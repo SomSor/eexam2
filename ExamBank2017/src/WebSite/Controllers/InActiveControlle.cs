@@ -215,7 +215,7 @@ namespace WebSite.Controllers
             var _examSuite = repoQ.GetQuestionSuite(ExamSuiteId);
             var _considerations = repoForApprove.ListConsiderationByExamSuiteId(_examSuite?._id);
             //_examSuite.Questions = this.GetQuestion(_examSuite);
-            _examSuite.Questions = this.helper.GetQuestion(_examSuite);
+            if (_examSuite.Questions != null) _examSuite.Questions = this.helper.GetQuestion(_examSuite);
 
             var examSuite = new ExamSuite
             {

@@ -138,6 +138,7 @@ namespace WebSite.Controllers
                 SubjectCode = _subject.SubjectCode,
                 Level = 1,
                 LayoutCode = "LayoutCode",
+                Questions = Enumerable.Empty<TheS.ExamBank.DataFormats.Question>(),
             };
 
             repoQ.InsertQuestionSuite(qsuite);

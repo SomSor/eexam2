@@ -148,8 +148,7 @@
         .module('app')
         //.constant('defaultUrl', 'http://eexambankex.azurewebsites.net')
         //.constant('defaultUrl', 'http://localhost:50273')
-        .constant('defaultUrl', 'http://http://10.10.2.251:8080')
-        //.constant('defaultUrl', 'http://150.95.27.173/DSD#!/')
-        //.constant('defaultUrl', 'http://150.95.27.173:80')
+        //.constant('defaultUrl', 'http://10.10.2.251:8080')
+        .constant('defaultUrl', 'http://150.95.27.173:8080')
         .service('appConfig', AppConfig);
 }
