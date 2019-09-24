@@ -66,7 +66,8 @@ namespace WebSite.Repositories.MongoImpl
 
         public void InsertQuestionSuite(QuestionSuite qsuite)
         {
-            throw new NotImplementedException();
+            var coltn = helper.GetCollection<QuestionSuite>(InactiveSubject_ExamSuite);
+            coltn.InsertOne(qsuite);
         }
 
         public void Upsert(QuestionSuite qsuite)

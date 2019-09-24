@@ -66,10 +66,10 @@ namespace WebSite
             services.AddSingleton(pvdr => CloudStorageAccount.Parse(webconfig.StorageConnectionString));
             services.AddTransient(pvdr => new MongoClient(webconfig.MongoDbConnectionString));
             services.AddTransient<Repositories.MongoImpl.MongoHelper>();
-            services.AddTransient<IQuestionImportRepository, Repositories.OracleImpl.OraQuestionImportRepository>();
-            services.AddTransient<IExamForApproveRepository, Repositories.OracleImpl.OraExamForApproveRepository>();
-            //services.AddTransient<IQuestionImportRepository, Repositories.MongoImpl.QuestionImportRepository>();
-            //services.AddTransient<IExamForApproveRepository, Repositories.MongoImpl.ExamForApproveRepository>();
+            //services.AddTransient<IQuestionImportRepository, Repositories.OracleImpl.OraQuestionImportRepository>();
+            //services.AddTransient<IExamForApproveRepository, Repositories.OracleImpl.OraExamForApproveRepository>();
+            services.AddTransient<IQuestionImportRepository, Repositories.MongoImpl.QuestionImportRepository>();
+            services.AddTransient<IExamForApproveRepository, Repositories.MongoImpl.ExamForApproveRepository>();
             services.AddTransient<IExamForRandomRepository, Repositories.MongoImpl.ExamForRandomRepository>();
             services.AddTransient<ICloudStorage, Repositories.MongoImpl.CloudStorage>();
             services.AddTransient<IFile, TheS.ExamBank.Parsers.FileHelper>();

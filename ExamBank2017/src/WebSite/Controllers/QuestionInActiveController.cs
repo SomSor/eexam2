@@ -172,68 +172,68 @@ namespace WebSite.Controllers
         [Route("CreateQuestion")]
         public IActionResult CreateQuestion([FromBody] Question request)
         {
-            var questionId = Guid.NewGuid().ToString();
-            repoQ.InsertQuestion(new TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswerWithId
-            {
-                _id = questionId,
-                No = request.QuestionNumber,
-                NoShuffleChoice = request.IsAllowRandomChoice,
-                Content = request.Detail,
-                QuestionSuiteId = request.ExamSuiteId,
-            });
-
-            foreach (var choice in request.Choices)
-            {
-                var choiceId = $"{questionId}-{choice.id}";
-                repoQ.InsertChoice(new TheS.ExamBank.DataFormats.SelectableChoiceWithId
-                {
-                    _id = choiceId,
-                    Code = choice.id,
-                    Content = choice.Detail,
-                    IsCorrectAnswer = choice.IsCorrect,
-                    QuestionId = questionId,
-                });
-            }
-
-            var questionSuite = repoQ.GetQuestionSuite(request.ExamSuiteId);
-            var questionSuites = repoQ.GetAllQuestionSuiteBySubjectId(questionSuite.SubjectId);
-            var questionSuiteCount = questionSuites.Count();
-            var questionCount = questionSuites.Sum(qs => qs.Questions.Count());
-            repoQ.UpdateQuestionCount(questionSuite.SubjectId, questionCount, questionSuiteCount);
-
-            //var qsuiteVm = repoQ.GetQuestionSuite(request.ExamSuiteId);
-            //var questions = qsuiteVm.Questions.ToList();
             //var questionId = Guid.NewGuid().ToString();
-            //questions.Add(new TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer
+            //repoQ.InsertQuestion(new TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswerWithId
             //{
             //    _id = questionId,
             //    No = request.QuestionNumber,
             //    NoShuffleChoice = request.IsAllowRandomChoice,
             //    Content = request.Detail,
-            //    Choices = request.Choices.Select(c => new TheS.ExamBank.DataFormats.SelectableChoice
-            //    {
-            //        Code = c.id,
-            //        Content = c.Detail,
-            //        IsCorrectAnswer = c.IsCorrect,
-            //    }).ToList(),
-            //    Assets = Enumerable.Empty<TheS.ExamBank.DataFormats.Asset>(),
+            //    QuestionSuiteId = request.ExamSuiteId,
             //});
-            //qsuiteVm.Questions = questions;
-            //var qsuite = new TheS.ExamBank.DataFormats.QuestionSuite()
-            //{
-            //    _id = qsuiteVm?._id,
-            //    Code = qsuiteVm?.Code,
-            //    Title = qsuiteVm?.Title,
-            //    SubjectName = qsuiteVm?.SubjectName,
-            //    Description = qsuiteVm?.Description,
-            //    SubjectId = qsuiteVm?.Description,
-            //    SubjectCode = qsuiteVm?.SubjectCode,
-            //    Level = qsuiteVm?.Level ?? 0,
-            //    LayoutCode = qsuiteVm?.LayoutCode,
-            //    Questions = qsuiteVm?.Questions,
-            //};
 
-            //repoQ.Upsert(qsuite);
+            //foreach (var choice in request.Choices)
+            //{
+            //    var choiceId = $"{questionId}-{choice.id}";
+            //    repoQ.InsertChoice(new TheS.ExamBank.DataFormats.SelectableChoiceWithId
+            //    {
+            //        _id = choiceId,
+            //        Code = choice.id,
+            //        Content = choice.Detail,
+            //        IsCorrectAnswer = choice.IsCorrect,
+            //        QuestionId = questionId,
+            //    });
+            //}
+
+            //var questionSuite = repoQ.GetQuestionSuite(request.ExamSuiteId);
+            //var questionSuites = repoQ.GetAllQuestionSuiteBySubjectId(questionSuite.SubjectId);
+            //var questionSuiteCount = questionSuites.Count();
+            //var questionCount = questionSuites.Sum(qs => qs.Questions.Count());
+            //repoQ.UpdateQuestionCount(questionSuite.SubjectId, questionCount, questionSuiteCount);
+
+            var qsuiteVm = repoQ.GetQuestionSuite(request.ExamSuiteId);
+            var questions = qsuiteVm.Questions.ToList();
+            var questionId = Guid.NewGuid().ToString();
+            questions.Add(new TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer
+            {
+                _id = questionId,
+                No = request.QuestionNumber,
+                NoShuffleChoice = request.IsAllowRandomChoice,
+                Content = request.Detail,
+                Choices = request.Choices.Select(c => new TheS.ExamBank.DataFormats.SelectableChoice
+                {
+                    Code = c.id,
+                    Content = c.Detail,
+                    IsCorrectAnswer = c.IsCorrect,
+                }).ToList(),
+                Assets = Enumerable.Empty<TheS.ExamBank.DataFormats.Asset>(),
+            });
+            qsuiteVm.Questions = questions;
+            var qsuite = new TheS.ExamBank.DataFormats.QuestionSuite()
+            {
+                _id = qsuiteVm?._id,
+                Code = qsuiteVm?.Code,
+                Title = qsuiteVm?.Title,
+                SubjectName = qsuiteVm?.SubjectName,
+                Description = qsuiteVm?.Description,
+                SubjectId = qsuiteVm?.Description,
+                SubjectCode = qsuiteVm?.SubjectCode,
+                Level = qsuiteVm?.Level ?? 0,
+                LayoutCode = qsuiteVm?.LayoutCode,
+                Questions = qsuiteVm?.Questions,
+            };
+
+            repoQ.Upsert(qsuite);
 
             return Ok(new { Message = $"Created!", QuestionId = questionId });
         }
@@ -242,53 +242,53 @@ namespace WebSite.Controllers
         [Route("UpdateQuestion")]
         public IActionResult UpdateQuestion([FromBody] Question request)
         {
-            repoQ.UpdateQuestion(new TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswerWithId
-            {
-                _id = request.id,
-                No = request.QuestionNumber,
-                NoShuffleChoice = request.IsAllowRandomChoice,
-                Content = request.Detail,
-                QuestionSuiteId = request.ExamSuiteId,
-            });
-
-            foreach (var choice in request.Choices)
-            {
-                var choiceId = $"{request.id}-{choice.id}";
-                repoQ.UpdateChoice(new TheS.ExamBank.DataFormats.SelectableChoiceWithId
-                {
-                    _id = choiceId,
-                    Code = choice.id,
-                    Content = choice.Detail,
-                    IsCorrectAnswer = choice.IsCorrect,
-                    QuestionId = request.id,
-                });
-            }
-
-            //var qsuiteVm = repoQ.GetQuestionSuite(request.ExamSuiteId);
-            //var question = qsuiteVm?.Questions?.Where(x => x._id == request.id)?.FirstOrDefault();
-            //question.Content = request.Detail;
-            //question.Choices = request.Choices?.Select(x => new TheS.ExamBank.DataFormats.SelectableChoice
+            //repoQ.UpdateQuestion(new TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswerWithId
             //{
-            //    Code = x.id,
-            //    Content = x.Detail,
-            //    IsCorrectAnswer = x.IsCorrect,
+            //    _id = request.id,
+            //    No = request.QuestionNumber,
+            //    NoShuffleChoice = request.IsAllowRandomChoice,
+            //    Content = request.Detail,
+            //    QuestionSuiteId = request.ExamSuiteId,
             //});
 
-            //var qsuite = new TheS.ExamBank.DataFormats.QuestionSuite()
+            //foreach (var choice in request.Choices)
             //{
-            //    _id = qsuiteVm?._id,
-            //    Code = qsuiteVm?.Code,
-            //    Title = qsuiteVm?.Title,
-            //    SubjectName = qsuiteVm?.SubjectName,
-            //    Description = qsuiteVm?.Description,
-            //    SubjectId = qsuiteVm?.Description,
-            //    SubjectCode = qsuiteVm?.SubjectCode,
-            //    Level = qsuiteVm?.Level ?? 0,
-            //    LayoutCode = qsuiteVm?.LayoutCode,
-            //    Questions = qsuiteVm?.Questions,
-            //};
+            //    var choiceId = $"{request.id}-{choice.id}";
+            //    repoQ.UpdateChoice(new TheS.ExamBank.DataFormats.SelectableChoiceWithId
+            //    {
+            //        _id = choiceId,
+            //        Code = choice.id,
+            //        Content = choice.Detail,
+            //        IsCorrectAnswer = choice.IsCorrect,
+            //        QuestionId = request.id,
+            //    });
+            //}
 
-            //repoQ.Upsert(qsuite);
+            var qsuiteVm = repoQ.GetQuestionSuite(request.ExamSuiteId);
+            var question = qsuiteVm?.Questions?.Where(x => x._id == request.id)?.FirstOrDefault();
+            question.Content = request.Detail;
+            question.Choices = request.Choices?.Select(x => new TheS.ExamBank.DataFormats.SelectableChoice
+            {
+                Code = x.id,
+                Content = x.Detail,
+                IsCorrectAnswer = x.IsCorrect,
+            });
+
+            var qsuite = new TheS.ExamBank.DataFormats.QuestionSuite()
+            {
+                _id = qsuiteVm?._id,
+                Code = qsuiteVm?.Code,
+                Title = qsuiteVm?.Title,
+                SubjectName = qsuiteVm?.SubjectName,
+                Description = qsuiteVm?.Description,
+                SubjectId = qsuiteVm?.Description,
+                SubjectCode = qsuiteVm?.SubjectCode,
+                Level = qsuiteVm?.Level ?? 0,
+                LayoutCode = qsuiteVm?.LayoutCode,
+                Questions = qsuiteVm?.Questions,
+            };
+
+            repoQ.Upsert(qsuite);
 
             return Ok(new { Message = $"Updated!", QuestionId = request.id });
         }
