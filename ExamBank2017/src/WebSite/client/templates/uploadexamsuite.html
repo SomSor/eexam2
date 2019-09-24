@@ -1,0 +1,106 @@
+﻿---
+name: uploadexamsuite
+url: /uploadexamsuite
+controller: 'app.uploadExamSuiteApp.uploadExamSuiteController as ctx'
+---
+<form class="grid-container" method="post" action="/api/Markdown/Verify" enctype="multipart/form-data">
+    <h2 class="medium-offset-2">อัพโหลดชุดข้อสอบ</h2>
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            ไฟล์ :
+        </div>
+        <div class="medium-4 grid-content">
+            <!--<input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.TempFileName}}" />-->
+            <input type="file" name="files" multiple required/>
+        </div>
+        <div class="medium-4">
+            <!--<a class="button secondary" ng-click="ctx.BrowseFile()">Browse...</a>-->
+            <!--<a class="button" ng-click="ctx.VerifyMarkdown()">ตรวจสอบ</a>-->
+        </div>
+    </div>
+    <br>
+    <!--<div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            กลุ่มอาชีพ :
+        </div>
+        <div class="medium-4 grid-content">
+            <input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.SubjectGroupName}}" />
+        </div>
+        <div class="medium-4"></div>
+    </div>
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            กลุ่มวิชา :
+        </div>
+        <div class="medium-4 grid-content">
+            <input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.OccupationGroupName}}" />
+        </div>
+        <div class="medium-4"></div>
+    </div>
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            รหัสวิชา :
+        </div>
+        <div class="medium-4 grid-content">
+            <input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.SubjectCode}}" />
+        </div>
+        <div class="medium-4"></div>
+    </div>
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            วิชา :
+        </div>
+        <div class="medium-4 grid-content">
+            <input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.SubjectName}}" />
+        </div>
+        <div class="medium-4"></div>
+    </div>
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            รหัสหมวด :
+        </div>
+        <div class="medium-4 grid-content">
+            <input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.TitleCode}}" />
+        </div>
+        <div class="medium-4"></div>
+    </div>
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            หมวด :
+        </div>
+        <div class="medium-4 grid-content">
+            <input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.TitleName}}" />
+        </div>
+        <div class="medium-4"></div>
+    </div>
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            จำนวนข้อสอบ :
+        </div>
+        <div class="medium-4 grid-content">
+            <input type="text" disabled="disabled" value="{{ctx.uploadExamSuite.QuestionCount}}" />
+        </div>
+        <div class="medium-4"></div>
+    </div>-->
+    <div class="grid-block v-align">
+        <div class="medium-2 medium-offset-2 align-center text-right">
+            ภาษา :
+        </div>
+        <div class="medium-4 grid-content">
+            <select name="Language">
+                <option value="TH">ภาษาไทย (TH)</option>
+                <option value="EN">ภาษาอังกฤษ (EN)</option>
+                <option value="CN">ภาษาจีน (CN)</option>
+                <option value="JP">ภาษาญี่ปุ่น (JP)</option>
+                <option value="MY">ภาษายาวี (MY)</option>
+            </select>
+        </div>
+        <div class="medium-4"></div>
+    </div>
+    <div class="grid-block v-align">
+        <div class="medium-offset-4 medium-4 grid-content">
+            <button class="button" type="submit">บันทึก</button>
+        </div>
+        <div class="medium-4"></div>
+    </div>
+</form>

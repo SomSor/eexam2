@@ -1,0 +1,34 @@
+﻿@model IEnumerable<WebSite.ViewModels.ExamBankModelsBack.QuestionSuiteVM>
+@{
+    ViewData["Title"] = "fixall";
+    int i = 0;
+}
+<input type="button" value="fix" onclick="i = 0; start();" /><br /><br />
+<script>
+    var i = 0;
+    function start() {
+        $('#' + subjectIds[i]).load('fix/' + subjectIds[i], function () {
+            i++;
+            if (i < subjectIds.length) start();
+            else i = 0;
+        }, function () {
+            var content = $('#' + subjectIds[i]).html();
+            $('#' + subjectIds[i]).html(content + " FAIL !!");
+        });
+    }
+
+    function load(subjectid) {
+        $('#' + subjectid).load('fix/' + subjectid);
+    }
+
+    var subjectIds = [];
+    @foreach (var subject in Model)
+    {
+        @Html.Raw("subjectIds[" + i + "] = '" + subject._id.Replace('.', '_') + "';");
+        i++;
+    }
+</script>
+@foreach (var subject in Model)
+{
+    <a href="#" id="@subject._id.Replace('.','_')" onclick="load('@subject._id.Replace('.','_')')">@subject._id @subject.Title</a><br />
+}

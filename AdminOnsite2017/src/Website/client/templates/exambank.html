@@ -1,0 +1,44 @@
+﻿---
+name: exambank
+url: /exambank
+---
+<div class="grid-content" ng-controller="application.exambankApp.exambankController as ctx">
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <div class="grid-block">
+                    <div class="medium-4 text-center">วิชา</div>
+                    <div class="medium-1 text-center">ภาษา</div>
+                    <div class="medium-1 text-center">เสียง</div>
+                    <div class="medium-2 text-center">จำนวนที่สอบได้</div>
+                    <div class="medium-2 text-center">จำนวนคนที่สอบ</div>
+                    <div class="medium-2 text-center">หมายเหตุ</div>
+                    <!--<div class="medium-1 text-center">โหลดข้อสอบเพิ่ม</div>-->
+                </div>
+            </div>
+            <div class="card-section">
+                <div class="grid-block v-align" ng-repeat="_examData in ctx._examdata.ExamSheets">
+                    <div class="medium-4 text-center"><p>{{_examData.SubjectName}}</p></div>
+                    <div class="medium-1 text-center"><p>{{_examData.ExamLanguage}}</p></div>
+                    <div class="medium-1 text-center"><p>{{_examData.VoiceLanguage}}</p></div>
+                    <div class="medium-2 text-center"><p>{{_examData.Quantity}}</p></div>
+                    <div class="medium-2 text-center"><p>{{_examData.Book}}</p></div>
+                    <div class="medium-2 text-center"><p ng-show="_examData.Quantity<_examData.Book">ข้อสอบไม่พอสอบ</p></div>
+                    <!--<div class="medium-1 text-center"><font size="6"  class="fi-download" zf-open="confirmDownload" ng-click="ctx.downloadRequest('TS012356','th','th',20)" style="cursor: pointer;"></font></div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div zf-modal="confirm" class="tiny collapse" id="confirmDownload">
+        <div class="primary title-bar">
+            <div class="center title">
+                ต้องการ Download ข้อสอบเพิ่มเติม ?
+            </div>
+        </div>
+        <br>
+        <div class="text-center">
+            <a class="button">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+</div>

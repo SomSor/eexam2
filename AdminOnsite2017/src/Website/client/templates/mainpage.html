@@ -1,0 +1,198 @@
+﻿---
+name: mainpage
+url: /mainpage
+---
+<div id="dialogModal" class="modal-overlay is-active" overlay="false" overlay-close="false" ng-show="!ctx.prepareData">
+    <font size="6">Loading.....</font>
+</div>
+
+<div class="grid-content" ng-controller="application.mainpageApp.mainpageController as ctx">
+    <div class="grid-block">
+        <div class="medium-6 v-align">
+            <label class="medium-8">
+                <span class="inline-label">
+                    <input type="text" placeholder="Search..." ng-model="searchText">
+                    <span class="form-label" ng-click="ctx.searchTestRegis(searchText)" style="cursor: pointer;"><img zf-iconic="" icon="Magnifying-glass" size="small" class="iconic-color-dark"></span>
+                </span>
+            </label>
+        </div>
+    </div>
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <div class="grid-block v-align">
+                    <div class="medium-1 text-center">ลำดับ</div>
+                    <div class="medium-2 text-center">รหัสประชาชน</div>
+                    <div class="medium-2 text-center">ชื่อ-นามสกุล</div>
+                    <div class="medium-2 text-center">วิชา</div>
+                    <div class="medium-1 text-center">วันที่นัดสอบ</div>
+                    <div class="medium-2 text-center v-align">
+                        <div class="medium-3 text-center">ภาษา</div>
+                        <div class="medium-6 text-center">สถานะ</div>
+                        <div class="medium-3 text-center">ครั้งที่</div>
+                    </div>
+                    <div class="medium-2 text-center v-align">
+                        <div class="medium-4"><font size="6" class="fi-page-doc"></font></div>
+                        <div class="medium-4"><font size="6" class="fi-print"></font></div>
+                        <div class="medium-4"><font size="6" class="fi-widget"></font></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-section">
+                <div class="grid-block v-align" ng-repeat="_testregistration in ctx._testregistration.TestRegistrations">
+                    <div class="medium-1 text-center">
+                        <img zf-iconic="" icon="Circle-check" class="iconic-color-success" size="small" ng-show="_testregistration.IsSync">
+                        <span ng-hide="_testregistration.IsSync">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        {{$index+1}}
+                    </div>
+                    <div class="medium-2 text-center">{{_testregistration.PID}}</div>
+                    <div class="medium-2 text-center">{{_testregistration.FirstName}}&nbsp;{{_testregistration.LastName}}</div>
+                    <div class="medium-2 text-center ">{{_testregistration.SubjectName}}</div>
+                    <div class="medium-1 text-center ">{{_testregistration.AppointDate | date:"dd/MM/yyyy"}}</div>
+                    <div class="medium-2 text-center v-align">
+                        <div class="medium-3 text-center">{{_testregistration.ExamLanguage}}</div>
+                        <div class="medium-6 text-center">{{_testregistration.Status}}</div>
+                        <div class="medium-3 text-center">{{_testregistration.LatestCount}}</div>
+                    </div>
+                    <div class="medium-2 text-center v-align">
+                        <div class="medium-4"><font size="6" class="fi-page-doc" style="cursor: pointer;" ng-click="ctx.goPrintQRCode(_testregistration.PID)"></font></div>
+                        <div class="medium-4"><font size="6" class="fi-print" style="cursor: pointer;" ng-click="ctx.goPrintSheet(_testregistration.PID,_testregistration.SheetId)" ng-show="_testregistration.Status=='PASS'|| _testregistration.Status=='FAIL'"></font></div>
+                        <div class="medium-4"><font size="6" class="fi-widget" zf-open="useroption" style="cursor: pointer;" ng-click="ctx._showInModal=_testregistration"></font></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------- Modal Section ------------------------------>
+    <zf-modal id="useroption" class="large collapse">
+        <div class="primary title-bar">
+            <div class="center title">
+                รายละเอียด
+            </div>
+            <span zf-close="" class="right"><a>ปิด</a></span>
+        </div>
+        <br />
+        <div class="grid-content v-align">
+            <div class="medium-8 grid-block align-top">
+                <div class="medium-4"><img media="small" src="http://placehold.it/170x250?text=1"></div>
+                <div class="medium-8 grid-content">
+                    <div class="grid-block"><h6 class="medium-3">ชื่อ-สกุล</h6><h6 class="medium-9">{{ctx._showInModal.FirstName}}&nbsp;{{ctx._showInModal.LastName}}</h6></div>
+                    <div class="grid-block"><h6 class="medium-3">รหัส</h6><h6 class="medium-9">{{ctx._showInModal.PID}}</h6></div>
+                    <div class="grid-block"><h6 class="medium-3">วิชา</h6><h6 class="medium-9">{{ctx._showInModal.SubjectName}}</h6></div>
+                    <div class="grid-block"><h6 class="medium-3">สถานะ</h6><h6 class="medium-9">{{ctx._showInModal.Status}}</h6></div>
+                    <div class="grid-block"><h6 class="medium-3">ภาษา</h6><h6 class="medium-9">{{ctx._showInModal.ExamLanguage}}</h6></div>
+                    <div class="grid-block"><h6 class="medium-3">เสียง</h6><h6 class="medium-9">{{ctx._showInModal.VoiceLanguage}}</h6></div>
+                </div>
+            </div>
+            <!----------------------Option Section-------------------->
+            <div class="medium-4">
+                <div class="medium-12 grid-block" zf-open="" zf-close="useroption" style="cursor: pointer;">
+                    <font size="6" class="fi-credit-card medium-2 medium-offset-3 "></font>
+                    <span class="v-align">MapwildCard</span>
+                </div>
+                <hr />
+
+                <div class="medium-12 grid-block" zf-open="confirmEnd" zf-close="useroption" style="cursor: pointer;" ng-show="ctx._showInModal.Status=='DONE'">
+                    <font size="6" class="fi-flag medium-2 medium-offset-3 "></font>
+                    <span class="v-align">FinishTest</span>
+                </div>
+                <div class="medium-12 grid-block" ng-hide="ctx._showInModal.Status=='DONE'">
+                    <font size="6" color="grey" class="fi-flag medium-2 medium-offset-3 "></font>
+                    <font color="grey" class="v-align">FinishTest</font>
+                </div>
+                <hr />
+
+                <div class="medium-12 grid-block" zf-open="confirmResume" zf-close="useroption" style="cursor: pointer;" ng-show="ctx._showInModal.Status!='FAIL'&& ctx._showInModal.Status!='PASS' && ctx._showInModal.Status!='APPOINTED'">
+                    <font size="6" class="fi-refresh medium-2 medium-offset-3 "></font>
+                    <span class="v-align">Resume</span>
+                </div>
+                <div class="medium-12 grid-block" ng-hide="ctx._showInModal.Status!='FAIL'&& ctx._showInModal.Status!='PASS' && ctx._showInModal.Status!='APPOINTED'">
+                    <font size="6" color="grey" class="fi-refresh medium-2 medium-offset-3 "></font>
+                    <font color="grey" class="v-align">Resume</font>
+                </div>
+                <hr />
+
+
+                <div class="medium-12 grid-block" zf-open="selectLanguage" zf-close="useroption" style="cursor: pointer;" ng-hide="ctx._showInModal.Status=='FAIL' || ctx._showInModal.Status=='PASS' || ctx._showInModal.Status=='DONE'">
+                    <font size="6" class="fi-comment medium-2 medium-offset-3 "></font>
+                    <span class="v-align">Language</span>
+                </div>
+                <div class="medium-12 grid-block" ng-show="ctx._showInModal.Status=='FAIL' || ctx._showInModal.Status=='PASS' || ctx._showInModal.Status=='DONE'">
+                    <font size="6" color="grey" class="fi-comment medium-2 medium-offset-3 "></font>
+                    <font color="grey" class="v-align">Language</font>
+                </div>
+
+                <hr />
+            </div>
+        </div>
+    </zf-modal>
+    <!--------------------------------------Confirm Modal Section--------------------------------------->
+    <div zf-modal="confirm" class="tiny collapse" id="confirmEnd">
+        <div class="primary title-bar">
+            <div class="center title">
+                ต้องการสิ้นสุดการสอบการสอบ ?
+            </div>
+            <span zf-close="" class="right"><a>ปิด</a></span>
+        </div>
+        <br>
+        <div class="text-center">
+            <a zf-close="" class="button" ng-click="ctx.EndTest(ctx._showInModal.PID,ctx._showInModal.SheetId)">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+
+    <div zf-modal="confirm" class="tiny collapse" id="confirmResume">
+        <div class="primary title-bar">
+            <div class="center title">
+                ต้องการสอบอีกครั้ง ?
+            </div>
+            <span zf-close="" class="right"><a>ปิด</a></span>
+        </div>
+        <br>
+        <div class="text-center">
+            <a zf-close="" class="button" ng-click="ctx.ResumeTest(ctx._showInModal.PID,ctx._showInModal.SheetId)">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+
+    <div zf-modal="confirm" class="tiny collapse" id="confirmCancel">
+        <div class="primary title-bar">
+            <div class="center title">
+                ต้องการยกเลิกการสอบ ?
+            </div>
+            <span zf-close="" class="right"><a>ปิด</a></span>
+        </div>
+        <br>
+        <div class="text-center">
+            <a zf-close="" class="button" ng-click="ctx.CancelTest(ctx._showInModal.PID,ctx._showInModal.SheetId)">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+    <div zf-modal="confirm" class="tiny collapse" id="selectLanguage">
+        <div class="primary title-bar">
+            <div class="center title">
+                กรุณาเลือกภาษา
+            </div>
+            <span zf-close="" class="right"><a>ปิด</a></span>
+        </div>
+        <br>
+        <div class="text-center" zf-close="" style="cursor: pointer" ng-click="ctx.ChangeUserLanguage('th')">
+            <span>ไทย</span>
+        </div>
+        <hr />
+        <div class="text-center" zf-close="" style="cursor: pointer" ng-click="ctx.ChangeUserLanguage('en')">
+            <span>อังกฤษ</span>
+        </div>
+        <hr />
+        <div class="text-center" zf-close="" style="cursor: pointer" ng-click="ctx.ChangeUserLanguage('cn')">
+            <span>จีน</span>
+        </div>
+        <hr />
+        <div class="text-center" zf-close="" style="cursor: pointer" ng-click="ctx.ChangeUserLanguage('jp')">
+            <span>ญี่ปุ่น</span>
+        </div>
+        <hr />
+    </div>
+</div>
+
+

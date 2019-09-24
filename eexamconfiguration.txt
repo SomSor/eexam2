@@ -1,0 +1,30 @@
+examtest
+    c:\examtest\
+        assets - c:\examsuiteid\imgs\xxx.image.png (xxx => asset name)
+examconfig
+    c:\examconfig\
+        logo - xxx.png (xxx => centerid)  upload to https://examex.blob.core.windows.net/examtest/examlogo/
+database
+    c:\litedb\MyData.db
+
+AdminOnline
+	appsettings.json    (ftp://eexamthaiex%255ciddriver@waws-prod-sg1-011.ftp.azurewebsites.windows.net/site/approot/src/WebSite/appsettings.json)
+    app.config.ts       (ftp://eexamthaiex%255ciddriver@waws-prod-sg1-011.ftp.azurewebsites.windows.net/site/wwwroot/js/app.js)
+
+AdminOnSite
+    appsettings.json    ( IIS web app..\approot\src\WebSite\appsettings.json)
+    app.config.ts       ( IIS web app..\wwwroot\js\app.js)
+
+LocalDB
+    app.config    ( IIS web app..\approot\src\WebSite\appsettings.json)
+
+Client (Config api id)
+    android
+        config.txt ???
+
+    PC
+        config.txt ???        
+    
+        meta4clickonce
+        http://examex.blob.core.windows.net/examclient/pc/SmartCardReader.application
+

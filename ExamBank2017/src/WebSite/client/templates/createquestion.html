@@ -1,0 +1,67 @@
+﻿---
+name: createquestion
+url: /createquestion/:examsuiteid
+controller: 'app.createQuestionApp.createQuestionController as ctx'
+---
+<div class="grid-container">
+    <br>
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <h4>รายละเอียดชุดข้อสอบ</h4>
+            </div>
+            <div class="card-section">
+                <div class="grid-block"><h6 class="medium-3 grid-content">รหัสวิชา</h6><h6 class="medium-9">{{ctx._examSuite.SubjectCode}}</h6></div>
+                <div class="grid-block"><h6 class="medium-3 grid-content">วิชา</h6><h6 class="medium-9">{{ctx._examSuite.SubjectName}}</h6></div>
+                <div class="grid-block"><h6 class="medium-3 grid-content">รหัสหมวด</h6><h6 class="medium-9">{{ctx._examSuite.TitleCode}}</h6></div>
+                <div class="grid-block"><h6 class="medium-3 grid-content">หมวด</h6><h6 class="medium-9">{{ctx._examSuite.TitleName}}</h6></div>
+                <div class="grid-block"><h6 class="medium-3 grid-content"><a>ลบหมวดนี้</a></h6></div>
+            </div>
+        </div>
+    </div>
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <h4>รายละเอียดข้อสอบ</h4>
+            </div>
+            <div class="card-section">
+                <form>
+                    <div class="grid-block"><h6 class="medium-12 grid-content">โจทย์ข้อที่ {{ctx._question.QuestionNumber}}</h6><h6 class="medium-12"><input type="text" ng-model="ctx._question.Detail" id="txtQuestion"></h6></div>
+                    <div class="grid-block"><h6 class="medium-12 grid-content"><input type="file" class="button" /></h6></div>
+                    <div class="grid-block"><h6 class="medium-2 grid-content">คำตอบ</h6><h6 class="medium-10"></h6></div>
+                    <div class="grid-block" ng-repeat="c in ctx._question.Choices"><h6 class="medium-1 grid-content">{{c.id}}</h6><h6 class="medium-10"><input type="text" ng-model="c.Detail"></h6></div>
+                    <div class="grid-block">
+                        <h6 class="medium-3 grid-content">ตำตอบที่ถูกต้องคือ</h6><h6 class="medium-1">
+                            <select ng-options="c for c in ctx._choices" ng-model="ctx._correctAnswer" ng-init="ctx._correctAnswer=ctx._choices[0]"></select>
+                        </h6>
+                    </div>
+                    <div class="grid-block">
+                        <div class="grid-content">
+                            <button class="button float-right alert" ng-click="ctx.Delete()" ng-disabled="!ctx._question.id">ลบข้อสอบ</button>
+                            <button type="reset" class="button float-right" ng-click="ctx.Clear()">ยกเลิก</button>
+                            <button class="button float-right success" ng-click="ctx.Create()"><span ng-hide="!ctx._question.id">แก้ไข</span><span ng-hide="ctx._question.id">สร้าง</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="question in ctx._examSuite.Questions">
+        <div>
+            <div class="float-right">
+                <input type="checkbox" disabled="disabled" ng-checked="question.IsAllowRandomChoice" ng-model="question.IsAllowRandomChoice" /><label>No random choice</label>
+                <a ng-click="ctx.Show(question.id)">แก้ไข</a>
+            </div>
+            <div class="medium-9">
+                <div class="grid-block">
+                    <p>{{question.QuestionNumber}}.</p>&nbsp;&nbsp;&nbsp;<span marked="question.Detail" class="medium-11"></span>
+                </div>
+                <div class="grid-block" ng-repeat="choice in question.Choices">
+                    <span ng-class="{'success badge': choice.IsCorrect, 'secondary badge': !choice.IsCorrect}">{{choice.id}}</span>&nbsp;&nbsp;&nbsp;
+                    <span class="medium-11" marked="choice.Detail"></span>
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>

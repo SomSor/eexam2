@@ -1,0 +1,32 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExamClient.Controls"
+             xmlns:helper="clr-namespace:ExamClient.Helpers"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+             xmlns:ViewModel="clr-namespace:ExamClient.ViewModel" x:Class="ExamClient.Controls.QuestionUI" 
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ViewModel:QuestionViewModel x:Key="QuestionViewModelDataSource" d:IsDataSource="True"/>
+    </UserControl.Resources>
+    <!--<UserControl.DataContext>
+        <Binding Source="{StaticResource QuestionViewModelDataSource}"/>
+    </UserControl.DataContext>-->
+    <Grid Background="White">
+        <Rectangle Stroke="Black" StrokeThickness="4"/>
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Margin="0" Stroke="Black" StrokeThickness="0" Fill="Black"/>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Q" VerticalAlignment="Center" Foreground="White" FontSize="64"/>           
+            <WebBrowser x:Name="ContentWebBrowser" helper:BrowserBehavior.Html="{Binding TextMD}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Grid.Column="1" Margin="4,0,0,0" />
+        </Grid>
+
+    </Grid>
+</UserControl>

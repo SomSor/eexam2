@@ -1,0 +1,35 @@
+﻿---
+name: testresult
+url: /testresult/:pid/:sheetid
+controller: 'application.searchresultApp.PrintResultController as ctx'
+---
+<div ui-view="" class="grid-container" style="width:600px;">
+    <h3 class="text-center"><b>ผลคะแนนการสอบ</b></h3>
+    <h6 class="text-center"><b>การสอบวัดผลภาคทฤษฎี</b></h6><br />
+    <div style="height:9em">
+        <!--<img src="../assets/logo/file_1382649001.jpg" width="125px" height="125px" class="float-left" />-->
+        <img src="{{ctx.logoUrl}}" width="125px" height="125px" class="float-left" />
+        <div style="padding-left:10px;padding-right:25px;" class="float-left">
+            <h6 style="width:300px"><span style="padding-right:8px">ชื่อ-นามสกุล</span>{{ctx._getTestResult.Firstname}} {{ctx._getTestResult.LastName}}</h6>
+            <h6 style="width:300px"><span style="padding-right:28px">เลขที่บัตร</span>{{ctx._getTestResult.PID}}</h6>
+            <h6 style="width:300px"><span style="padding-right:28px">วันที่สอบ</span>{{ctx._getTestResult.ExamDateTime | date:'dd/MM/yyyy'}}</h6>
+            <h6 style="width:300px"><span style="padding-right:13px">การสอบวิชา</span>{{ctx._getTestResult.SubjectName}}</h6>
+            <h6 style="width:300px"><span style="padding-right:28px">สอบครั้งที่</span>{{ctx._getTestResult.TestCount}}</h6>
+        </div>
+        <img src="{{ctx.ExamPicUrl}}/{{ctx.SheetId}}.jpg" width="125px" height="125px" />
+    </div>
+    <div class="card" style="padding:10px;width:400px;margin-left:100px;">
+        <h4 style="padding-left:10px;"><span style="padding-right:120px">ผลการสอบ</span>{{ctx._getTestResult.Status}}</h4>
+        <h4 style="padding-left:10px;"><span style="padding-right:53px">จำนวนข้อที่ถูก <img zf-iconic="" icon="Circle-check" class="iconic-color-dark" size="medium"></span>{{ctx._getTestResult.CorrectCount}} ข้อ</h4>
+        <h4 style="padding-left:10px;"><span style="padding-right:53px">จำนวนข้อที่ผิด <img zf-iconic="" icon="Circle-x" class="iconic-color-dark" size="medium"></span>{{ctx._getTestResult.InCorrectCount}} ข้อ</h4>
+    </div>
+    <div style="width:300px;" class="text-center float-left">
+        <h6>เจ้าหน้าที่คุมสอบ</h6><br />
+        <h6>..........................................</h6>
+        <h6>(<span style="padding-left:200px"></span>)</h6>
+    </div>
+    <div style="width:300px;" class="text-center float-left">
+        <p>สอบวันที่.....................................</p>
+        <p>{{ctx._getTestResult.CenterNameTH}}</p>
+    </div>
+</div>

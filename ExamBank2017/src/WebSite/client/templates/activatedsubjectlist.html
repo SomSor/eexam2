@@ -1,0 +1,76 @@
+﻿---
+name: activatedsubjectlist
+url: /activatedsubjectlist
+controller: 'app.subjectlistApp.activatedSubjectListController as ctx'
+---
+
+<div class="grid-container">
+    <br>
+    <div class="grid-block">
+        <div class="grid-content medium-5">      
+            <label>กลุ่มอาชีพ</label>
+            <select ng-model="selectedOccupation.OccupationId">
+                <option ng-repeat="occupation in ctx._subjectList.Occupations" value="{{occupation.id}}">{{occupation.Name}}</option>
+            </select>
+        </div>
+        <div class="grid-content medium-7">
+            <label>กลุ่มวิชา</label>
+            <span class="inline-label">
+                <select class="grid-content medium-8" ng-model="selectedSubjectGroup.SubjectGroupId">
+                    <option ng-repeat="subjectGroup in ctx._subjectList.SubjectGroups | filter:selectedOccupation:true" value="{{subjectGroup.id}}">{{subjectGroup.Name}}</option>
+                </select>
+                <span class="grid-content medium-4">
+                    <input type="button" class="button float-right" ng-click="selectedSubjectGroup = ''" value="แสดงทั้งหมด" />
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-divider">
+            <div class="grid-block v-align">
+                <div class="medium-2 text-center align-center">รหัสวิชา</div>
+                <div class="medium-4 text-center align-center">วิชา</div>
+                <div class="medium-1 text-center align-center">ภาษา</div>
+                <div class="medium-1 text-center align-center">จำนวนหมวด</div>
+                <div class="medium-1 text-center align-center">จำนวนคำถาม</div>
+                <div class="medium-1 text-center align-center">เวอร์ชั่น</div>
+                <div class="medium-1 text-center align-center">สถานะ</div>
+                <div class="medium-1 text-center align-center">รายละเอียด</div>
+            </div>
+        </div>
+        <div class="card-section">
+            <div class="grid-block" ng-repeat="subject in ctx._subjectList.SubjList | filter:selectedSubjectGroup:true">
+                <div class="medium-2 text-center">
+                    <p>{{subject.SubjectCode}}</p>
+                </div>
+                <div class="medium-4 text-center">
+                    <p>{{subject.SubjectName}}</p>
+                </div>
+                <div class="medium-1 text-center">
+                    <p>{{subject.ContentLanguage}}</p>
+                </div>
+                <div class="medium-1 text-center">
+                    <p>{{subject.ExamSuiteCount}}</p>
+                </div>
+                <div class="medium-1 text-center">
+                    <p>{{subject.QuestionCount}}</p>
+                </div>
+                <div class="medium-1 text-center">
+                    <p>{{subject.Version}}</p>
+                </div>
+                <div class="medium-1 text-center">
+                    <div class="text-center">
+                        <p>
+                            <img ng-show="!subject.IsDisabled" zf-iconic="" icon="Circle-check" size="small" class="iconic-color-success"/>
+                            <img ng-show="subject.IsDisabled" zf-iconic="" icon="Circle-x" size="small" class="iconic-color-alert"/>
+                        </p>
+                    </div>
+                </div>
+                <div class="medium-1 text-center">
+                    <p><a ui-sref="activatedsubjectview({ subjectid: subject.id })">ดู</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

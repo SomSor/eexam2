@@ -1,0 +1,320 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SmartCardReader"
+        xmlns:Models="clr-namespace:SmartCardReader.Models" x:Class="SmartCardReader.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800" MinWidth="800" MinHeight="600">
+    <Window.Resources>
+        <Models:PrintQRVM x:Key="PrintQRVMDataSource" d:IsDataSource="True"/>
+        <Models:CheckResultVM x:Key="CheckResultVMDataSource" d:IsDataSource="True"/>
+        <Models:DisplayAllVM x:Key="DisplayAllVMDataSource" d:IsDataSource="True"/>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="PrintButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <StackPanel Margin="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image Source="Images/white-printer.png" Margin="0,8"/>
+                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="10,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#1F26A0DA"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#a826A0Da"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#3D26A0DA"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#FF26A0DA"/>
+        <Style x:Key="SearchButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="0,0,10,0"/>
+                                <Image Height="Auto" Width="Auto" Source="Images/searcher.png" Margin="0,5"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="ResultDataTemplate">
+            <Border MinWidth="340" MinHeight="140" BorderBrush="Black" BorderThickness="2" Background="White" Height="Auto" Width="Auto" Padding="8">
+                <Grid Height="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="ชื่อ" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,0,10,0" FontSize="16"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="รหัสประชาชน" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,26,10,0" FontSize="16"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="วิชา" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,52,9,0" FontSize="16"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="สอบครั้งที่" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,78,9,0" FontSize="16"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding FullName}" VerticalAlignment="Top" TextAlignment="Left" Margin="10,0,0,0" Grid.Column="1" FontSize="16" Height="Auto" Grid.ColumnSpan="3"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding PID}" VerticalAlignment="Top" TextAlignment="Left" Margin="10,26,0,0" Grid.Column="1" FontSize="16" Height="Auto" Grid.ColumnSpan="1"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding SubjectName}" VerticalAlignment="Top" TextAlignment="Left" Margin="10,52,0,0" Grid.Column="1" FontSize="16" Height="Auto" Grid.ColumnSpan="1"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding TestCount}" VerticalAlignment="Top" TextAlignment="Left" Margin="10,78,0,0" Grid.Column="1" FontSize="16" Height="Auto" Grid.ColumnSpan="1"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="สถานะ" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,104,9,0" FontSize="16"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Status}" VerticalAlignment="Top" TextAlignment="Left" Margin="10,104,0,0" Grid.Column="1" FontSize="16" Height="Auto" Grid.ColumnSpan="1"/>
+                    <Image HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Width="40" Grid.Column="1" Source="Images/black-printer.png" Margin="0,0,8,8"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <Style x:Key="ResultListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RefreshButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image Height="Auto" Width="Auto" Source="Images/refresh.png" Margin="0,10"/>
+                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="10,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="0" Background="#FFD6D6D6" DataContext="{Binding Source={StaticResource CheckResultVMDataSource}}">
+        <TabControl x:Name="TabControl1" Margin="0,-2,0,0" Padding="0" DataContext="{Binding Source={StaticResource PrintQRVMDataSource}}" SelectionChanged="TabControl1_SelectionChanged">
+            <TabItem Header="Map" Width="260" FontWeight="Bold" FontSize="20" Margin="0" BorderBrush="#FF999999" Height="40" DataContext="{Binding}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Map" VerticalAlignment="Center" Grid.ColumnSpan="2" FontSize="36"/>
+                    <Grid Margin="10" Grid.Row="1">
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="ค้นหา" VerticalAlignment="Top" Margin="0"/>
+                        <TextBox x:Name="txtMapSearch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" Margin="60,0,0,0" Height="30" BorderBrush="Black" TextChanged="txtMapSearch_TextChanged"/>
+                        <Button Content="Refresh" VerticalAlignment="Top" Margin="0,40,0,0" FontWeight="Bold" BorderBrush="{x:Null}" Background="Black" Foreground="White" BorderThickness="0" Height="40" Style="{DynamicResource RefreshButtonStyle}" Click="btnRefresh_click"/>
+                        <DataGrid x:Name="datagridPerson" Margin="0,90,0,0" Background="White" BorderBrush="Black" ItemsSource="{Binding TestRegistrations}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DataGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="รหัสประชาชน" MinWidth="175" Binding="{Binding PID}"/>
+                                <DataGridTextColumn Header="ชื่อ-สกุล" MinWidth="175" Binding="{Binding FullName}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <Grid Grid.Column="1" Margin="10" Grid.Row="1">
+                        <TextBlock TextWrapping="Wrap" Text="ข้อมูลบัตร wild card" VerticalAlignment="Top" FontSize="20"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="รหัสเดิม" VerticalAlignment="Top" Margin="0,50,0,0"/>
+                        <TextBox x:Name="OldCode" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" Margin="80,50,0,0" Height="30" BorderBrush="Black" IsEnabled="False" Background="#FFD1D1D1"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="รหัสใหม่" VerticalAlignment="Top" Margin="0,95,0,0"/>
+                        <TextBox x:Name="NewCode" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" Margin="80,95,0,0" Height="30" BorderBrush="Black"/>
+                        <Border BorderBrush="Black" BorderThickness="2" Padding="10" Margin="0,140,0,50">
+                            <Image Source="Images/Card.png" Width="175" Height="233" VerticalAlignment="Top"/>
+                        </Border>
+                        <Button Content="Map" VerticalAlignment="Bottom" Margin="0,4,0,0" FontWeight="Bold" BorderBrush="{x:Null}" Background="Black" Foreground="White" BorderThickness="0" Height="40" Click="btn_map_click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="QR" Width="260" FontWeight="Bold" FontSize="20" Margin="0" BorderBrush="#FF999999" Height="40" DataContext="{Binding}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="QR" VerticalAlignment="Center" Grid.ColumnSpan="2" FontSize="36"/>
+                    <Grid Margin="10" Grid.Row="1">
+                        <TextBox x:Name="txtSearchQr" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" Margin="0,0,105,0" BorderBrush="Black" Height="30"/>
+                        <Button Content="ค้นหา" VerticalAlignment="Top" Margin="0" FontWeight="Bold" BorderBrush="{x:Null}" Background="Black" Foreground="White" BorderThickness="0" HorizontalAlignment="Right" Height="30" Width="100" Style="{DynamicResource SearchButtonStyle}" Click="btnSearchQr_click"/>
+                        <Border BorderBrush="Black" BorderThickness="2" Padding="10" Margin="0,45,0,0">
+                            <Image Source="Images/Card.png" Width="284" Height="378" VerticalAlignment="Top"/>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="1" Margin="10" Grid.Row="1">
+                        <Border Margin="0,0,0,60" BorderBrush="Black" BorderThickness="2">
+                            <ScrollViewer>
+                                <StackPanel x:Name="PanelOne" />
+                            </ScrollViewer>
+                        </Border>
+                        <Button Content="พิมพ์" VerticalAlignment="Bottom" Margin="0,4,0,0" FontWeight="Bold" BorderBrush="{x:Null}" Background="Black" Foreground="White" BorderThickness="0" Height="40" Style="{DynamicResource PrintButtonStyle}" Click="btnPrintQr_click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="ผลสอบ" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="20" Margin="0" BorderBrush="#FF999999" Height="40" DataContext="{Binding Mode=OneWay}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="ผลสอบ" VerticalAlignment="Center" Grid.ColumnSpan="2" FontSize="36"/>
+                    <Grid Margin="10" Grid.Row="1">
+                        <TextBox x:Name="txtSearchResult" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" Margin="0,0,105,0" BorderBrush="Black" Height="30"/>
+                        <Button Content="ค้นหา" VerticalAlignment="Top" Margin="0" FontWeight="Bold" BorderBrush="{x:Null}" Background="Black" Foreground="White" BorderThickness="0" HorizontalAlignment="Right" Height="30" Width="100" Style="{DynamicResource SearchButtonStyle}" Click="btnSearchResult_click"/>
+                        <Border BorderBrush="Black" BorderThickness="2" Padding="10" Margin="0,45,0,0">
+                            <Image Source="Images/Card.png" Width="284" Height="378" VerticalAlignment="Top"/>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="1" Margin="10" Grid.Row="1">
+                        <ListBox x:Name="listBoxResult" BorderBrush="Black" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemTemplate="{DynamicResource ResultDataTemplate}" ItemContainerStyle="{DynamicResource ResultListBoxItemStyle}" ItemsSource="{Binding Results}" SelectionChanged="ListBox_SelectionChanged" Margin="0,0,0,60">
+                        </ListBox>
+                        <Button Content="พิมพ์" VerticalAlignment="Bottom" FontWeight="Bold" BorderBrush="{x:Null}" Background="Black" Foreground="White" BorderThickness="0" Height="40" Style="{DynamicResource PrintButtonStyle}" Click="btnPrintResult_click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

@@ -1,0 +1,74 @@
+﻿---
+name: createinactivesubject
+url: /createinactivesubject
+controller: 'app.createInactiveSubjectApp.createInactiveSubjectController as ctx'
+---
+<div class="grid-container">
+    <br>
+    <br>
+    <br>
+    <center><h3>สร้างวิชาและหมวดวิชา</h3></center>
+    <br>
+    <div class="grid-block">
+        <div class="card medium-offset-2 medium-8">
+            <div class="card-divider">
+                <h4>
+                    รายละเอียดชุดข้อสอบ
+                    <!--<a class="button float-right" ng-click="ctx.Back()">กลับ</a>-->
+                </h4>
+            </div>
+            <div class="card-section">
+                <form>
+                    <div class="grid-block"><h6 class="medium-2 grid-content">รหัสวิชา</h6><h6 class="medium-10"><input type="text" ng-model="ctx._subject.SubjectCode" id="txtSubjectCode"></h6></div>
+                    <div class="grid-block"><h6 class="medium-2 grid-content">วิชา</h6><h6 class="medium-10"><input type="text" ng-model="ctx._subject.SubjectName"></h6></div>
+                    <div class="grid-block"><h6 class="medium-2 grid-content">ภาษา</h6><h6 class="medium-2"><input type="text" ng-model="ctx._subject.ContentLanguage"></h6></div>
+                    <div class="grid-block"><h6 class="medium-2 grid-content">เวอร์ชั่น</h6><h6 class="medium-2"><input type="text" ng-model="ctx._subject.Version"></h6></div>
+                    <div class="grid-block">
+                        <div class="grid-content">
+                            <input type="hidden" ng-model="ctx._subject.id">
+                            <button class="button float-right alert" ng-click="ctx.Delete()" ng-disabled="!ctx._subject.id">ลบวิชา</button>
+                            <button type="button" class="button float-right" ng-click="ctx.Clear()">ยกเลิก</button>
+                            <button class="button float-right success" ng-click="ctx.Create()"><span ng-hide="!ctx._subject.id">แก้ไข</span><span ng-hide="ctx._subject.id">สร้าง</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="card">
+        <div class="card-divider">
+            <div class="grid-block v-align">
+                <div class="medium-2 text-center align-center">รหัสวิชา</div>
+                <div class="medium-3 text-center align-center">วิชา</div>
+                <div class="medium-1 text-center align-center">ภาษา</div>
+                <div class="medium-2 text-center align-center">จำนวนหมวด</div>
+                <div class="medium-2 text-center align-center">จำนวนคำถาม</div>
+                <div class="medium-2 text-center align-center">รายละเอียด</div>
+            </div>
+        </div>
+        <div class="card-section">
+            <div class="grid-block" ng-repeat="subject in ctx._subjectList.SubjList | filter:selectedSubjectGroup:true">
+                <div class="medium-2 text-center">
+                    <p>{{subject.SubjectCode}}</p>
+                </div>
+                <div class="medium-3 text-center">
+                    <p>{{subject.SubjectName}}</p>
+                </div>
+                <div class="medium-1 text-center">
+                    <p>{{subject.ContentLanguage}}</p>
+                </div>
+                <div class="medium-2 text-center">
+                    <p>{{subject.ExamSuiteCount}}</p>
+                </div>
+                <div class="medium-2 text-center">
+                    <p>{{subject.QuestionCount}}</p>
+                </div>
+                <div class="medium-2 text-center">
+                    <a ng-click="ctx.Show(subject.id)">แก้ไข</a> <a ui-sref="createexamsuite({ subjectid: subject.id })">ดู</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

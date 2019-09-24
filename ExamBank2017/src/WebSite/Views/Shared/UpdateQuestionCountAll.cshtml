@@ -1,0 +1,40 @@
+﻿@model IEnumerable<WebSite.ViewModels.ExamBankModelsBack.InActiveSubject.InactiveSubject>
+@{
+    ViewData["Title"] = "qcntall";
+    int i = 0;
+}
+<input type="text" id="iii" value="1" />
+<input type="button" value="update question count" onclick="stop = 0;i = $('#iii').val() - 1; start()" />
+<input type="button" value="stop" onclick="stop = 1;" /><br /><br />
+<script>
+    var subjectIds = [];
+    @foreach (var subject in Model)
+    {
+        @Html.Raw("subjectIds[" + i + "] = '" + subject._id + "';");
+        i++;
+    }
+
+    var i = 0;
+    var stop = 0;
+    function start() {
+        if (stop == 1) return;
+        $('#' + subjectIds[i]).load('qcnt/' + subjectIds[i], function () {
+            i++;
+            if (i < subjectIds.length) start();
+            else i = 0;
+        }, function () {
+            var content = $('#' + subjectIds[i]).html();
+            $('#' + subjectIds[i]).html(content + " FAIL !!");
+        });
+    }
+
+    function load(subjectid) {
+        $('#' + subjectid).load('qcnt/' + subjectid);
+    }
+</script>
+@{ i = 1;}
+@foreach (var subject in Model)
+{
+    @i <a href="#" id="@subject._id" onclick="load('@subject._id')">@subject._id @subject.SubjectName</a><br />
+    i++;
+}

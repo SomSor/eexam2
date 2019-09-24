@@ -1,0 +1,68 @@
+﻿---
+name: inactivesubjectlist
+url: /inactivesubjectlist
+controller: 'app.subjectlistApp.inactiveSubjectListController as ctx'
+---
+
+<div class="grid-container">
+    <br>
+    <div class="grid-block">
+        <div class="grid-content medium-5">
+            <label>กลุ่มอาชีพ</label>
+            <select ng-model="selectedOccupation.OccupationId">
+                <option ng-repeat="occupation in ctx._subjectList.Occupations" value="{{occupation.id}}">{{occupation.Name}}</option>
+            </select>
+        </div>
+        <div class="grid-content medium-7">
+            <label>กลุ่มวิชา</label>
+            <span class="inline-label">
+                <select class="grid-content medium-8" ng-model="selectedSubjectGroup.SubjectGroupId">
+                    <option ng-repeat="subjectGroup in ctx._subjectList.SubjectGroups | filter:selectedOccupation:true" value="{{subjectGroup.id}}">{{subjectGroup.Name}}</option>
+                </select>
+                <span class="grid-content medium-4">
+                    <input type="button" class="button float-right" ng-click="selectedSubjectGroup = ''" value="แสดงทั้งหมด" />
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-divider">
+            <div class="grid-block v-align">
+                <div class="medium-2 text-center align-center">รหัสวิชา</div>
+                <div class="medium-3 text-center align-center">วิชา</div>
+                <div class="medium-1 text-center align-center">ภาษา</div>
+                <div class="medium-2 text-center align-center">จำนวนหมวด</div>
+                <div class="medium-2 text-center align-center">จำนวนคำถาม</div>
+                <div class="medium-2 text-center align-center">รายละเอียด</div>
+            </div>
+        </div>
+        <div class="card-section">
+            <div class="grid-block" ng-repeat="subject in ctx._subjectList.SubjList | filter:selectedSubjectGroup:true">
+                <div class="medium-2 text-center">
+                    <p>{{subject.SubjectCode}}</p>
+                </div>
+                <div class="medium-3 text-center">
+                    <p>{{subject.SubjectName}}</p>
+                </div>
+                <div class="medium-1 text-center">
+                    <p>{{subject.ContentLanguage}}</p>
+                </div>
+                <div class="medium-2 text-center">
+                    <p>
+                        {{subject.ExamSuiteCount}}
+                        <span ng-show="subject.ExamSuiteAcceptCount > 0 && subject.ExamSuiteCount != subject.ExamSuiteAcceptCount">(<img zf-iconic="" size="small" icon="Circle-check" class="iconic-color-success">{{subject.ExamSuiteAcceptCount}} / <img zf-iconic="" size="small" icon="Circle-x" class="iconic-color-alert">{{subject.ExamSuiteRejectCount}})</span>
+                        <span ng-show="subject.ExamSuiteAcceptCount > 0 && subject.ExamSuiteCount == subject.ExamSuiteAcceptCount"><img zf-iconic="" size="small" icon="Circle-check" class="iconic-color-success"></span>
+                        <span ng-show="subject.ExamSuiteAcceptCount == 0"><font size="4" color="orange" class="fi-clock"></font></span>
+                    </p>
+                </div>
+                <div class="medium-2 text-center">
+                    <p>{{subject.QuestionCount}}</p>
+                </div>
+                <div class="medium-2 text-center">
+                    <p><a ui-sref="inactivesubjectview({ subjectid: subject.id })">ดู</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

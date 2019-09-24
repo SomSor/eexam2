@@ -1,0 +1,106 @@
+﻿---
+name: testbank
+url: /testbank
+controller: 'application.testBankApp.testBankController as ctx'
+---
+<div ng-show="!ctx.prepareData" class="text-center">
+    <br /><br /><font size="6">Loading.....</font><br /><br />
+</div>
+<div ng-show="ctx.failToLoad" class="text-center">
+    <br /><br /><font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br /><br />
+</div>
+<div ng-show="ctx.prepareData && !ctx.failToLoad">
+    <br />
+    <form>
+        <div class="grid-container">
+            <div class="grid-block grid-content v-align">
+                <div class="small-12 medium-4 grid-content">
+                    <label>กลุ่มอาชีพ</label>
+                    <select name="" id="" ng-model="OCGroup" ng-init="OCGroup=null">
+                        <option value="{{_occupationGroup.id}}" ng-repeat="_occupationGroup in ctx._subjects.Occupations">{{_occupationGroup.Name}}</option>
+                    </select>
+                </div>
+                <div class="small-12 medium-4 grid-content">
+                    <label>กลุ่มวิชา</label>
+                    <select name="" id="" ng-model="subjectGoup" ng-init="subjectGoup=null">
+                        <option value="{{_subjectGroups.id}}" ng-repeat="_subjectGroups in ctx._subjects.SubjectGroups | filter:{OccupationId : OCGroup}">{{_subjectGroups.Name}}</option>
+                    </select>
+                </div>
+                <div class="small-12 medium-4 grid-content">
+                    <label>วิชา</label>
+                    <select name="" id="" ng-model="subject" ng-init="subject=null">
+                        <option value="{{_subjects.SubjectCode}}" ng-repeat="_subjects in ctx._subjects.SubjList| filter:{SubjectGroupId : subjectGoup}">{{_subjects.SubjectName}}</option>
+                    </select>
+                </div>
+                <div class="small-12 medium-2 grid-content">
+                    <label>ภาษาสอบ</label>
+                    <select name="" id="" ng-model="language" ng-init="language=null" >
+                        <option value="{{_subjectLanguage.Code}}" ng-repeat="_subjectLanguage in ctx._subjects.LanguageSources| filter:{SubjectCode : subject}">{{_subjectLanguage.Code}}</option>
+                    </select>
+                </div>
+                <div class="small-12 medium-2 grid-content">
+                    <label>เสียงบรรยาย</label>
+                    <select name="" id="" ng-model="voice" ng-init="voice=null">
+                        <option value="{{_subjectsvoice.Code}}" ng-repeat="_subjectsvoice in ctx._subjects.VoiceSources| filter:{SubjectCode : subject}">{{_subjectsvoice.Code}}</option>
+                    </select>
+                </div>
+                <div class="small-12 medium-4 grid-content">
+                    <label>จำนวน</label>
+                    <input type="number" ng-model="quatity" />
+                </div>
+                <div class="small-12 medium-4 grid-content align-bottom">
+                    <a class="button large" zf-open="dialogModal" ng-click="ctx.SubmitTestRegis(subject,language,voice,quatity)">ดาวโหลด</a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="card">
+        <div class="card-divider">
+            <div class="grid-block v-align">
+                <div class="large-3 medium-2 text-center align-center grid-content">วิชา</div>
+                <div class="large-2 medium-2 text-center align-center grid-content">ภาษาข้อสอบ</div>
+                <div class="large-2 medium-2 text-center align-center grid-content">เสียงบรรยาย</div>
+                <div class="large-1 medium-2 text-center align-center grid-content">จำนวน</div>
+                <div class="large-2 medium-2 text-center align-center grid-content">จำนวนคนที่สอบ</div>
+                <div class="large-2 medium-2 text-center align-center grid-content">version</div>
+            </div>
+        </div>
+        <div class="card-section">
+            <div class="grid-block" ng-repeat="_examSheet in ctx._syncTestRegisVM.ExamSheets">
+                <div class="large-3 medium-2 text-center grid-content">
+                    <p>{{_examSheet.SubjectName}}</p>
+                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>{{_examSheet.ExamLanguage}}</p>
+                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>{{_examSheet.VoiceLanguage}}</p>
+                </div>
+                <div class="large-1 medium-2 text-center grid-content">
+                    <p>{{_examSheet.Quantity}}</p>                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>{{_examSheet.Book}}</p>
+                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>{{_examSheet.Version}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div zf-modal="" class="collapse small" id="dialogModal">
+    <div class="primary title-bar">
+        <div class="center title">แจ้งเตือน</div>
+    </div>
+    <div class="text-center">
+        {{ctx.alertMessage}}
+        <br />
+        <br />
+        <a class="button" zf-close ng-show="ctx.showAlertOkBtn">ตกลง</a>
+        <br />
+        <br />
+    </div>
+</div>
+

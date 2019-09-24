@@ -1,0 +1,64 @@
+﻿---
+name: activatedexamsuiteview
+url: /activatedexamsuiteview/:subjectid/:examsuiteid
+controller: 'app.examSuiteApp.activatedExamSuiteViewController as ctx'
+---
+
+<div class="grid-container">
+    <br>
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <h4>
+                    รายละเอียดชุดข้อสอบ
+                    <a class="button float-right" ng-click="ctx.Back()">กลับ</a>
+                </h4>
+            </div>
+            <div class="card-section">
+                <div class="grid-block"><h6 class="medium-2 grid-content">รหัสวิชา</h6><h6 class="medium-10">{{ctx._examSuite.SubjectCode}}</h6></div>
+                <div class="grid-block"><h6 class="medium-2 grid-content">วิชา</h6><h6 class="medium-10">{{ctx._examSuite.SubjectName}}</h6></div>
+                <div class="grid-block"><h6 class="medium-2 grid-content">รหัสหมวด</h6><h6 class="medium-10">{{ctx._examSuite.TitleCode}}</h6></div>
+                <div class="grid-block"><h6 class="medium-2 grid-content">หมวด</h6><h6 class="medium-10">{{ctx._examSuite.TitleName}}</h6></div>
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="question in ctx._examSuite.Questions">
+        <div>
+            <div class="float-right">
+                <input type="checkbox" disabled="disabled" ng-checked="question.IsAllowRandomChoice" ng-model="question.IsAllowRandomChoice" /><label>No random choice</label>
+                <a zf-open="EditQuestionModal" ng-click="ctx.EditQuestionPreparation(question)">แก้ไข</a>
+            </div>
+            <div class="medium-9">
+                <div class="grid-block">
+                    <p>{{question.QuestionNumber}}.</p>&nbsp;&nbsp;&nbsp;<span marked="question.Detail" class="medium-11"></span>
+                </div>
+                <div class="grid-block" ng-repeat="choice in question.Choices">
+                    <span ng-class="{'success badge': choice.IsCorrect, 'secondary badge': !choice.IsCorrect}">{{choice.id}}</span>&nbsp;&nbsp;&nbsp;
+                    <span class="medium-11" marked="choice.Detail"></span>
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <!--EditQuestionModal-->
+    <div zf-modal="" class="collapse" id="EditQuestionModal">
+        <div class="primary title-bar">
+            <div class="center title">
+                แก้ไขเฉลยและการสุ่มตัวเลือก
+            </div>
+        </div>
+        <div class="card-section">
+            <h6>{{ ctx._editQuestion.QuestionNumber }}. {{ ctx._editQuestion.Detail }}</h6>
+            <div ng-repeat="choice in ctx._editQuestion.Choices">
+                <h6 class="grid-content"><label><input type="radio" name="choice" ng-checked="choice.IsCorrect" ng-click="ctx.ChangeChoiceCorrect(choice)"> {{ choice.Detail }}</label></h6>
+            </div>
+            <br><br><br>
+            <div class="text-center"><h6><label><input type="checkbox" ng-model="ctx._editQuestion.IsAllowRandomChoice" ng-checked="ctx._editQuestion.IsAllowRandomChoice"> No random choice</label></h6></div>
+        </div>
+        <div class="text-center">
+            <a class="button" zf-close="" ng-click="ctx.EditQuestion(ctx._editQuestion)">ตกลง</a>
+            <a class="secondary button" zf-close="">กลับ</a>
+        </div>
+    </div>
+
+</div>

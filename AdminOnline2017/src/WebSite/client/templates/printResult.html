@@ -1,0 +1,100 @@
+﻿---
+name: printResult
+url: /printResult/:datestring
+controller: 'application.testResult.testResultPrintController as ctx'
+---
+
+
+<style>
+    p.tabletext {
+        font-size: 0.7em;
+    }
+
+    th.tabletext {
+        font-size: 0.7em;
+        height: 3em;
+    }
+
+    td.tabletext {
+        font-size: 0.7em;
+        height: 3em;
+    }
+
+    table {
+        width: 600px;
+        border: solid 1px #808080;
+        border-radius: 20px;
+    }
+
+    th {
+        height: 10px;
+        background-color: #DDD;
+    }
+
+    th {
+        height: 10px;
+        background-color: #DDD;
+    }
+</style>
+
+<div ng-show="!ctx.prepareData" class="text-center">
+    <br /><br /><font size="6">Loading.....</font><br /><br />
+</div>
+<div ng-show="ctx.failToLoad" class="text-center">
+    <br /><br /><font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br /><br />
+</div>
+<div ui-view="" class="grid-container" style="width:600px;text-align: center;" ng-show="ctx.prepareData && !ctx.failToLoad">
+    <h2>ข้อมูลการสอบรายวัน</h2>
+    <p>ประจำวันที่ {{ctx.testDate  | date:'d/M/yyyy'}}</p>
+    <div style="padding-left:10px;padding-right:25px;width:600px;">
+        <img src="https://examex.blob.core.windows.net/examtest/examlogo/{{ctx.canterId}}.png" width="125px" height="125px" />
+        <div><h4>{{ctx.testResult.centerName}}</h4></div>
+    </div>
+    <table>
+        <tr>
+            <td class="tabletext">จำนวนการสอบทั้งหมด</td>
+            <td class="tabletext">{{ctx.testResult.totalsTest}} รายการ</td>
+            <td class="tabletext">จำนวนผู้เข้าสอบทั้งหมด</td>
+            <td class="tabletext">{{ctx.testResult.totalsTestPerson}} คน</td>
+        </tr>
+        <tr>
+            <td class="tabletext">จำนวนคนสอบผ่าน</td>
+            <td class="tabletext">{{ctx.testResult.totalsTest}} รายการ</td>
+            <td class="tabletext">จำนวนคนสอบไม่ผ่าน</td>
+            <td class="tabletext">{{ctx.testResult.totalsFailTest}} คน</td>
+        </tr>
+        <tr>
+            <td class="tabletext">เปอร์เซ็นคนสอบผ่าน</td>
+            <td class="tabletext">{{ctx.testResult.percentagePassTest}} %</td>
+            <td class="tabletext">เปอร์เซ็นคนสอบไม่ผ่าน</td>
+            <td class="tabletext">{{ctx.testResult.percentageFailTest}} %</td>
+        </tr>
+        <tr>
+            <td class="tabletext">สอบปรกติ</td>
+            <td class="tabletext">{{ctx.testResult.normalTest}} ครั้ง</td>
+            <td class="tabletext">สอบซ่อม</td>
+            <td class="tabletext">{{ctx.testResult.retest}} ครั้ง</td>
+        </tr>
+    </table>
+    <br /><br />
+    <table>
+        <tr>
+            <th class="tabletext">ลำดับ</th>
+            <th class="tabletext">บัตรประชาชน</th>
+            <th class="tabletext">ชื่อ-สกุล</th>
+            <th class="tabletext">วันสอบ</th>
+            <th class="tabletext">วิชา</th>
+            <th class="tabletext">คะแนน</th>
+            <th class="tabletext">ผลการสอบ</th>
+        </tr>
+        <tr ng-repeat="_testResultTestRegis in ctx.testResult.examsheets">
+            <td class="tabletext">{{$index+1}}</td>
+            <td class="tabletext">{{_testResultTestRegis.TestRegis.PID}}</td>
+            <td class="tabletext">{{_testResultTestRegis.TestRegis.FirstName}} {{_testResultTestRegis.TestRegis.LastName}}</td>
+            <td class="tabletext">{{_testResultTestRegis.ExamDateTime | date:'dd/MM/yyyy'}}</td>
+            <td class="tabletext">{{_testResultTestRegis.TestRegis.SubjectName}}</td>
+            <td class="tabletext">{{_testResultTestRegis.Score}}</td>
+            <td class="tabletext">{{_testResultTestRegis.LatestStatus}}</td>
+        </tr>
+    </table>
+</div>

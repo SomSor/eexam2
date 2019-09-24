@@ -1,0 +1,46 @@
+﻿---
+name: printqr
+url: /printqr
+---
+<div class="grid-content" ng-controller="application.printqrApp.printqrController as ctx">
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-section">
+                <div class="grid-block">
+                    <div class="medium-4 medium-offset-1 text-center">
+                        <label>
+                            <span class="inline-label">
+                                <input type="text" placeholder="กรอกเลขบัตร ปชช หรือ เสียบ card" ng-model="searchText">
+                                <span class="form-label"><img zf-iconic="" icon="Magnifying-glass" size="small" class="iconic-color-dark" ng-click="ctx.printQR(searchText)" style="cursor: pointer;"></span>
+                            </span>
+                        </label>
+                        <div class="medium-9 float-left medium-offset-2">
+                            <zf-interchange>
+                                <img media="small" src="http://placehold.it/150x150?text=1">
+                                <img media="medium" src="http://placehold.it/150x150?text=1">
+                                <img media="large" src="http://placehold.it/150x150?text=1">
+                            </zf-interchange>
+                        </div>
+                    </div>
+                    <div class="medium-offset-1 medium-6 text-center" ng-repeat="_printResult in ctx._printqr">
+                        <div class="card medium-11">
+                            <div class="card-section">
+                                <div class="grid-block grid-content v-align">
+                                    <h6 class="medium-12 text-left">
+                                        ชื่อ-นามสกุล {{_printResult.FirstName}}&nbsp;{{_printResult.LastName}}
+                                    </h6>
+                                    <h6 class="medium-10 text-left">
+                                        เลขบัตร ปชช. {{_printResult.PID}}
+                                    </h6>
+                                    <div class="text-right">
+                                        <h1 class="fi-print" style="cursor: pointer;" ng-click="ctx.goPrintQRCode(_printResult.PID)"></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

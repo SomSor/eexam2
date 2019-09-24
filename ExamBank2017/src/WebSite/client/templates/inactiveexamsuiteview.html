@@ -1,0 +1,165 @@
+﻿---
+name: inactiveexamsuiteview
+url: /inactiveexamsuiteview/:examsuiteid
+controller: 'app.examSuiteApp.inactiveExamSuiteViewController as ctx'
+---
+
+<div class="grid-container">
+    <br>
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <h4>
+                    รายละเอียดชุดข้อสอบ
+                    <a class="button float-right" ng-click="ctx.Back()">กลับ</a>
+                </h4>
+            </div>
+            <div class="card-section">
+                <div class="grid-block"><h6 class="medium-2 grid-content">รหัสวิชา</h6><h6 class="medium-10">{{ctx._examSuite.SubjectCode}}</h6></div>
+                <div class="grid-block"><h6 class="medium-2 grid-content">วิชา</h6><h6 class="medium-10">{{ctx._examSuite.SubjectName}}</h6></div>
+                <div class="grid-block"><h6 class="medium-2 grid-content">รหัสหมวด</h6><h6 class="medium-10">{{ctx._examSuite.TitleCode}}</h6></div>
+                <div class="grid-block"><h6 class="medium-2 grid-content">หมวด</h6><h6 class="medium-10">{{ctx._examSuite.TitleName}}</h6></div>
+                <h6>
+                    <a zf-open="ActivateSubjectModal">ลบหมวดนี้</a>
+                </h6>
+                <!--ActivateSubjectModal-->
+                <div zf-modal="" class="collapse" id="ActivateSubjectModal">
+                    <div class="primary title-bar">
+                        <div class="center title">
+                            ต้องการลบหมวดนี้
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <h6 class="text-center">{{ctx._examSuite.TitleCode}} {{ctx._examSuite.TitleName}}</h6>
+                    </div>
+                    <div class="text-center">
+                        <a class="button" ng-click="ctx.DeleteExamSuite(ctx._examSuite.id)">ลบหมวดนี้</a>
+                        <a class="secondary button" zf-close="">ปิด</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="question in ctx._examSuite.Questions">
+        <div class="medium-4 float-right">
+            <div class="text-right"><input type="checkbox" disabled="disabled" ng-checked="question.IsAllowRandomChoice" ng-model="question.IsAllowRandomChoice" /><label>No random choice</label></div>
+            <br />
+
+            <!--Accept and Reject Buttons-->
+            <div ng-init="value[$index] = ctx.IsShowAccept(question)">
+                <div class="float-right">
+                    <div ng-show="value[$index] == null">
+                        <a class="success button" ng-click="value[$index] = true; ctx.ConsiderQuestion(question,true,null)">Accept</a>
+                        <a class="alert button" zf-open="RejectCommentModal{{question.QuestionNumber}}">Reject</a>
+                    </div>
+                    <div>
+                        <a class="success button disabled" ng-show="value[$index] == true">Accepted</a>
+                        <a class="alert button disabled" ng-show="value[$index] == false">Rejected</a>
+                        <a ng-show="value[$index] != null" ng-click="value[$index] = null">ยกเลิก</a>
+                    </div>
+                    <!--RejectCommentModal-->
+                    <div zf-modal="" class="collapse" id="RejectCommentModal{{question.QuestionNumber}}">
+                        <div class="primary title-bar">
+                            <div class="center title">
+                                Reject comment
+                            </div>
+                        </div>
+                        <div class="card-section">
+                            <textarea class="medium-10 medium-offset-1" rows="8" ng-model="RejectComment"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <a class="button" zf-close="RejectCommentModal{{question.QuestionNumber}}" ng-click="value[$index] = false; ctx.ConsiderQuestion(question,false,RejectComment)">Reject</a>
+                            <a class="secondary button" zf-close="RejectCommentModal{{question.QuestionNumber}}">กลับ</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!--Edit and Cancel-->
+                <div class="float-right">
+                    <p><a zf-open="EditQuestionModal" ng-click="ctx.EditQuestionPreparation(question)">แก้ไข</a></p>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!--Consideration history-->
+                <div class="float-right">
+                    <p ng-repeat="consideration in question.Considerations | orderBy: '-CreateDateTime' | limitTo: 3">
+                        <span>{{consideration.CreateDateTime | date:'d/MM/yyyy HH:mm'}} : {{consideration.IsAccept?'Accepted':ctx.LimitCommentLength(consideration.RejectComment)}}</span>
+                    </p>
+                    <a ng-hide="question.Considerations.length < 1" zf-open="ViewRejectHistoryModal" ng-click="ctx.ViewAllConsiderationHistory(question)" class="float-right">ดูทั้งหมด...</a>
+                </div>
+            </div>
+
+        </div>
+        <!------------------------------------- Question ------------------------------------->
+        <div class="medium-8">
+            <div class="grid-block">
+                <p>{{question.QuestionNumber}}.</p>&nbsp;&nbsp;&nbsp;<span marked="question.Detail" class="medium-11"></span>
+            </div>
+            <div class="grid-block" ng-repeat="choice in question.Choices">
+                <span ng-class="{'success badge': choice.IsCorrect, 'secondary badge': !choice.IsCorrect}">{{choice.id}}</span>&nbsp;&nbsp;&nbsp;
+                <span marked="choice.Detail" class="medium-11"></span>
+            </div>
+        </div>
+        <!------------------------------------- Question ------------------------------------->
+        <hr />
+    </div>
+
+    <!--EditQuestionModal-->
+    <div zf-modal="" class="collapse" id="EditQuestionModal">
+        <div class="primary title-bar">
+            <div class="center title">
+                แก้ไขเฉลยและการสุ่มตัวเลือก
+            </div>
+        </div>
+        <div class="card-section">
+            <h6>{{ ctx._editQuestion.QuestionNumber }}. {{ ctx._editQuestion.Detail }}</h6>
+            <div ng-repeat="choice in ctx._editQuestion.Choices">
+                <h6 class="grid-content"><label><input type="radio" name="choice" ng-checked="choice.IsCorrect" ng-click="ctx.ChangeChoiceCorrect(choice)"> {{ choice.Detail }}</label></h6>
+            </div>
+            <br><br><br>
+            <div class="text-center"><h6><label><input type="checkbox" ng-model="ctx._editQuestion.IsAllowRandomChoice" ng-checked="ctx._editQuestion.IsAllowRandomChoice"> No random choice</label></h6></div>
+        </div>
+        <div class="text-center">
+            <a class="button" zf-close="" ng-click="ctx.EditQuestion(ctx._editQuestion)">ตกลง</a>
+            <a class="secondary button" zf-close="">กลับ</a>
+        </div>
+    </div>
+
+    <!--ViewRejectHistoryModal-->
+    <div zf-modal="" class="collapse" id="ViewRejectHistoryModal">
+        <div class="primary title-bar">
+            <div class="center title">
+                Comment ทั้งหมด
+            </div>
+        </div>
+        <div class="card-section">
+            <div class="card">
+                <div class="card-divider">
+                    <div class="grid-block">
+                        <div class="medium-2 text-center"></div>
+                        <div class="medium-3 text-center">วันที่</div>
+                        <div class="medium-5 text-center">Comment</div>
+                        <div class="medium-2 text-center">โดย</div>
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="grid-block" ng-repeat="consideration in ctx._rejectConsiderations | orderBy: '-CreateDateTime'">
+                        <div class="medium-2 text-center">
+                            <span ng-show="consideration.IsAccept">Accepted</span>
+                            <span ng-show="!consideration.IsAccept">Rejected</span>
+                        </div>
+                        <div class="medium-3 text-center">{{consideration.CreateDateTime | date:'d/MM/yyyy HH:mm'}}</div>
+                        <div class="medium-5">{{consideration.IsAccept?'Accepted':consideration.RejectComment}}</div>
+                        <div class="medium-2 text-center">{{consideration.UserName}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <a class="secondary button medium-5" zf-close="">กลับ</a>
+        </div>
+    </div>
+</div>

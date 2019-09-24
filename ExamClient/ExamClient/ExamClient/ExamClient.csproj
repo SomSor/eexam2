@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E0C110D2-D39B-47A8-8835-62EB38DDB0B9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExamClient</RootNamespace>
+    <AssemblyName>ExamClient</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MarkdownSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MarkdownSharp.1.13.0.0\lib\35\MarkdownSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PerfEx.Infrastructure.Common">
+      <HintPath>..\..\..\lib\PerfEx.Infrastructure.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TheS.SmartCard.ACOSx86">
+      <HintPath>..\..\..\lib\TheS.SmartCard.ACOSx86.dll</HintPath>
+    </Reference>
+    <Reference Include="TheS.SmartCard.Common">
+      <HintPath>..\..\..\lib\TheS.SmartCard.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="WebCam_Capture">
+      <HintPath>..\..\..\lib\WebCam_Capture.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Converters\AnswerColorConverter.cs" />
+    <Compile Include="Converters\ChoiceCorrectConverter.cs" />
+    <Compile Include="Converters\ChoiceSelectedConverter.cs" />
+    <Compile Include="Helpers\BrowserBehavior.cs" />
+    <Compile Include="Helpers\WebCamHelper.cs" />
+    <Compile Include="Controls\ChoiceUI.xaml.cs">
+      <DependentUpon>ChoiceUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExamInformationUI.xaml.cs">
+      <DependentUpon>ExamInformationUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\QuestionUI.xaml.cs">
+      <DependentUpon>QuestionUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActiveResponse.cs" />
+    <Compile Include="Models\Answer.cs" />
+    <Compile Include="Models\AnswerRequest.cs" />
+    <Compile Include="Models\Choice.cs" />
+    <Compile Include="Models\ChoiceSelector.cs" />
+    <Compile Include="Models\ClientSheetRequest.cs" />
+    <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\EventArgs.cs" />
+    <Compile Include="Models\ExamSheetResponse.cs" />
+    <Compile Include="Models\MessageRespone.cs" />
+    <Compile Include="Models\PicRequest.cs" />
+    <Compile Include="Models\PicResponse.cs" />
+    <Compile Include="Models\PreExamResponse.cs" />
+    <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\ResultResponse.cs" />
+    <Compile Include="Models\SendResultArgs.cs" />
+    <Compile Include="Models\SubjectResponse.cs" />
+    <Compile Include="Models\TestingData.cs" />
+    <Compile Include="Resources\MVVMBase.cs" />
+    <Compile Include="Resources\MVVMCommand.cs" />
+    <Compile Include="Services\IOnsiteServices.cs" />
+    <Compile Include="Services\OnsiteServices.cs" />
+    <Compile Include="Utils\ProgramConfig.cs" />
+    <Compile Include="Utils\WebCam.cs" />
+    <Compile Include="ViewModel\CameraViewModel.cs" />
+    <Compile Include="ViewModel\ChoiceViewModel.cs" />
+    <Compile Include="ViewModel\ExamAnsViewModel.cs" />
+    <Compile Include="ViewModel\ExamSumaryViewModel.cs" />
+    <Compile Include="ViewModel\ExamViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\QuestionViewModel.cs" />
+    <Compile Include="ViewModel\SmartCardViewModel.cs" />
+    <Compile Include="ViewModel\TutorialViewModel.cs" />
+    <Compile Include="Views\CameraPage.xaml.cs">
+      <DependentUpon>CameraPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExamPage.xaml.cs">
+      <DependentUpon>ExamPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExamSumaryPage.xaml.cs">
+      <DependentUpon>ExamSumaryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SmartCardPage.xaml.cs">
+      <DependentUpon>SmartCardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TutorialPage.xaml.cs">
+      <DependentUpon>TutorialPage.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\ChoiceUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ExamInformationUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\QuestionUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExamClientResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\CameraPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExamPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExamSumaryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SmartCardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TutorialPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iddriverlogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\scancard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\profile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\timer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\closebutton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\previous.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\unanswerquestion.png" />
+    <Resource Include="Images\firstquestion.png" />
+    <Resource Include="Images\howto.png" />
+    <Resource Include="Images\volume.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

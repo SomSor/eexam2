@@ -1,0 +1,8 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var _centerdata = Newtonsoft.Json.JsonConvert.SerializeObject(WebSite.Controllers.HomeController._centerdata);
+}
+<div ng-controller="app.shared.sharedController as ctx">
+    <div ng-init="ctx.SetDate('@_centerdata')"></div>
+    <div ui-view class="grid-content"></div>
+</div>

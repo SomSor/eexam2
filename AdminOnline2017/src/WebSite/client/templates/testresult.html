@@ -1,0 +1,83 @@
+﻿---
+name: testresult
+url: /testresult
+controller: 'application.testResult.testResultController as ctx'
+---
+<div ng-show="!ctx.prepareData" class="text-center">
+    <br /><br /><font size="6">Loading.....</font><br /><br />
+</div>
+<div ng-show="ctx.failToLoad" class="text-center">
+    <br /><br /><font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br /><br />
+</div>
+<div ng-show="ctx.prepareData && !ctx.failToLoad">
+    <br />
+    <div class="grid-container">
+        <h2>ข้อมูลการสอบรายวัน</h2>
+        <div class="grid-block">
+            <div class="medium-6 medium-offset-3 v-align text-left">
+                <div class="medium-4"><img src="https://examex.blob.core.windows.net/examtest/examlogo/{{ctx.canterId}}.png" /></div>
+                <div class="medium-8"><h4>{{ctx.testResult.centerName}}</h4></div>
+            </div>
+        </div>
+        <div class="grid-block">
+            <label class="medium-6">
+                <span class="inline-label">
+                    <md-datepicker ng-model="ctx.testDate" md-placeholder="Enter date" md-min-date="ctx.minDate" md-max-date="ctx.maxDate" md-date-filter="ctx.onlyPredicate" ng-change="ctx.getTestResultByDate()"></md-datepicker>
+                </span>
+            </label>
+        </div>
+        <div class="card">
+            <div class="card-section">
+                <div class="grid-block grid-content v-align">
+                    <div class="medium-3"><p>จำนวนการสอบทั้งหมด</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.totalsTest}} รายการ</p></div>
+                    <div class="medium-3"><p>จำนวนผู้เข้าสอบทั้งหมด</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.totalsTestPerson}} คน</p></div>
+                </div>
+                <div class="grid-block grid-content v-align">
+                    <div class="medium-3"><p>จำนวนคนสอบผ่าน</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.totalsPassTest}} คน</p></div>
+                    <div class="medium-3"><p>จำนวนคนสอบไม่ผ่าน</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.totalsFailTest}} คน</p></div>
+                </div>
+                <div class="grid-block grid-content v-align">
+                    <div class="medium-3"><p>เปอร์เซ็นคนสอบผ่าน</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.percentagePassTest}} %</p></div>
+                    <div class="medium-3"><p>เปอร์เซ็นคนสอบไม่ผ่าน</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.percentageFailTest}} %</p></div>
+                </div>
+                <div class="grid-block grid-content v-align">
+                    <div class="medium-3"><p>สอบปรกติ</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.normalTest}} ครั้ง</p></div>
+                    <div class="medium-3"><p>สอบซ่อม</p></div>
+                    <div class="medium-3"><p>{{ctx.testResult.retest}} ครั้ง</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-divider">
+            <div class="grid-block v-align">
+                <div class="medium-1 text-center grid-content">ลำดับ</div>
+                <div class="medium-2 text-center grid-content">บัตรประชาชน</div>
+                <div class="medium-2 text-center align-center grid-content">ชื่อ-สกุล</div>
+                <div class="medium-2 text-center align-center grid-content">วันสอบ</div>
+                <div class="medium-3 text-center align-center grid-content">วิชา</div>
+                <div class="medium-1 text-center align-center grid-content">คะแนน</div>
+                <div class="medium-1 text-center align-center grid-content">ผลการสอบ</div>
+            </div>
+        </div>
+        <div class="card-section">
+            <div class="grid-block v-align" ng-repeat="_testResultTestRegis in ctx.testResult.examsheets">
+                <div class="medium-1 text-center grid-content"><p>{{$index+1}}</p></div>
+                <div class="medium-2 text-center grid-content"><p>{{_testResultTestRegis.TestRegis.PID}}</p></div>
+                <div class="medium-2 text-center align-center grid-content"><p>{{_testResultTestRegis.TestRegis.FirstName}} {{_testResultTestRegis.TestRegis.LastName}}</p></div>
+                <div class="medium-2 text-center align-center grid-content"><p>{{_testResultTestRegis.ExamDateTime | date:'dd/MM/yyyy'}}</p></div>
+                <div class="medium-3 text-center align-center grid-content"><p>{{_testResultTestRegis.TestRegis.SubjectName}}</p></div>
+                <div class="medium-1 text-center align-center grid-content"><p>{{_testResultTestRegis.Score}}</p></div>
+                <div class="medium-1 text-center align-center grid-content"><p>{{_testResultTestRegis.LatestStatus}}</p></div>
+            </div>
+        </div>
+    </div>
+    <a class="button float-right" ng-click="ctx.goPrintResult()">Print</a>
+</div>

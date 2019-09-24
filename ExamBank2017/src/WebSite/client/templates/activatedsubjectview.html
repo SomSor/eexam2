@@ -1,0 +1,285 @@
+﻿---
+name: activatedsubjectview
+url: /activatedsubjectview/:subjectid
+controller: 'app.subjectApp.activatedSubjectViewController as ctx'
+---
+
+<div class="grid-container">
+    <br>
+    <div class="grid-block">
+        <div class="grid-content medium-6">
+            <div class="card">
+                <div class="card-divider">
+                    <h4>รายละเอียดวิชา</h4>
+                </div>
+                <div class="card-section">
+                    <div class="grid-block"><h6 class="medium-3 grid-content">รหัสวิชา</h6><h6 class="medium-9">{{ctx._subject.SubjectCode}}</h6></div>
+                    <div class="grid-block"><h6 class="medium-3 grid-content">วิชา</h6><h6 class="medium-9">{{ctx._subject.SubjectName}}</h6></div>
+                    <div class="grid-block"><h6 class="medium-3 grid-content">ภาษา</h6><h6 class="medium-9">{{ctx._subject.ContentLanguage}}</h6></div>
+                    <h6>เวอร์ชั่น {{ctx._subject.Version}} <a zf-open="VersionListModal">ประวัติ</a></h6>
+                    <div zf-modal="" class="collapse" id="VersionListModal">
+                        <div class="primary title-bar">
+                            <div class="center title">ประวัติ</div>
+                        </div>
+                        <div class="card-section">
+                            <div class="card">
+                                <div class="card-divider">
+                                    <div class="grid-block">
+                                        <div class="medium-3 text-center">ใช้งาน</div>
+                                        <div class="medium-6 text-center">วันที่อัพเดท</div>
+                                        <div class="medium-3 text-center">Version</div>
+                                    </div>
+                                </div>
+                                <div class="card-section">
+                                    <div class="grid-block" ng-repeat="version in ctx._subject.VersionList">
+                                        <div class="medium-3 text-center"><input type="radio" name="selectedVersion" ng-model="ctx._activatedSubjectId" value="{{version.SubjectId}}" id="version{{version.SubjectId}}" /></div>
+                                        <div class="medium-6 text-center"><label for="version{{version.SubjectId}}">{{version.CreateDateTime | date:'d/MM/yyyy HH:mm'}}</label></div>
+                                        <div class="medium-3 text-center"><label for="version{{version.SubjectId}}">{{version.VersionText}}</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a class="button" zf-close="VersionListModal" ng-click="ctx.ReversionSubject()">Reversion</a>
+                            <a class="secondary button" zf-close="VersionListModal" ng-click="ctx.BackReversionSubject()">กลับ</a>
+                        </div>
+                    </div>
+                    <div ng-show="ctx._subject.IsDisabled">
+                        <img ng-show="ctx._subject.IsDisabled" zf-iconic="" icon="Circle-x" size="small" class="iconic-color-alert" />
+                        รายวิชานี้ถูกปิดการใช้งานอยู่
+                        <a zf-open="disableSubjectModal">[เปิดการใช้งานวิชานี้]</a>
+                    </div>
+                    <div ng-show="!ctx._subject.IsDisabled">
+                        <img ng-show="!ctx._subject.IsDisabled" zf-iconic="" icon="Circle-check" size="small" class="iconic-color-success" />
+                        รายวิชานี้ใช้งานได้ปกติ
+                        <a zf-open="disableSubjectModal">[ปิดการใช้งานวิชา]</a>
+                    </div>
+                    <div zf-modal="" class="collapse" id="disableSubjectModal">
+                        <div class="primary title-bar">
+                            <div class="center title">เปิด/ปิด การใช้งานรายวิชา</div>
+                        </div>
+                        <div class="card-section">
+                            <div class="text-center">
+                                <div ng-show="ctx._subject.IsDisabled">ต้องการเปิดการใช้งานวิชา</div>
+                                <div ng-show="!ctx._subject.IsDisabled">ต้องการปิดกรใช้งานวิชา</div>
+                                {{ctx._subject.SubjectCode}} {{ctx._subject.SubjectName}}
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a class="button success" ng-click="ctx.EnableSubject()" ng-show="ctx._subject.IsDisabled" zf-close="disableSubjectModal">
+                                <img zf-iconic="" icon="Circle-check" size="small" class="iconic-color-success" />
+                                เปิดการใช้งาน
+                            </a>
+                            <a class="button alert" ng-click="ctx.DisableSubject()" ng-show="!ctx._subject.IsDisabled" zf-close="disableSubjectModal">
+                                <img zf-iconic="" icon="Circle-x" size="small" class="iconic-color-alert" />
+                                ปิดการใช้งาน
+                            </a>
+                            <a class="secondary button" zf-close="disableSubjectModal">ปิด</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-content medium-6">
+            <div class="card">
+                <div class="card-divider">
+                    <h4>จัดการเสียงอ่าน</h4>
+                </div>
+                <div class="card-section">
+                    <div class="card">
+                        <div class="card-divider">
+                            <div class="grid-block">
+                                <div class="medium-2 text-center">ใช้งาน</div>
+                                <div class="medium-5 text-center">ภาษา</div>
+                                <div class="medium-5 text-center">รหัส</div>
+                            </div>
+                        </div>
+                        <div class="card-section">
+                            <div class="grid-block" ng-repeat="voiceLanguage in ctx._editVoices">
+                                <div class="medium-2 text-center"><input type="checkbox" ng-checked="{{voiceLanguage.IsUsed}}" /></div>
+                                <div class="medium-5 text-center">{{voiceLanguage.Language}}</div>
+                                <div class="medium-5 text-center">{{voiceLanguage.LanguageCode}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="secondary button float-right" ng-click="ctx.CancelChangedVoiceLanguage()">ยกเลิก</div>
+                    <a class="button float-right" zf-open="saveChangeVoiceLangModal">บันทึก</a>
+                    <div zf-modal="" class="collapse" id="saveChangeVoiceLangModal">
+                        <div class="primary title-bar">
+                            <div class="center title">ต้องการบันทึกการเปลี่ยนแปลงเสียงอ่านของรายวิชา</div>
+                        </div>
+                        <div class="card-section">
+                            <h6 class="text-center">
+                                {{ctx._subject.SubjectCode}} {{ctx._subject.SubjectName}}
+                            </h6>
+                        </div>
+                        <div class="text-center">
+                            <a class="button" ng-click="ctx.ActivedSubjectVoice()">บันทึก</a>
+                            <a class="secondary button" zf-close="">ปิด</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-divider">
+            <h4>จัดการหมวดข้อสอบ</h4>
+        </div>
+        <div class="card-section">
+            <div class="card">
+                <div class="card-divider">
+                    <div class="grid-block">
+                        <div class="medium-3 text-center">รหัสหมวด</div>
+                        <div class="medium-5 text-center">หมวด</div>
+                        <div class="medium-2 text-center">จำนวนคำถาม</div>
+                        <div class="medium-2 text-center">รายละเอียด</div>
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div ng-repeat="examSuite in ctx._subject.ExamSuites">
+                        <div class="grid-block">
+                            <div class="medium-3 text-center"><p>{{examSuite.TitleCode}}</p></div>
+                            <div class="medium-5 text-center"><p>{{examSuite.TitleName}}</p></div>
+                            <div class="medium-2 text-center"><p>{{examSuite.QuestionCount}}</p></div>
+                            <div class="medium-2 text-center"><p><a ui-sref="activatedexamsuiteview({ subjectid: ctx._subject.id, examsuiteid: examSuite.id })">ดู</a></p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="grid-block">
+                        <div class="medium-3 text-center">รวม</div>
+                        <div class="medium-5 text-center"></div>
+                        <div class="medium-2 text-center">{{ctx._subject.QuestionCount}}</div>
+                        <div class="medium-2 text-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-divider">
+            <h4>จัดการ การสุ่มข้อสอบ</h4>
+        </div>
+
+        <div class="card-section">
+            <div ng-repeat="examSuiteGroup in ctx._subject.ExamSuiteGroups">
+                <h5>ชุดข้อสอบ : {{examSuiteGroup.ExamSuiteGroupName}} / เกณฑ์ผ่าน {{examSuiteGroup.PassScore}} ข้อ / เวลาสอบ {{examSuiteGroup.ExamDuration}} นาที <label class="label label-danger" ng-show="!examSuiteGroup.IsUsed">ปิดการใช้งาน</label> <a zf-open="EditExamSuiteGroupModal" ng-click="ctx.EditExamSuiteGroupPreparation(examSuiteGroup)">แก้ไข</a></h5>
+                <div class="card">
+                    <div class="card-divider">
+                        <div class="grid-block">
+                            <div class="medium-2 text-center">รหัสหมวด</div>
+                            <div class="medium-5 text-center">หมวด</div>
+                            <div class="medium-2 text-center">จำนวนคำถาม</div>
+                            <div class="medium-2 text-center">จำนวนสุ่ม</div>
+                            <div class="medium-1 text-center">แก้ไข</div>
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="grid-block" ng-repeat="examSuiteGroupMap in examSuiteGroup.ExamSuiteGroupMaps">
+                            <!--<div ng-repeat="examSuite in ctx._subject.ExamSuites">-->
+                            <div class="medium-2 text-center"><p>{{ ctx.GetExamSuiteTitleCode(examSuiteGroupMap) }}</p></div>
+                            <div class="medium-6 text-center"><p>{{ ctx.GetExamSuiteTitleName(examSuiteGroupMap) }}</p></div>
+                            <div class="medium-2 text-center"><p>{{ ctx.GetExamSuiteQuestionCount(examSuiteGroupMap) }}</p></div>
+                            <div class="medium-1 text-center"><p>{{ examSuiteGroupMap.RandomCount }}</p></div>
+                            <div class="medium-1 text-center"><a zf-open="EditExamSuiteGroupMapModal" ng-click="ctx.EditExamSuiteGroupMapPreparation(examSuiteGroupMap)">แก้ไข</a></div>
+                        </div>
+
+                    </div>
+                    <div class="card-section">
+                        <div class="grid-block">
+                            <div class="medium-2 text-center">รวม</div>
+                            <div class="medium-6 text-center"></div>
+                            <div class="medium-2 text-center">{{ctx._subjectQCnt}}</div>
+                            <div class="medium-1 text-center">{{ examSuiteGroup.SumRandomCountCount }}</div>
+                            <div class="medium-1 text-center"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="button" zf-open="addExamSuiteGroupModal">เพิ่มชุดข้อสอบ</a>
+            <!--AddExamSuiteGroupModal-->
+            <div zf-modal="" class="collapse small" id="addExamSuiteGroupModal">
+                <div class="primary title-bar">
+                    <div class="center title">
+                        เพิ่มชุดข้อสอบ
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="grid-content">
+                        <div class="grid-block"><h6 class="medium-3 medium-offset-2 v-align">ชื่อชุดข้อสอบ </h6><input type="text" class="medium-2" ng-model="ctx._newExamSuiteGroup.ExamSuiteGroupName" /></div>
+                        <div class="grid-block"><h6 class="medium-3 medium-offset-2 v-align">เกณฑ์ผ่าน </h6><input type="text" class="medium-2" ng-model="ctx._newExamSuiteGroup.PassScore" /><h6 class="medium-2 medium-offset-1 v-align">ข้อ</h6></div>
+                        <div class="grid-block"><h6 class="medium-3 medium-offset-2 v-align">เวลาสอบ </h6><input type="text" class="medium-2" ng-model="ctx._newExamSuiteGroup.ExamDuration" /><h6 class="medium-2 medium-offset-1 v-align">นาที</h6></div>
+                        <div class="text-center"><h6><input type="checkbox" ng-model="ctx._newExamSuiteGroup.IsUsed" /> เปิดใช้งาน</h6></div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="button" zf-close="addExamSuiteGroupModal" ng-click="ctx.AddExamSuiteGroup()">เพิ่ม</a>
+                    <a class="secondary button" zf-close="addExamSuiteGroupModal">ปิด</a>
+                </div>
+            </div>
+
+            <!--EditExamSuiteGroupModal-->
+            <div zf-modal="" class="collapse small" id="EditExamSuiteGroupModal">
+                <div class="primary title-bar">
+                    <div class="center title">
+                        แก้ไขชุดข้อสอบ
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="grid-content">
+                        <div class="grid-block"><h6 class="medium-3 medium-offset-2 v-align">ชื่อชุดข้อสอบ </h6><input class="medium-2" type="text" ng-model="ctx._editExamSuiteGroup.ExamSuiteGroupName" /></div>
+                        <div class="grid-block"><h6 class="medium-3 medium-offset-2 v-align">เกณฑ์ผ่าน </h6><input class="medium-2" type="text" ng-model="ctx._editExamSuiteGroup.PassScore" /><h6 class="medium-2 medium-offset-1 v-align">ข้อ</h6></div>
+                        <div class="grid-block"><h6 class="medium-3 medium-offset-2 v-align">เวลาสอบ </h6><input class="medium-2" type="text" ng-model="ctx._editExamSuiteGroup.ExamDuration" /><h6 class="medium-2 medium-offset-1 v-align">นาที</h6></div>
+                        <div class="text-center"><h6><input type="checkbox" ng-model="ctx._editExamSuiteGroup.IsUsed" /> เปิดใช้งาน</h6></div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="button" ng-click="ctx.EditExamSuiteGroup(ctx._editExamSuiteGroup)" zf-close="EditExamSuiteGroupModal">บันทึก</a>
+                    <a class="alert button" zf-close="EditExamSuiteGroupModal" zf-open="DeleteExamSuiteGroupConfirmModal">ลบ</a>
+                    <a class="secondary button" zf-close="EditExamSuiteGroupModal">กลับ</a>
+                </div>
+            </div>
+
+            <!--DeleteExamSuiteGroupConfirmModal-->
+            <div zf-modal="" class="collapse small" id="DeleteExamSuiteGroupConfirmModal">
+                <div class="primary title-bar">
+                    <div class="center title">
+                        ต้องการลบชุดข้อสอบ {{ctx._editExamSuiteGroup.ExamSuiteGroupName}} หรือไม่?
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="alert button" zf-close="DeleteExamSuiteGroupConfirmModal" ng-click="ctx.DeleteExamSuiteGroup()">ลบ</a>
+                    <a class="secondary button" zf-close="DeleteExamSuiteGroupConfirmModal">กลับ</a>
+                </div>
+            </div>
+
+            <!--EditExamSuiteGroupMapModal-->
+            <div zf-modal="" class="collapse tiny" id="EditExamSuiteGroupMapModal">
+                <div class="primary title-bar">
+                    <div class="center title">
+                        จำนวนสุ่ม
+                    </div>
+                </div>
+                <div class="card-section grid-block">
+                    <div class="medium-3 medium-offset-1 v-align">
+                        {{ctx._oldExamSuiteGroupMapRandomCount}} >>>
+                    </div>
+                    <div class="medium-3 v-align">
+                        <input type="text" ng-model="ctx._editExamSuiteGroupMap.RandomCount">
+                    </div>
+                    <div class="medium-4 medium-offset-1 v-align">
+                        ข้อ
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="button" ng-click="ctx.EditExamSuiteGroupMap(ctx._editExamSuiteGroupMap)" zf-close="EditExamSuiteGroupMapModal">บันทึก</a>
+                    <a class="secondary button" zf-close="EditExamSuiteGroupMapModal">กลับ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

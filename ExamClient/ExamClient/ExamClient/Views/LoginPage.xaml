@@ -1,0 +1,65 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ExamClient.Views"
+      xmlns:ViewModel="clr-namespace:ExamClient.ViewModel" 
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+      x:Class="ExamClient.Views.LoginPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="LoginPage">
+    <Page.Resources>
+        <ViewModel:LoginViewModel x:Key="LoginViewModelDataSource" d:IsDataSource="True"/>
+        <Storyboard x:Key="StartStoryboard" AutoReverse="True" RepeatBehavior="Forever">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="StartThaiLanguageButton">
+                <EasingColorKeyFrame KeyTime="0" Value="#FF33CD5F"/>
+                <EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FF8BC99D"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <ei:ControlStoryboardAction Storyboard="{StaticResource StartStoryboard}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Page.DataContext>
+        <Binding Source="{StaticResource LoginViewModelDataSource}"/>
+    </Page.DataContext>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="ระบบการสอบอิเล็กทรอนิกส์" VerticalAlignment="Center" FontSize="36" Height="48" Margin="0,8,0,9" Width="366"/>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Height="48" Margin="0,8,0,9" Width="290">
+            <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="หมายเลขเครื่อง :" VerticalAlignment="Top" FontSize="36"/>
+            <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="001" VerticalAlignment="Top" Margin="8,0,0,0" FontSize="36"/>
+
+        </StackPanel>
+        <Rectangle Fill="#FFACACAC" Height="2" Stroke="Black" VerticalAlignment="Bottom" StrokeThickness="0" Margin="0"/>
+        <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="2">
+            <Image Height="250" Width="350" Source="/ExamClient;component/Images/iddriverlogo.png"/>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="เข้าสู่ระบบ / Login" VerticalAlignment="Top" FontSize="36" Margin="0,8,0,0"/>
+
+            <Button x:Name="StartThaiLanguageButton" Content="ภาษาไทย" BorderThickness="0" Background="#FF33CD5F" MinHeight="60" Foreground="White" Margin="0,8,0,0" FontSize="24" Click="Button_Click" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="SetLanguageTH"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <Button Content="English" BorderThickness="0" Background="#FF387EF5" MinHeight="60" Foreground="White" Margin="0,8,0,0" FontSize="24" Click="Button_Click_1">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="SetLanguageEN"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+        </StackPanel>
+    </Grid>
+</Page>

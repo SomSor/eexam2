@@ -1,0 +1,85 @@
+﻿---
+name: testing
+url: /testing
+---
+<div class="grid-content" ng-controller="application.testingApp.testingController as ctx">
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <div class="grid-block v-align">
+                    <div class="medium-1 text-center">ลำดับ</div>
+                    <div class="medium-2 text-center">รหัสประชาชน</div>
+                    <div class="medium-2 text-center">ชื่อ-นามสกุล</div>
+                    <div class="medium-3 text-center">วิชา</div>
+                    <div class="medium-1 text-center">สถานะ</div>
+                    <div class="medium-2 text-center">เวลาที่เหลือ</div>
+                    <div class="medium-1 text-center"><font size="6" class="fi-widget"></font></div>
+                </div>
+            </div>
+
+            <div class="card-section">
+                <div class="grid-block v-align" ng-repeat="_testingData in ctx._testingData.TestRegistrations">
+                    <div class="medium-1 text-center">{{$index+1}}</div>
+                    <div class="medium-2 text-center">{{_testingData.PID}}</div>
+                    <div class="medium-2 text-center">{{_testingData.FirstName}}&nbsp;{{_testingData.LastName}}</div>
+                    <div class="medium-3 text-center">{{_testingData.SubjectName}}</div>
+                    <div class="medium-1 text-center">{{_testingData.Status}}</div>
+                    <div id="time{{$index}}" class="medium-2 text-center"></div>
+                    <div class="medium-1 text-center"><font size="6" class="fi-widget" zf-open="useroptiontest" ng-click="ctx._showInModal=_testingData" style="cursor: pointer;"></font></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------- Modal Section ------------------------------>
+    <zf-modal id="useroptiontest" class="tiny">
+        <div class="medium-12 grid-block" zf-open="confirmResume" zf-close="useroption" style="cursor: pointer;" ng-show="ctx._showInModal.Status!='FAIL'|| ctx._showInModal.Status!='PASS'|| ctx._showInModal.Status!='APPOINTED'">
+            <font size="6" class="fi-refresh medium-2 medium-offset-3 "></font>
+            <span class="v-align">Resume</span>
+        </div>
+        <hr ng-show="(ctx._showInModal.Status !='APPOINTED' || ctx._showInModal.Status!='PASS')&&(ctx._showInModal.Status!='FAIL'|| ctx._showInModal.Status!='PASS'|| ctx._showInModal.Status!='APPOINTED')"/>
+        <div class="medium-12 grid-block" zf-open="confirmCancel" zf-close="useroption" style="cursor: pointer;" ng-show="ctx._showInModal.Status!='APPOINTED' || ctx._showInModal.Status!='PASS'">
+            <font size="6" class="fi-x medium-2 medium-offset-3 "></font>
+            <span class="v-align">Abort</span>
+        </div>
+    </zf-modal>
+    <div zf-modal="confirm" class="tiny collapse" id="confirmEnd">
+        <div class="primary title-bar">
+            <div class="center title">
+                ต้องการสิ้นสุดการสอบการสอบ ?
+            </div>
+        </div>
+        <br>
+        <div class="text-center">
+            <a zf-close="" class="button" ng-click="ctx.EndTest(ctx._showInModal.PID,ctx._showInModal.SheetId)">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+
+    <div zf-modal="confirm" class="tiny collapse" id="confirmResume">
+        <div class="primary title-bar">
+            <div class="center title">
+                ต้องการสอบอีกครั้ง ?
+            </div>
+        </div>
+        <br>
+        <div class="text-center">
+            <a zf-close="" class="button" ng-click="ctx.ResumeTest(ctx._showInModal.PID,ctx._showInModal.SheetId)">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+
+    <div zf-modal="confirm" class="tiny collapse" id="confirmCancel">
+        <div class="primary title-bar">
+            <div class="center title">
+                ต้องการยกเลิกการสอบ ?
+            </div>
+        </div>
+        <br>
+        <div class="text-center">
+            <a zf-close="" class="button" ng-click="ctx.CancelTest(ctx._showInModal.PID,ctx._showInModal.SheetId)">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+</div>
+
+

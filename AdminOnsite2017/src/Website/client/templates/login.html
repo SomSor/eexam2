@@ -1,0 +1,32 @@
+﻿---
+name: login
+url: /login
+controller: 'application.loginApp.loginController as ctx'
+---
+
+<div class="grid-container">
+    <br><br>
+    <div class="medium-10 medium-offset-1">
+        <div class="grid-block v-align">
+            <div class="medium-6"><h1>E-Exam</h1></div>
+            <div class="medium-6"><h4 class="text-right medium-9 medium-offset-1">{{ctx._centerData.NameTh}} [{{ctx._centerData._id}}]</h4></div>
+        </div>
+        <br><br><br>
+        <form>
+            <div class="grid-block">
+                <!--<div class="medium-6"><img src="http://placehold.it/300x150?text=1"></div>-->
+                <div class="medium-6"><img src="{{ctx._logoUrl}}"></div>
+                <div class="medium-5">
+                    <div class="grid-content">
+                        <input type="text" placeholder="Username" ng-model="username">
+                        <input type="password" placeholder="Password" ng-model="password">
+                        <button type="submit" class="button" ng-click="ctx.login(username,password)">Login</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="grid-block text-center">
+            <font color="red">{{ctx._messageRespone.Message}}</font>
+        </div>
+    </div>
+</div>

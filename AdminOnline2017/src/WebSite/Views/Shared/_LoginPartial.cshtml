@@ -1,0 +1,42 @@
+@using System.Security.Claims
+
+<div class="menu-group-left">
+    <ul class="primary condense menu-bar">
+        <li><a ui-sref="home"><strong>Admin Online</strong></a></li>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li><a ui-sref="main"><strong>รายชื่อทั้งหมด</strong></a></li>
+            <li><a ui-sref="synctestregis"><strong>รายชื่อผู้มีสิทธิ์สอบ</strong></a></li>
+            <li><a ui-sref="testbank"><strong>เตรียมข้อสอบ</strong></a></li>
+            if (WebSite.Controllers.HomeController._centerdata.SiteId == "01")
+            {
+                <li><a ui-sref="syncresultall"><strong>syncresultall</strong></a></li>
+            }
+            if (WebSite.Controllers.HomeController._centerdata.SiteId == "02")
+            {
+                <li><a ui-sref="syncresult"><strong>syncresult</strong></a></li>
+            }
+            <li><a ui-sref="testresult"><strong>examreport</strong></a></li>
+        }
+    </ul>
+</div>
+
+<div class="menu-group-right">
+    <ul class="primary menu-bar">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li>
+                <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+                    <div class="grid-content">
+                        <font color="white" asp-controller="Manage" asp-action="Index" title="Manage">@User.Identity.Name</font>
+                        <a onclick="logoutForm.submit()"><font color="white">Log off</font></a>
+                    </div>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li><a asp-controller="Account" asp-action="Login">Log in</a></li>
+        }
+    </ul>
+</div>

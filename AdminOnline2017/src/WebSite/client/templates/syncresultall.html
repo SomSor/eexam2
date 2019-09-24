@@ -1,0 +1,78 @@
+﻿---
+name: syncresultall
+url: /syncresultall
+controller: 'application.syncResultApp.syncResultController as ctx'
+---
+<div ng-show="!ctx.prepareData" class="text-center">
+    <br /><br /><font size="6">Loading.....</font><br /><br />
+</div>
+<div ng-show="ctx.failToLoad" class="text-center">
+    <br /><br /><font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br /><br />
+</div>
+<div ng-show="ctx.prepareData && !ctx.failToLoad">
+    <br />
+    <div>
+        <div class="grid-block">
+            <div class="grid-content">
+                <div class="float-right">
+                    <a class="button large" zf-open="confirmSendResultAll" ng-class="{'disabled':ctx.checkAtLeastOne('syncAll')==0}">ส่งผลให้กรมฯ</a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-divider">
+                <div class="grid-block v-align">
+                    <div class="large-2 medium-2 align-center grid-content"><input id="checkboxAll" ng-model="checkAll" ng-click="ctx.checkAllCheckBox(checkAll,'allResult')" type="checkbox">&nbsp;ลำดับ</div>
+                    <div class="large-2 medium-2 text-center align-center grid-content">รหัสบัตรประชาชน</div>
+                    <div class="large-2 medium-2 text-center align-center grid-content">ชื่อ-สกุล</div>
+                    <div class="large-2 medium-2 text-center align-center grid-content">หลักสูตร</div>
+                    <div class="large-1 medium-1 text-center align-center grid-content">วันที่สมัคร</div>
+                    <div class="large-1 medium-1 text-center align-center grid-content">วันที่สอบ</div>
+                    <div class="large-1 medium-1 text-center align-center grid-content">ครั้งที่</div>
+                    <div class="large-1 medium-1 text-center align-center grid-content">สถานะ</div>
+                </div>
+            </div>
+            <div class="card-section">
+                <div class="grid-block" ng-repeat="_resultAll in ctx._syncResult">
+                    <div class="large-2 medium-2 grid-content">
+                        <input id="checkbox{{$index}}" ng-model="_resultAll.Checking" ng-init="_resultAll.Checking=false" type="checkbox"><label for="checkbox{{$index}}">{{$index+1}}</label>
+                    </div>
+                    <div class="large-2 medium-2 text-center grid-content">
+                        <p>{{_resultAll.PID}}</p>
+                    </div>
+                    <div class="large-2 medium-2 text-center grid-content">
+                        <p>{{_resultAll.FirstName}} {{_resultAll.LastName}}</p>
+                    </div>
+                    <div class="large-2 medium-2 text-center grid-content">
+                        <p>{{_resultAll.SubjectName}}</p>
+                    </div>
+                    <div class="large-1 medium-1 text-center grid-content">
+                        <p>{{_resultAll.RegDate | date:'dd/MM/yyyy'}}</p>
+                    </div>
+                    <div class="large-1 medium-1 text-center grid-content">
+                        <p>{{_resultAll.AppointDate | date:'dd/MM/yyyy'}}</p>
+                    </div>
+                    <div class="large-1 medium-1 text-center align-center grid-content">
+                        <p>{{_resultAll.TestCount}}</p>
+                    </div>
+                    <div class="large-1 medium-1 text-center grid-content">
+                        <p>{{_resultAll.Status}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div zf-modal="" class="collapse small" id="confirmSendResultAll">
+    <div class="primary title-bar">
+        <div class="center title">
+            ยืนยันการส่งผลให้กรมฯ
+        </div>
+    </div>
+
+    <div class="text-center">
+        <p>จำนวน {{(ctx._syncResult | filter:{Checking:true}).length}} คน</p>
+        <a class="button" zf-close ng-click="ctx.sendDataToTirdParty('syncAll')">ตกลง</a>
+        <a class="button" zf-close>ยกเลิก</a>
+    </div>
+</div>

@@ -1,0 +1,269 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ExamClient.Views"
+      xmlns:helper="clr-namespace:ExamClient.Helpers"
+      xmlns:Controls="clr-namespace:ExamClient.Controls" 
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+      xmlns:ViewModel="clr-namespace:ExamClient.ViewModel" 
+      x:Class="ExamClient.Views.ExamPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="768" d:DesignWidth="1000"
+      Title="ExamPage">
+    <Page.Resources>
+        <ViewModel:ExamViewModel x:Key="ExamViewModelDataSource" d:IsDataSource="True"/>
+        <Storyboard x:Key="NextStoryboard" AutoReverse="True" RepeatBehavior="Forever">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="NextButton">
+                <EasingColorKeyFrame KeyTime="0" Value="#FF387EF5"/>
+                <EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FFBED6FF"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+    <Page.DataContext>
+        <Binding Source="{StaticResource ExamViewModelDataSource}"/>
+    </Page.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="10" Visibility="{Binding MainExamVisibility}" d:IsHidden="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="210*"/>
+                    <RowDefinition Height="150*"/>
+                    <RowDefinition Height="150*"/>
+                    <RowDefinition Height="150*"/>
+                    <RowDefinition Height="150*"/>
+                    <RowDefinition Height="150*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding QuestionSelect.Question.QuestionNumber}" Foreground="Black" VerticalAlignment="Center" FontSize="24" Height="32" HorizontalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" Text="จงเลือกคำตอบที่ถูกต้องที่สุด" Foreground="Black" VerticalAlignment="Center" FontSize="24" Height="32" Grid.Column="1"/>
+                </Grid>
+                <Controls:QuestionUI Grid.Row="1" BorderThickness="0" Margin="0,10,0,0" Foreground="{x:Null}" BorderBrush="Black" DataContext="{Binding QuestionSelect}" />
+                <Controls:ChoiceUI Grid.Row="2" Margin="0,10,0,0" DataContext="{Binding First}" />
+                <Controls:ChoiceUI Grid.Row="3" Margin="0,10,0,0" DataContext="{Binding Second}" />
+                <Controls:ChoiceUI Grid.Row="4" Margin="0,10,0,0" DataContext="{Binding Third}" />
+                <Controls:ChoiceUI Grid.Row="5" Margin="0,10,0,0" DataContext="{Binding Fourth}" />
+                <!--<Controls:ChoiceUI Grid.Row="6" Margin="0,10,0,0"/>-->
+            </Grid>
+            <Grid Grid.Column="1" Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button x:Name="button" Content="ยืนยันคำตอบ" VerticalAlignment="Top" Background="#FF387EF5" Foreground="White" MinHeight="40" FontSize="22" BorderBrush="{x:Null}" BorderThickness="0" Visibility="{Binding BtnChooseVisibility}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="ChooseByBtn"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <Border Grid.Row="1" Margin="0,10,0,0" BorderThickness="4" BorderBrush="{Binding BorderColor}">
+                    <!--<WebBrowser/>-->
+                    <WebBrowser x:Name="ExpansionWebBrowser" helper:BrowserBehavior.Html="{Binding Preview}"/>
+
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1" Background="Black" Visibility="{Binding MainExamVisibility}">
+
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="348"/>
+                </Grid.RowDefinitions>
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8">
+                    <Image Source="/ExamClient;component/Images/timer.png"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding DisplayDuration}" Foreground="White" VerticalAlignment="Center" FontSize="24" Margin="10,0,0,0"/>
+                </StackPanel>
+                <Button Content="เรียกผู้คุมสอบ" BorderThickness="0" Background="#FF387EF5" Foreground="White" FontSize="24" Grid.Row="1" Margin="0" Visibility="Collapsed"/>
+                <Grid Grid.Row="2" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding SubjectName}"  Foreground="White" VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
+                    <Image Grid.Row="1" Source="{Binding ProfilePhoto}" Margin="10"/>
+                    <TextBlock Text="{Binding FullName}" Foreground="White" VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" Grid.Row="2"/>
+                </Grid>
+                <Rectangle Fill="Transparent" Grid.Row="2" Grid.RowSpan="2" Margin="0,10,0,0"/>
+                <StackPanel Orientation="Vertical" Grid.Row="4" Grid.RowSpan="6" Margin="0">
+                    <Grid Height="50" Margin="0,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button BorderThickness="0" Background="#FFC7C7C7" Foreground="White" FontSize="24" Style="{DynamicResource PreviousButtonStyle}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="PreviousQuestion"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <Button BorderThickness="0" Background="#FF33CD5F" Foreground="White" FontSize="24" Grid.Column="1" Style="{DynamicResource NextButtonStyle}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="NextQuestion"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+
+                    </Grid>
+                    <Button BorderThickness="0" Background="#FFC7C7C7" Foreground="White" FontSize="24" Style="{DynamicResource UnanswerQuestionButtonStyle}" Content="ข้อที่ยังไม่ได้ทำ" Margin="0,8,0,0" Height="50">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="NextNoChoice"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button BorderThickness="0" Background="#FFC7C7C7" Foreground="White" FontSize="24" Style="{DynamicResource FirstQuestionButtonStyle}" Content="ไปที่ข้อแรก" Margin="0,8,0,0" Height="50">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="FirstAnswer"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button BorderThickness="0" Background="#FFC7C7C7" Foreground="White" FontSize="24" Style="{DynamicResource HowToButtonStyle}" Content="วิธีการใช้งาน" Margin="0,8,0,0" Height="50" Click="Button_Click_1">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="BackToTutorial"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button BorderThickness="0" Background="#FFC7C7C7" Foreground="White" FontSize="24" Style="{DynamicResource VolumeButtonStyle}" Content="ฟังเสียง" Margin="0,8,0,0" Height="50">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="PlayVoice"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button Content="ส่งข้อสอบ" Background="#FF33CD5F" Foreground="White" FontSize="24" Margin="0,8,0,0" Height="50" BorderThickness="0" Click="Button_Click">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="OpenSendResultDlg"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+
+                </StackPanel>
+                <ListBox x:Name="lbMiniAns" Grid.Row="3" ItemsPanel="{DynamicResource HorizontalItemsPanelTemplate}" ItemContainerStyle="{DynamicResource ContainerQuestionExamListBoxItemStyle}" ItemTemplate="{DynamicResource QuestionExamDataTemplate}" Background="{x:Null}" BorderThickness="0" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Answers, Mode=TwoWay}" SelectedIndex="{Binding SelectIndex, Mode=TwoWay}"/>
+            </Grid>
+
+        </Grid>
+
+        <!--<Controls:ExamInformationUI Grid.ColumnSpan="2" Background="{x:Null}" Visibility="Collapsed"/>-->
+
+        <Grid x:Name="WarningGrid" Background="#66000000" Grid.ColumnSpan="2" Visibility="Collapsed" d:IsHidden="True">
+            <Grid HorizontalAlignment="Center" Height="300" VerticalAlignment="Center" Width="400">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+                <Grid.Background>
+                    <ImageBrush ImageSource="/ExamClient;component/Images/background.png"/>
+                </Grid.Background>
+                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="กรุณาตอบให้ครบทุกคำถาม" VerticalAlignment="Center" FontSize="24"/>
+                <Button Content="ตกลง" BorderThickness="0" Background="#FF387EF5" MinHeight="60" Foreground="White" FontSize="24" Grid.Row="1" Margin="8"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="ConfirmGrid" Background="#66000000" Grid.ColumnSpan="2" Visibility="{Binding SendExamVisibility}" d:IsHidden="True">
+            <Grid HorizontalAlignment="Center" Height="300" VerticalAlignment="Center" Width="400">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+                <Grid.Background>
+                    <ImageBrush ImageSource="/ExamClient;component/Images/background.png"/>
+                </Grid.Background>
+                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="ยืนยันการส่งผลสอบ" VerticalAlignment="Center" FontSize="36"/>
+                <Grid Grid.Row="1" Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="ยกเลิก" BorderThickness="0" Background="#FF33CD5F" MinHeight="60" Foreground="White" FontSize="24" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="CloseSendResultDlg"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button x:Name="btnSendResult" Content="ตกลง" BorderThickness="0" Background="#FF387EF5" MinHeight="60" Foreground="White" FontSize="24" Grid.Column="1" Click="sendResult" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="SendResult"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!--<Controls:ExamInformationUI x:Name="examAns" Grid.ColumnSpan="2" Background="{x:Null}"  DataContext="{Binding ExamAns}"/>-->
+
+        <Grid x:Name="ExamInformationGrid" Grid.ColumnSpan="2" Visibility="{Binding ExamAnsVisibility}">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="65"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.RowSpan="2" Grid.Row="1">
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="24" Text="{Binding SubjectName}"/>
+                    <Image Source="{Binding ProfilePhoto}" Margin="0,10,0,0" Height="300" Width="300"/>
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="24" Text="{Binding FullName}" Margin="0,10,0,0"/>
+                    <Rectangle Fill="#FFACACAC" Height="2" Stroke="Black" VerticalAlignment="Bottom" StrokeThickness="0" Margin="0,10,0,0"/>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="24" Text="เปลี่ยนภาษา/Change language" Margin="0,10,0,0"/>
+                    <Button Content="ภาษาไทย" BorderThickness="0" Background="#FF33CD5F" MinHeight="60" Foreground="White" FontSize="24" Height="60" Margin="0,10,0,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="SetLanguageTH"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button Content="English" BorderThickness="0" Background="#FF387EF5" MinHeight="60" Foreground="White" FontSize="24" Height="60" Margin="0,10,0,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="SetLanguageEN"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </StackPanel>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="36" Grid.ColumnSpan="2" Margin="0"><Run Text="ข้อมูลผู้เข้าสอบและคำถาม"/></TextBlock>
+                <Button Content="Button" HorizontalAlignment="Right" Width="75" Grid.Column="1" Style="{DynamicResource ClosePopupButtonStyle}" Background="#00000000" BorderBrush="{x:Null}" BorderThickness="0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="CloseExamAns"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <ListBox Grid.Column="1" Grid.Row="1" Background="{x:Null}" ItemTemplate="{DynamicResource SelectQuestionPopupDataTemplate}" ItemContainerStyle="{DynamicResource ContainerQuestionPopupListBoxItemStyle}" ItemsPanel="{DynamicResource HorizontalItemsPanelTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10" BorderThickness="0" BorderBrush="{x:Null}" ItemsSource="{Binding Answers, Mode=TwoWay}" SelectedItem="{Binding CurrentAnswer, Mode=TwoWay}" SelectedIndex="{Binding SelectIndex, Mode=TwoWay}"/>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,151 @@
+﻿---
+name: syncresult
+url: /syncresult
+controller: 'application.syncResultApp.syncResultController as ctx'
+---
+<div ng-show="!ctx.prepareData" class="text-center">
+    <br /><br /><font size="6">Loading.....</font><br /><br />
+</div>
+<div ng-show="ctx.failToLoad" class="text-center">
+    <br /><br /><font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br /><br />
+</div>
+<div ng-show="ctx.prepareData && !ctx.failToLoad">
+    <br />
+    <div ng-model="ctx.tabStatus" ng-init="ctx.tabStatus='pass'">
+        <div ng-show="ctx.tabStatus=='pass'">
+            <div class="grid-block grid-content">
+                <div class="float-right">
+                    <a class="button large" zf-open="confirmSendResultPass" ng-class="{'disabled':ctx.checkAtLeastOne('syncPass')==0}">ส่งผลให้กรมฯ</a>
+                </div>
+            </div>
+        </div>
+        <div ng-show="ctx.tabStatus=='fail'">
+            <div class="grid-block grid-content">
+                <div class="float-right">
+                    <a class="button large" zf-open="confirmSendResultFail" ng-class="{'disabled':ctx.checkAtLeastOne('syncFail')==0}">ส่งผลให้กรมฯ</a>
+                </div>
+            </div>
+        </div>
+        <div zf-tabs="" class="tab-contents">
+            <div ng-click="ctx.tabStatus='pass'">
+                <div zf-tab="" title="รายชื่อผู้ที่สอบผ่าน">
+                    <div class="card">
+                        <div class="card-divider">
+                            <div class="grid-block v-align">
+                                <div class="large-2 medium-2 align-center grid-content"><input id="checkboxAllPass" ng-model="checkAllPass" ng-click="$parent.ctx.checkAllCheckBox(checkAllPass,'passResult')" type="checkbox">&nbsp;ลำดับ</div>
+                                <div class="large-2 medium-2 text-center align-center grid-content">รหัสบัตรประชาชน</div>
+                                <div class="large-2 medium-2 text-center align-center grid-content">ชื่อ-สกุล</div>
+                                <div class="large-2 medium-2 text-center align-center grid-content">หลักสูตร</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">วันที่สมัคร</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">วันที่สอบ</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">ครั้งที่</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">สถานะ</div>
+                            </div>
+                        </div>
+                        <div class="card-section">
+                            <div class="grid-block" ng-repeat="_passResults in $parent.ctx._passResult">
+                                <div class="large-2 medium-2 grid-content">
+                                    <input id="checkbox{{$index}}" ng-model="_passResults.Checking" ng-init="_passResults.Checking=false" type="checkbox"><label for="checkbox{{$index}}">{{$index+1}}</label>
+                                </div>
+                                <div class="large-2 medium-2 text-center grid-content">
+                                    <p>{{_passResults.PID}}</p>
+                                </div>
+                                <div class="large-2 medium-2 text-center grid-content">
+                                    <p>{{_passResults.FirstName}} {{_passResults.LastName}}</p>
+                                </div>
+                                <div class="large-2 medium-2 text-center grid-content">
+                                    <p>{{_passResults.SubjectName}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center grid-content">
+                                    <p>{{_passResults.RegDate | date:'dd/MM/yyyy'}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center grid-content">
+                                    <p>{{_passResults.AppointDate | date:'dd/MM/yyyy'}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">
+                                    <p>{{_passResults.TestCount}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center grid-content">
+                                    <p>{{_passResults.Status}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-click="ctx.tabStatus='fail'">
+                <div zf-tab="" title="รายชื่อผู้ที่สอบตก">
+                    <div class="card">
+                        <div class="card-divider">
+                            <div class="grid-block v-align">
+                                <div class="large-2 medium-2 align-center grid-content"><input id="checkboxAllFail" ng-model="checkAllFail" ng-click="$parent.ctx.checkAllCheckBox(checkAllFail,'failResult')" type="checkbox">&nbsp;ลำดับ</div>
+                                <div class="large-2 medium-2 text-center align-center grid-content">รหัสบัตรประชาชน</div>
+                                <div class="large-2 medium-2 text-center align-center grid-content">ชื่อ-สกุล</div>
+                                <div class="large-2 medium-2 text-center align-center grid-content">หลักสูตร</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">วันที่สมัคร</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">วันที่สอบ</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">ครั้งที่</div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">สถานะ</div>
+                            </div>
+                        </div>
+                        <div class="card-section">
+                            <div class="grid-block" ng-repeat="_failResults in $parent.ctx._failResult">
+                                <div class="large-2 medium-2 grid-content">
+                                    <input id="checkbox{{$index}}" ng-model="_failResults.Checking" ng-init="_failResults.Checking=false" type="checkbox"><label for="checkbox{{$index}}">{{$index+1}}</label>
+                                </div>
+                                <div class="large-2 medium-2 text-center grid-content">
+                                    <p>{{_failResults.PID}}</p>
+                                </div>
+                                <div class="large-2 medium-2 text-center grid-content">
+                                    <p>{{_failResults.FirstName}} {{_failResults.LastName}}</p>
+                                </div>
+                                <div class="large-2 medium-2 text-center grid-content">
+                                    <p>{{_failResults.SubjectName}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center grid-content">
+                                    <p>{{_failResults.RegDate | date:'dd/MM/yyyy'}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center grid-content">
+                                    <p>{{_failResults.AppointDateTime | date:'dd/MM/yyyy'}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center align-center grid-content">
+                                    <p>{{_failResults.TestCount}}</p>
+                                </div>
+                                <div class="large-1 medium-1 text-center grid-content">
+                                    <p>{{_failResults.Status}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div zf-modal="" class="collapse small" id="confirmSendResultPass">
+    <div class="primary title-bar">
+        <div class="center title">
+            ยืนยันการส่งผลผู้สอบผ่านให้กรมฯ
+        </div>
+    </div>
+
+    <div class="text-center">
+        <p>จำนวน {{(ctx._passResult | filter:{Checking:true}).length}} คน</p>
+        <a class="button" zf-close ng-click="ctx.sendDataToTirdParty('syncPass')">ตกลง</a>
+        <a class="button" zf-close>ยกเลิก</a>
+    </div>
+</div>
+
+<div zf-modal="" class="collapse small" id="confirmSendResultFail">
+    <div class="primary title-bar">
+        <div class="center title">
+            ยืนยันการส่งผลผู้สอบตกให้กรมฯ
+        </div>
+    </div>
+    <div class="text-center">
+        <p>จำนวน {{(ctx._syncResult | filter:{Checking:true}).length}} คน</p>
+        <a class="button" zf-close ng-click="ctx.SubmitTestRegis('syncFail')">ตกลง</a>
+        <a class="button" zf-close>ยกเลิก</a>
+    </div>
+</div>

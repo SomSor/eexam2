@@ -1,0 +1,30 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SmartCardReader.Controls"
+             xmlns:Models="clr-namespace:SmartCardReader.Models" x:Class="SmartCardReader.Controls.QRPrintUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="110" d:DesignWidth="340">
+    <UserControl.Resources>
+        <Models:PrintQRVM x:Key="PrintQRVMDataSource" d:IsDataSource="True"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource PrintQRVMDataSource}"/>
+    </UserControl.DataContext>
+    <Border MinWidth="340" MinHeight="100" BorderBrush="Black" BorderThickness="2" Background="White" Height="Auto" Width="Auto" Margin="0" Padding="8">
+        <Grid Height="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="ชื่อ" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,0,10,0" FontSize="20"/>
+            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="รหัสประชาชน" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,28,10,0" FontSize="20"/>
+            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="วิชา" VerticalAlignment="Top" Height="Auto" TextAlignment="Right" Margin="0,59,9,0" FontSize="20"/>
+            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left" Margin="10,0,0,0" Grid.Column="1" FontSize="20" Text="{Binding TestRegistrations.FullName, Mode=OneWay}"/>
+            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left" Margin="10,28,0,0" Grid.Column="1" FontSize="20" Text="{Binding TestRegistrations.PID}"/>
+            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left" Margin="10,59,0,0" Grid.Column="1" FontSize="20" Text="{Binding TestRegistrations.SubjectName}"/>
+        </Grid>
+    </Border>
+</UserControl>

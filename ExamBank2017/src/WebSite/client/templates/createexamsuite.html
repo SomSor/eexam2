@@ -1,0 +1,77 @@
+﻿---
+name: createexamsuite
+url: /createexamsuite/:subjectid
+controller: 'app.creatEexamSuiteApp.creatEexamSuiteController as ctx'
+---
+<div class="grid-container">
+    <br>
+    <div class="grid-block">
+        <div class="card medium-6">
+            <div class="card-divider">
+                <h4>รายละเอียดวิชา</h4>
+            </div>
+            <div class="card-section">
+                <div class="grid-block"><h6 class="medium-3 grid-content">รหัสวิชา</h6><h6 class="medium-9">{{ctx._subject.SubjectCode}}</h6></div>
+                <div class="grid-block"><h6 class="medium-3 grid-content">วิชา</h6><h6 class="medium-9">{{ctx._subject.SubjectName}}</h6></div>
+                <div class="grid-block"><h6 class="medium-3 grid-content">ภาษา</h6><h6 class="medium-9">{{ctx._subject.ContentLanguage}}</h6></div>
+            </div>
+        </div>
+    </div>
+    <div class="grid-block">
+        <div class="card medium-6">
+            <div class="card-divider">
+                <h4>รายละเอียดชุดข้อสอบ</h4>
+            </div>
+            <div class="card-section">
+                <form>
+                    <div class="grid-block"><h6 class="medium-3 grid-content">รหัสหมวด</h6><h6 class="medium-9"><input type="text" ng-model="ctx._examSuite.TitleCode" id="txtTitleCode"></h6></div>
+                    <div class="grid-block"><h6 class="medium-3 grid-content">หมวด</h6><h6 class="medium-9"><input type="text" ng-model="ctx._examSuite.TitleName"></h6></div>
+                    <div class="grid-block">
+                        <div class="grid-content">
+                            <button class="button float-right alert" ng-click="ctx.Delete()" ng-disabled="!ctx._examSuite.id">ลบหมวด</button>
+                            <button type="reset" class="button float-right" ng-click="ctx.Clear()">ยกเลิก</button>
+                            <button class="button float-right success" ng-click="ctx.Create()"><span ng-hide="!ctx._examSuite.id">แก้ไข</span><span ng-hide="ctx._examSuite.id">สร้าง</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="grid-block">
+        <div class="card medium-12">
+            <div class="card-divider">
+                <h4>จัดการหมวดข้อสอบ</h4>
+            </div>
+            <div class="card-section">
+                <div class="card">
+                    <div class="card-divider">
+                        <div class="grid-block">
+                            <div class="medium-3 text-center">รหัสหมวด</div>
+                            <div class="medium-5 text-center ">หมวด</div>
+                            <div class="medium-2 text-center">จำนวนคำถาม</div>
+                            <div class="medium-2 text-center">รายละเอียด</div>
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="grid-block" ng-repeat="examSuite in ctx._subject.ExamSuites">
+                            <div class="medium-3 text-center"><p>{{examSuite.TitleCode}}</p></div>
+                            <div class="medium-5 text-center"><p>{{examSuite.TitleName}}</p></div>
+                            <div class="medium-2 text-center"><p>{{examSuite.QuestionCount}}</p></div>
+                            <div class="medium-2 text-center">
+                                <a ng-click="ctx.Show(examSuite.id)">แก้ไข</a> <a ui-sref="createquestion({ examsuiteid: examSuite.id })">ดู</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="grid-block">
+                            <div class="medium-3 text-center">รวม</div>
+                            <div class="medium-5"></div>
+                            <div class="medium-2 text-center">{{ctx._subject.QuestionCount}}</div>
+                            <div class="medium-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,268 @@
+﻿---
+name: synctestregis
+url: /synctestregis
+controller: 'application.syncTestRegisApp.syncTestRegisController as ctx'
+---
+<div ng-show="!ctx.prepareData" class="text-center">
+    <br /><br /><font size="6">Loading.....</font><br /><br />
+</div>
+<div ng-show="ctx.failToLoad" class="text-center">
+    <br /><br /><font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br /><br />
+</div>
+<div ng-show="ctx.prepareData && !ctx.failToLoad">
+    <div zf-tabs="" class="tab-contents">
+        <div zf-tab="" title="รายชื่อผู้ที่มีสิทธิ์สอบ">
+            <div class="card">
+                <div class="card-divider">
+                    <div class="grid-block v-align">
+                        <div class="large-2 medium-2 align-center grid-content"><input id="checkAllApproved" ng-model="checkAllApproved" type="checkbox" ng-click="$parent.ctx.checkAllCheckBox(checkAllApproved,'APPROVED')"><label for="checkAllApproved">ลำดับ</label></div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">รหัสบัตรประชาชน</div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">ชื่อ-สกุล</div>
+                        <div class="large-3 medium-3 text-center align-center grid-content">หลักสูตร</div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">วันที่สมัคร</div>
+                        <div class="large-1 medium-1 text-center align-center grid-content">รอบสอบ</div>
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="grid-block" ng-repeat="testregistration_AppointTest in $parent.ctx.approvedRegis">
+                        <div class="large-2 medium-2 grid-content">
+                            <input id="checkboxApproved{{$index}}" type="checkbox" ng-model="testregistration_AppointTest.Checking" ng-init="testregistration_AppointTest.Checking=false" ng-checked="testregistration_AppointTest.Checking"><label for="checkboxApproved{{$index}}">{{$index+1}}</label>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_AppointTest.PID}}</p>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_AppointTest.FirstName}} {{testregistration_AppointTest.LastName}}</p>
+                        </div>
+                        <div class="large-3 medium-3 text-center grid-content">
+                            <p>{{testregistration_AppointTest.SubjectName}}</p>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_AppointTest.RegDate | date:'dd-MM-yyyy'}}</p>
+                        </div>
+                        <div class="large-1 medium-1 text-center grid-content">
+                            <p>{{testregistration_AppointTest.ExamPeriod}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-block v-align">
+                <div class="small-12 medium-3 grid-content">
+                    <label>ภาษาที่สอบ</label>
+                    <select name="" id="" ng-model="$parent.ctx.ApproveLanguage" ng-init="$parent.ctx.ApproveLanguage = 'th'">
+                        <option value="" ng-repeat="languageSource_name in ctx._syncTestRegisVM.LanguageSource">{{languageSource_name.ExamLanguage}}</option>
+                        <!----------------Mock Data----------------->
+                        <option value="th">ภาษาไทย</option>
+                        <!------------------------------------------->
+                    </select>
+                </div>
+                <div class="small-12 medium-3 grid-content">
+                    <label>เสียงบรรยาย</label>
+                    <select name="" id="" ng-model="$parent.ctx.ApproveVoice" ng-init="$parent.ctx.ApproveVoice = 'th'">
+                        <option value="" ng-repeat="languageSource_voice in ctx._syncTestRegisVM.LanguageSource">{{languageSource_voice.VoiceLanguage}}</option>
+                        <!----------------Mock Data----------------->
+                        <option value="th">เสียงไทย</option>
+                        <!------------------------------------------->
+                    </select>
+                </div>
+                <div class="small-12 medium-3 grid-content align-top">
+                    <label>วันที่สอบ</label>
+                    <md-datepicker ng-model="$parent.ctx.ApproveDate" ng-init="$parent.ctx.ApproveDate=$parent.ctx.toDay" md-placeholder="Enter date" md-min-date="$parent.ctx.minDate"></md-datepicker>
+                </div>
+                <div class="small-12 medium-3 grid-content align-bottom">
+                    <a class="button" zf-open="confirmApprove" ng-class="{'disabled':$parent.ctx.checkAtLeastOne('approved')==0}">นัดสอบ</a>
+                </div>
+            </div>
+        </div>
+        <div zf-tab="" title="รายชื่อผู้ที่ขาดสอบ">
+            <div class="card">
+                <div class="card-divider">
+                    <div class="grid-block v-align">
+                        <div class="large-2 medium-2 align-center grid-content"><input id="checkAllMiss" ng-model="checkAllMiss" type="checkbox" ng-click="$parent.ctx.checkAllCheckBox(checkAllMiss,'MISS')"><label for="checkAllMiss">ลำดับ</label></div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">รหัสบัตรประชาชน</div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">ชื่อ-สกุล</div>
+                        <div class="large-3 medium-3 text-center align-center grid-content">หลักสูตร</div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">วันที่สมัคร</div>
+                        <div class="large-1 medium-1 text-center align-center grid-content">รอบสอบ</div>
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="grid-block" ng-repeat="testregistration_AbsentTestRegis in $parent.ctx.missRegis">
+                        <div class="large-2 medium-2 grid-content">
+                            <input id="checkboxMiss{{$index}}" type="checkbox" ng-model="testregistration_AbsentTestRegis.Checking" ng-init="testregistration_AbsentTestRegis.Checking=false" ng-checked="testregistration_AbsentTestRegis.Checking"><label for="checkboxMiss{{$index}}">{{$index+1}}</label>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_AbsentTestRegis.PID}}</p>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_AbsentTestRegis.FirstName}} {{testregistration_AbsentTestRegis.LastName}}</p>
+                        </div>
+                        <div class="large-3 medium-3 text-center grid-content">
+                            <p>{{testregistration_AbsentTestRegis.SubjectName}}</p>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_AbsentTestRegis.RegDate | date:'dd-MM-yyyy'}}</p>
+                        </div>
+                        <div class="large-1 medium-1 text-center grid-content">
+                            <p>{{testregistration_AbsentTestRegis.ExamPeriod}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-block v-align">
+                <div class="small-12 medium-3 grid-content">
+                    <label>ภาษาที่สอบ</label>
+                    <select name="" id="" ng-model="$parent.ctx.MissLanguage" ng-init="$parent.ctx.MissLanguage='th'">
+                        <option value="" ng-repeat="languageSource_name in ctx._syncTestRegisVM.LanguageSource">{{languageSource_name.ExamLanguage}}</option>
+                        <!----------------Mock Data----------------->
+                        <option value="th">ภาษาไทย</option>
+                        <!------------------------------------------->
+                    </select>
+                </div>
+                <div class="small-12 medium-3 grid-content">
+                    <label>เสียงบรรยาย</label>
+                    <select name="" id="" ng-model="$parent.ctx.MissVoice" ng-init="$parent.ctx.MissVoice='th'">
+                        <option value="" ng-repeat="languageSource_voice in ctx._syncTestRegisVM.LanguageSource">{{languageSource_voice.VoiceLanguage}}</option>
+                        <!----------------Mock Data----------------->
+                        <option value="th">เสียงไทย</option>
+                        <!------------------------------------------->
+                    </select>
+                </div>
+                <div class="small-12 medium-3 grid-content align-top">
+                    <label>วันที่สอบใหม่</label>
+                    <md-datepicker ng-model="$parent.ctx.MissDate" ng-init="$parent.ctx.MissDate=$parent.ctx.toDay" md-placeholder="Enter date" md-min-date="$parent.ctx.minDate"></md-datepicker>
+                </div>
+                <div class="small-12 medium-3 grid-content align-bottom">
+                    <a class="button" zf-open="confirmMiss" ng-class="{'disabled':$parent.ctx.checkAtLeastOne('miss')==0}">นัดสอบ</a>
+                </div>
+            </div>
+        </div>
+        <div zf-tab="" title="รายชื่อผู้ที่สอบตก">
+            <div class="card">
+                <div class="card-divider">
+                    <div class="grid-block v-align">
+                        <div class="large-2 medium-2 align-center grid-content"><input id="checkAllRegis" ng-model="checkAllRegis" type="checkbox" ng-click="$parent.ctx.checkAllCheckBox(checkAllRegis,'FAIL')"><label for="checkAllRegis">ลำดับ</label></div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">รหัสบัตรประชาชน</div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">ชื่อ-สกุล</div>
+                        <div class="large-3 medium-3 text-center align-center grid-content">หลักสูตร</div>
+                        <div class="large-2 medium-2 text-center align-center grid-content">วันที่สมัคร</div>
+                        <div class="large-1 medium-1 text-center align-center grid-content">รอบสอบ</div>
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="grid-block" ng-repeat="testregistration_FailTestRegis in $parent.ctx.failRegis">
+                        <div class="large-2 medium-2 grid-content">
+                            <input id="checkboxFail{{$index}}" type="checkbox" ng-model="testregistration_FailTestRegis.Checking" ng-init="testregistration_FailTestRegis.Checking=false" ng-checked="testregistration_FailTestRegis.Checking"><label for="checkboxFail{{$index}}">{{$index+1}}</label>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_FailTestRegis.PID}}</p>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_FailTestRegis.FirstName}} {{testregistration_FailTestRegis.LastName}}</p>
+                        </div>
+                        <div class="large-3 medium-3 text-center grid-content">
+                            <p>{{testregistration_FailTestRegis.SubjectName}}</p>
+                        </div>
+                        <div class="large-2 medium-2 text-center grid-content">
+                            <p>{{testregistration_FailTestRegis.RegDate | date:'dd-MM-yyyy'}}</p>
+                        </div>
+                        <div class="large-1 medium-1 text-center grid-content">
+                            <p>{{testregistration_FailTestRegis.ExamPeriod}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-block v-align">
+                <div class="small-12 medium-3 grid-content">
+                    <label>ภาษาที่สอบ</label>
+                    <select name="" id="" ng-model="$parent.ctx.FailLanguage" ng-init="$parent.ctx.FailLanguage='th'">
+                        <option value="" ng-repeat="languageSource_name in ctx._syncTestRegisVM.LanguageSource">{{languageSource_name.ExamLanguage}}</option>
+                        <!----------------Mock Data----------------->
+                        <option value="th">ภาษาไทย</option>
+                        <!------------------------------------------->
+                    </select>
+                </div>
+                <div class="small-12 medium-3 grid-content">
+                    <label>เสียงบรรยาย</label>
+                    <select name="" id="" ng-model="$parent.ctx.FailVoice" ng-init="$parent.ctx.FailVoice='th'">
+                        <option value="" ng-repeat="languageSource_voice in ctx._syncTestRegisVM.LanguageSource">{{languageSource_voice.VoiceLanguage}}</option>
+                        <!----------------Mock Data----------------->
+                        <option value="th">เสียงไทย</option>
+                        <!------------------------------------------->
+                    </select>
+                </div>
+                <div class="small-12 medium-3 grid-content align-top">
+                    <label>วันที่สอบใหม่</label>
+                    <md-datepicker ng-model="$parent.ctx.FailDate" ng-init="$parent.ctx.FailDate=$parent.ctx.toDay" md-placeholder="Enter date" md-min-date="$parent.ctx.minDate"></md-datepicker>
+                </div>
+                <div class="small-12 medium-3 grid-content align-bottom">
+                    <a class="button" zf-open="confirmFail" ng-class="{'disabled':$parent.ctx.checkAtLeastOne('fail')==0}">นัดสอบ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div zf-modal="" class="collapse small" id="confirmApprove">
+    <div class="primary title-bar">
+        <div class="center title">
+            ยืนยันการนัดสอบผู้มีสิทธิ์สอบ
+        </div>
+    </div>
+
+    <div class="text-center">
+        <p>ผู้มีสิทธิ์สอบทั้งหมดจำนวน {{(ctx.approvedRegis | filter:{Checking:true}).length}} คน</p>
+        <p>ภาษาที่สอบ {{ctx.ApproveLanguage}}</p>
+        <p>เสียงบรรยาย {{ctx.ApproveVoice}}</p>
+        <p>วันที่สอบ {{ctx.ApproveDate | date:'dd-MM-yyyy'}}</p>
+        <a class="button" zf-open="loadComplete" ng-click="ctx.SubmitTestRegis('approved')" zf-close>ตกลง</a>
+        <a class="button" zf-close>ยกเลิก</a>
+    </div>
+</div>
+
+<div zf-modal="" class="collapse small" id="confirmMiss">
+    <div class="primary title-bar">
+        <div class="center title">
+            ยืนยันการนัดสอบผู้ที่ขาดสอบ
+        </div>
+    </div>
+    <div class="text-center">
+        <p>ผู้ที่สขาดสอบทั้งหมดจำนวน {{(ctx.missRegis | filter:{Checking:true}).length}} คน</p>
+        <p>ภาษาที่สอบ {{ctx.MissLanguage}}</p>
+        <p>เสียงบรรยาย {{ctx.MissVoice}}</p>
+        <p>วันที่สอบ {{ctx.MissDate | date:'dd-MM-yyyy'}}</p>
+        <a class="button" zf-open="loadComplete" ng-click="ctx.SubmitTestRegis('miss')" zf-close>ตกลง</a>
+        <a class="button" zf-close>ยกเลิก</a>
+    </div>
+</div>
+
+<div zf-modal="" class="collapse small" id="confirmFail">
+    <div class="primary title-bar">
+        <div class="center title">
+            ยืนยันการนัดสอบผู้ที่สอบตก
+        </div>
+    </div>
+    <div class="text-center">
+        <p>ผู้ที่สอบตกทั้งหมดจำนวน {{(ctx.failRegis | filter:{Checking:true}).length}} คน</p>
+        <p>ภาษาที่สอบ {{ctx.FailLanguage}}</p>
+        <p>เสียงบรรยาย {{ctx.FailVoice}}</p>
+        <p>วันที่สอบ {{ctx.FailDate | date:'dd-MM-yyyy'}}</p>
+        <a class="button" zf-open="loadComplete" ng-click="ctx.SubmitTestRegis('fail')" zf-close>ตกลง</a>
+        <a class="button" zf-close>ยกเลิก</a>
+    </div>
+</div>
+
+<div zf-modal="" class="collapse small" id="loadComplete">
+    <div class="primary title-bar">
+        <div class="center title">แจ้งเตือน</div>
+    </div>
+    <div class="text-center">
+        {{ctx.alertMessage}}
+        <br />
+        <br />
+        <a class="button" zf-close ng-show="ctx.showAlertOkBtn">ตกลง</a>
+        <br />
+        <br />
+    </div>
+</div>

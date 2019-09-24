@@ -1,0 +1,86 @@
+﻿---
+name: maintab
+url: /maintab
+controller: 'application.mainpageApp.mainController as ctx'
+---
+<div id="dialogModal" class="modal-overlay is-active" overlay="false" overlay-close="false" ng-show="!ctx.prepareData">
+    <font size="6">Loading.....</font>
+</div>
+
+<div class="grid-content">
+    <br>
+    <div class="grid-block grid-content v-align">
+        <div class="medium-6">
+            จำนวนรายชื่อผู้สอบทั้งหมด {{ctx._moreInfo.TestRegisCount}} คน
+            <a class="button medium-offset-1" ng-click="ctx.Refresh()">Refresh</a>
+        </div>
+        <div class="medium-2 v-align"></div>
+        <div class="medium-4 v-align">
+            <div class="medium-4 float-right v-align">
+                <font class="align-bottom">เวลาสิ้นสุดการสอบ&nbsp;</font>
+            </div>
+            <div class="medium-4 float-right v-align">
+                <input class="medium-6" type="number" value="{{ctx._endHourTime}}" ng-disabled="ctx._disableActive" maxlength="2" max="23" min="0" ng-model="expriedHours"/>
+                &nbsp;:&nbsp;
+                <input class="medium-6" type="number" value="{{ctx._endMinuteTime}}" ng-disabled="ctx._disableActive" maxlength="2" max="59" min="0" placeholder="" ng-model="expriedMinutes" />
+            </div>
+            <div class="float-right">
+                <a class="button" zf-open="confirmActive" ng-class="{'disabled':ctx._disableActive}">เปิดรอบการสอบ</a>
+            </div>
+        </div>
+    </div>
+    <div class="grid-block grid-content v-align">
+        <div class="medium-6">
+            <!--<font color="red" ng-show="!ctx._moreInfo.IsExamEnough">จำนวนข้อสอบไม่พอสอบ</font>-->
+        </div>
+        <div class="medium-6">
+            <div class="float-right">
+                <a class="button" zf-open="confirm">ปิดรอบการสอบ</a>
+            </div>
+        </div>
+    </div>
+    <!---------------------------- Tab Section ------------------------------>
+    <ul class="segmented button-group" ng-init="_link = 'mainpage'">
+        <li><input type="radio" id="mainpage" ng-model="_link" name="filter" value="mainpage"><label for="mainpage">mainpage</label></li>
+        <li><input type="radio" id="testing" ng-model="_link" name="filter" value="testing"><label for="testing">testing</label></li>
+        <li><input type="radio" id="exambank" ng-model="_link" name="filter" value="exambank"><label for="exambank">exambank</label></li>
+        <li><input type="radio" id="manageNresult" ng-model="_link" name="filter" value="manageNresult"><label><a href="http://examex.blob.core.windows.net/examclient/pc/SmartCardReader.application" >manage & result</a></label></li>
+    </ul>
+    <div ng-if="ctx.LoadComplete">
+        <ng-include src="'templates/mainpage.html'" ng-show="_link=='mainpage'"></ng-include>
+        <ng-include src="'templates/testing.html'" ng-show="_link=='testing'"></ng-include>
+        <ng-include src="'templates/exambank.html'" ng-show="_link=='exambank'"></ng-include>
+    </div>
+
+    <!------------------------- Modal Section ------------------------------>
+    <div zf-modal="confirm" class="tiny collapse" id="confirm">
+        <div class="primary title-bar">
+            <div class="center title">
+                ยืนยันการปิดรอบการสอบ
+            </div>
+        </div>
+        <br>
+        <div class="text-center">
+            <a zf-close="" class="button" ng-click="ctx.CloseExamData()">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+    </div>
+
+    <div zf-modal="confirm" class="tiny collapse" id="confirmActive">
+        <div class="primary title-bar">
+            <div class="center title">
+                ยืนยันการเปิดรอบการสอบ
+            </div>
+        </div>
+        <br>
+        <div class="text-center" ng-show="!((expriedHours > 23 || expriedHours < 0) || (expriedMinutes > 59 || expriedMinutes < 0) || expriedHours == null || expriedMinutes == null)">
+            <p>เวลา {{expriedHours}} : {{expriedMinutes}}</p>
+            <a zf-close="" class="button" ng-click="ctx.Active(expriedHours,expriedMinutes)">ตกลง</a>
+            <a zf-close="" class="button">ยกเลิก</a>
+        </div>
+        <div class="text-center" ng-show="(expriedHours > 23 || expriedHours < 0) || (expriedMinutes > 59 || expriedMinutes < 0) || expriedHours == null || expriedMinutes == null">
+                <p><font color="red">คุณใส่เวลาไม่ถูกต้องกรุณาใส่เวลาใหม่</font></p>
+            <a zf-close="" class="button">ย้อนกลับ</a>
+        </div>
+    </div>
+</div>

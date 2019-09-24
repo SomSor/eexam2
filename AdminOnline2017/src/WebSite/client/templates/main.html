@@ -1,0 +1,85 @@
+﻿---
+name: main
+url: /main
+controller: 'application.mainApp.mainController as ctx'
+---
+<div ng-show="!ctx.prepareData" class="text-center">
+    <br /><br /><font size="6">Loading.....</font><br /><br />
+</div>
+<div ng-show="ctx.failToLoad" class="text-center">
+    <br /><br /><font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br /><br />
+</div>
+<div ng-show="ctx.prepareData && !ctx.failToLoad">
+    <div class="grid-container">
+        <div class="grid-block">
+            <div class="small-12 medium-7 medium-offset-5 grid-content v-align">
+                <label class="medium-6">
+                    <span class="inline-label">
+                        <md-datepicker ng-model="ctx.myDate" md-placeholder="Enter date" md-date-filter="ctx.onlyPredicate" ng-change="ctx.getTestRegisterationByDate()"></md-datepicker>
+                    </span>
+                </label>
+                <label class="medium-6">
+                    <span class="inline-label">
+                        <input type="search" placeholder="Search a thing" ng-model="filter" />
+                        <a class="button" ng-click="ctx.getTestRegisterationBySearch(filter)">Search</a>
+                    </span>
+                </label>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-divider">
+            <div class="grid-block v-align">
+                <div class="large-1 medium-1 text-center align-center grid-content">ลำดับ</div>
+                <div class="large-2 medium-2 text-center align-center grid-content">รหัสบัตรประชาชน</div>
+                <div class="large-3 medium-3 text-center align-center grid-content">ชื่อ-สกุล</div>
+                <div class="large-3 medium-3 text-center align-center grid-content">หลักสูตร</div>
+                <div class="large-2 medium-2 text-center align-center grid-content">วันที่สมัคร</div>
+                <div class="large-1 medium-1 text-center align-center grid-content">รอบสอบ</div>
+            </div>
+        </div>
+        <div class="card-section">
+            <div class="grid-block" ng-repeat="_testreg in ctx._mainVm.Testregistrations">
+                <div class="large-1 medium-1 text-center grid-content">
+                    <p>{{$index+1}}</p>
+                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>{{_testreg.PID}}</p>
+                </div>
+                <div class="large-3 medium-3 text-center grid-content">
+                    <p>{{_testreg.FirstName}} {{_testreg.LastName}}</p>
+                </div>
+                <div class="large-3 medium-3 text-center grid-content">
+                    <p>{{_testreg.SubjectName}}</p>
+                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>{{_testreg.AppointDate | date:'d/M/yyyy'}}</p>
+                </div>
+                <div class="large-1 medium-1 text-center grid-content">
+                    <p>{{_testreg.ExamPeriod}}</p>
+                </div>
+            </div>
+            <!----------------Mock Data----------------->
+            <!--<div class="grid-block" >
+                <div class="large-1 medium-1 text-center grid-content">
+                    <p>2</p>
+                </div>
+                <div class="large-3 medium-3 text-center grid-content">
+                    <p>นายช่าง กากกว่า</p>
+                </div>
+                <div class="large-4 medium-4 text-center grid-content">
+                    <p>ช่างซ่อมกันดัม</p>
+                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>2/19/2016</p>
+                </div>
+                <div class="large-2 medium-2 text-center grid-content">
+                    <p>เช้า-บ่าย</p>
+                </div>
+            </div>-->
+            <!------------------------------------------->
+        </div>
+    </div>
+</div>
