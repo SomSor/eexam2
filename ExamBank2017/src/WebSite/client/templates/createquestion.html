@@ -31,8 +31,12 @@ controller: 'app.createQuestionApp.createQuestionController as ctx'
                     <div class="grid-block"><h6 class="medium-2 grid-content">คำตอบ</h6><h6 class="medium-10"></h6></div>
                     <div class="grid-block" ng-repeat="c in ctx._question.Choices"><h6 class="medium-1 grid-content">{{c.id}}</h6><h6 class="medium-10"><input type="text" ng-model="c.Detail"></h6></div>
                     <div class="grid-block">
-                        <h6 class="medium-3 grid-content">ตำตอบที่ถูกต้องคือ</h6><h6 class="medium-1">
-                            <select ng-options="c for c in ctx._choices" ng-model="ctx._correctAnswer" ng-init="ctx._correctAnswer=ctx._choices[0]"></select>
+                        <h6 class="medium-3 grid-content">ตำตอบที่ถูกต้องคือ</h6>
+                        <h6 class="medium-1">
+                            <select ng-options="c for c in ctx._choices" ng-model="ctx._correctAnswer" ng-init="ctx._correctAnswer=ctx._choices[0]"></select>asvasv
+                        </h6>
+                        <h6 class="medium-3 grid-content">
+                            <input type="checkbox" ng-checked="ctx._question.IsAllowRandomChoice" ng-model="ctx._question.IsAllowRandomChoice" /><label>No random choice</label>
                         </h6>
                     </div>
                     <div class="grid-block">
