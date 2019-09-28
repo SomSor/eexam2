@@ -236,7 +236,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Map" VerticalAlignment="Center" Grid.ColumnSpan="2" FontSize="36"/>
+                    <TextBlock x:Name="txtTitle" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Map" VerticalAlignment="Center" Grid.ColumnSpan="2" FontSize="36"/>
                     <Grid Margin="10" Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="ค้นหา" VerticalAlignment="Top" Margin="0"/>
                         <TextBox x:Name="txtMapSearch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" Margin="60,0,0,0" Height="30" BorderBrush="Black" TextChanged="txtMapSearch_TextChanged"/>

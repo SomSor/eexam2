@@ -12,7 +12,8 @@
         <font size="6">Loading.....</font>
     </div>
     <div id="failToLoad" class="modal-overlay is-active" overlay="false" overlay-close="false" ng-show="ctx.prepareData == 2">
-        <font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br />
+        @*<font size="6">ไม่สามารถโหลดข้อมูลได้ กรุณารีเฟรชหน้าใหม่อีกครั้ง</font><br />*@
+        <font size="6"><a href="Account/Login">Login</a></font><br />
     </div>
     <div ng-init="ctx.alertDD('@_centerdata')"></div>
     <div ui-view class="grid-content"></div>

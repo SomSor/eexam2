@@ -110,11 +110,6 @@ gulp.task('copy', function () {
     ;
 });
 
-gulp.task('copy:clientapp', function () {
-    gulp.src('./clientapp/pc**/*')
-    .pipe(gulp.dest(paths.webroot + './clientapp/'));
-})
-
 // Copies your app's page templates and generates URLs for them
 gulp.task('copy:templates', function () {
     return gulp.src('./client/templates/**/*.html')
@@ -209,7 +204,7 @@ gulp.task('uglify:app', function () {
 
 // Builds your entire app once, without starting a server
 gulp.task('build', function (cb) {
-    sequence('compile:ts', ['copy', 'copy:clientapp', 'copy:foundation', 'sass', 'min', 'uglify'], 'copy:templates', cb);
+    sequence('compile:ts', ['copy', 'copy:foundation', 'sass', 'min', 'uglify'], 'copy:templates', cb);
 });
 
 // Starts a test server, which you can view at http://localhost:8079

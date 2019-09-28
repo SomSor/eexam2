@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LocalDBSolution.ViewModels;
 using LiteDB;
+using Microsoft.Extensions.Configuration;
 
 namespace LocalDBSolution.Repositories.Implementation
 {
@@ -11,9 +12,9 @@ namespace LocalDBSolution.Repositories.Implementation
     {
         private string localdb;
 
-        public SharedRepository()
+        public SharedRepository(localconfig localconfig)
         {
-            localdb = System.Configuration.ConfigurationSettings.AppSettings.Get("localdb");
+            localdb = localconfig.localdb;
         }
 
         public void CloseDifSheets(List<ExamSheet> sheets)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LocalDBSolution.ViewModels;
 using LiteDB;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace LocalDBSolution.Repositories.Implementation
 {
@@ -12,9 +13,9 @@ namespace LocalDBSolution.Repositories.Implementation
     {
         private string localdb;
 
-        public RepoForOnSite()
+        public RepoForOnSite(localconfig localconfig)
         {
-            localdb = System.Configuration.ConfigurationSettings.AppSettings.Get("localdb");
+            localdb = localconfig.localdb;
         }
 
         public void Active(DateTime ActiceDateTime, string centerid)

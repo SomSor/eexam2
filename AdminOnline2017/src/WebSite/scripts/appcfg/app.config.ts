@@ -96,11 +96,12 @@
     }
     angular
         .module('application')
-        //.constant('defaultUrl', 'http://localhost:50659')
-        .constant('defaultUrl', 'http://eexamthaiex.azurewebsites.net')
-        .constant('examBankUrl', 'http://eexambankex.azurewebsites.net')
+        .constant('defaultUrl', 'http://localhost:50659')
+        //.constant('defaultUrl', 'http://eexamthaiex.azurewebsites.net')
+        //.constant('examBankUrl', 'http://eexambankex.azurewebsites.net')
+        .constant('examBankUrl', 'http://localhost:8080')
         //.constant('examBankUrl', 'http://localhost:50659')
-        .constant('calStaticURl', 'http://192.168.9.99/localdb')
-        //.constant('calStaticURl', 'http://localhost:58426')
+        //.constant('calStaticURl', 'http://192.168.9.99/localdb')
+        .constant('calStaticURl', 'http://localhost:58426')
         .service('appConfig', AppConfig);
 }

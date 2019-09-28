@@ -49,7 +49,8 @@ namespace WebSite.Controllers
         {
             //string URL = string.Format("http://localhost:7113/api/activated/RandomExamSheet/1/TSS04318002/th/1");
 
-            string URL = string.Format("http://exambankex.azurewebsites.net/api/activated/RandomExamSheet/{0}/{1}/{2}/{3}", centerid, subjectcode, examlanguage, quantity);
+            //string URL = string.Format("http://exambankex.azurewebsites.net/api/activated/RandomExamSheet/{0}/{1}/{2}/{3}", centerid, subjectcode, examlanguage, quantity);
+            string URL = string.Format("http://localhost:50273/api/activated/RandomExamSheet/{0}/{1}/{2}/{3}", centerid, subjectcode, examlanguage, quantity);
             //string URL = string.Format("http://localhost:7113/api/activated/RandomExamSheet/{0}/{1}/{2}/{3}", centerid, subjectcode, examlanguage, quantity);
 
             using (var client = new WebClient())

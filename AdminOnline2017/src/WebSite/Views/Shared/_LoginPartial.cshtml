@@ -1,13 +1,13 @@
-@using System.Security.Claims
+๏ปฟ@using System.Security.Claims
 
 <div class="menu-group-left">
     <ul class="primary condense menu-bar">
         <li><a ui-sref="home"><strong>Admin Online</strong></a></li>
         @if (User.Identity.IsAuthenticated)
         {
-            <li><a ui-sref="main"><strong>รายชื่อทั้งหมด</strong></a></li>
-            <li><a ui-sref="synctestregis"><strong>รายชื่อผู้มีสิทธิ์สอบ</strong></a></li>
-            <li><a ui-sref="testbank"><strong>เตรียมข้อสอบ</strong></a></li>
+            <li><a ui-sref="main"><strong>เธฃเธฒเธขเธเธทเนเธญเธ—เธฑเนเธเธซเธกเธ”</strong></a></li>
+            <li><a ui-sref="synctestregis"><strong>เธฃเธฒเธขเธเธทเนเธญเธเธนเนเธกเธตเธชเธดเธ—เธเธดเนเธชเธญเธ</strong></a></li>
+            <li><a ui-sref="testbank"><strong>เน€เธ•เธฃเธตเธขเธกเธเนเธญเธชเธญเธ</strong></a></li>
             if (WebSite.Controllers.HomeController._centerdata.SiteId == "01")
             {
                 <li><a ui-sref="syncresultall"><strong>syncresultall</strong></a></li>

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -36,17 +37,30 @@ namespace SmartCardReader
         Models.DisplayAllVM MapWildcardVM = new Models.DisplayAllVM();
         Models.PrintQRVM QRVM = new Models.PrintQRVM();
         Models.CheckResultVM ResultVM = new Models.CheckResultVM();
-        
+
         private string localdbip;
         private string OnSiteIP;
+
+        private Timer aTimer;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            this.IsEnabled = false;
+            txtTitle.Text = "Connecting...";
+            aTimer = new Timer(1000);
+            aTimer.Elapsed += OnTimedEvent;
+            aTimer.AutoReset = false;
+            aTimer.Enabled = true;
+        }
+
+        public void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
             localdbip = System.Configuration.ConfigurationSettings.AppSettings.Get("LocalIP");
             OnSiteIP = System.Configuration.ConfigurationSettings.AppSettings.Get("OnSiteIP");
 
-            this.baseUrl = localdbip;
+            baseUrl = localdbip;
 
             var cts = new System.Threading.CancellationTokenSource();
 
@@ -57,32 +71,33 @@ namespace SmartCardReader
                 {
                     //var responseString = client.DownloadString(URL);
                     var dataByte = client.DownloadData(this.localdbip + "api/onsite/getcenterdata");
-                    var responseString = System.Text.Encoding.UTF8.GetString(dataByte);
-                    var data = Newtonsoft.Json.JsonConvert.DeserializeObject<CenterDataResponse>(responseString);
+                    var responseString = Encoding.UTF8.GetString(dataByte);
+                    var data = JsonConvert.DeserializeObject<CenterDataResponse>(responseString);
 
                     if (data != null)
                     {
-                        this.centerid = data._id;                        
+                        this.centerid = data._id;
                     }
                     else
                     {
-                        throw new Exception("ไม่พบข้อมูลโรงเรียน");
+                        MessageBox.Show("ไม่พบข้อมูลโรงเรียน");
                     }
+
+                    try
+                    {
+                        DoReadCard(cts.Token);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    this.IsEnabled = true;
+                    txtTitle.Text = "Map";
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    throw new Exception(" การเชื่อมการ กรม ขัดข้อง " + e.ToString());
+                    MessageBox.Show(" การเชื่อมการ กรม ขัดข้อง " + ex.Message);
                 }
-            }
-
-
-            try
-            {
-                DoReadCard(cts.Token);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
             }
         }
 

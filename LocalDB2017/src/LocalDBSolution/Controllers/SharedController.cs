@@ -33,8 +33,11 @@ namespace LocalDBSolution.Controllers
 
         private localconfig config;
 
-        public SharedController(ISharedRepository shareRepo, IRepoForOnSite onsiteRepo,
-            IOptions<localconfig> config)
+        public SharedController(
+            ISharedRepository shareRepo, 
+            IRepoForOnSite onsiteRepo,
+            localconfig config
+            )
         {
             this.shareRepo = shareRepo;
             this.onsiteRepo = onsiteRepo;
@@ -46,7 +49,7 @@ namespace LocalDBSolution.Controllers
             //config = System.Configuration.ConfigurationSettings.AppSettings.Get("config");
             //storageCon = System.Configuration.ConfigurationSettings.AppSettings.Get("StorageConnectionString");
 
-            this.config = config.Value;
+            this.config = config;
         }
 
         // GET: api/values

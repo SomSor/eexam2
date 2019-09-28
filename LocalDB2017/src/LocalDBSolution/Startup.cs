@@ -36,13 +36,13 @@ namespace LocalDBSolution
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "LocalDBSolution", Version = "v1" });
-            }); 
+            });
 
             // Add application services.
             services.AddTransient<IRepoForOnSite, Repositories.Implementation.RepoForOnSite>();
             services.AddTransient<ISharedRepository, Repositories.Implementation.SharedRepository>();
 
-            services.Configure<localconfig>(Configuration.GetSection("localconfig"));
+            services.AddTransient(x => Configuration.GetSection("localconfig").Get<localconfig>());
 
             services.AddCors(options =>
             {
