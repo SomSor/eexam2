@@ -8,13 +8,13 @@
     <environment names="Development">
         @if (!User.Identity.IsAuthenticated)
         {<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />}
-        <link href="~/css/app.css" rel="stylesheet" type="text/css">
+        <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css">
         <link href="~/lib/angular-material/angular-material.css" rel="stylesheet" />
     </environment>
     <environment names="Staging,Production">
         @if (!User.Identity.IsAuthenticated)
         {<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />}
-        <link href="~/css/app.css" rel="stylesheet" type="text/css">
+        <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css">
         <link href="~/lib/angular-material/angular-material.css" rel="stylesheet" />
     </environment>
 </head>

@@ -34,7 +34,7 @@
             });
         }
         public _subjectGroupsFilter(Oc: string): shared.SubjectGroup[] {
-            return this._subjects.SubjectGroups.filter(re=> re.id == Oc);
+            return this._subjects.SubjectGroups.filter(re => re.id == Oc);
         }
         public SubmitTestRegis(subject: string, language: string, voice: string, quatity: number) {
             this.prepareData = false;
@@ -46,15 +46,16 @@
 
             //------------------------Check version------------------------------------
             this.testBankSvc.CheckSubjectVersion(subject, version).then(re => {
-                console.log(re.Code);
-                newQuatity = quatity + parseInt(re.Code);
+                console.log(quatity);
+                //console.log(re.Code);
+                //newQuatity = quatity + parseInt(re.Code);
                 //------------------------Submit ExamSheet------------------------------------
-                this.testBankSvc.syncTestRegisSubmitExamSheet(subject, language, voice, newQuatity).then(re=> {
+                this.testBankSvc.syncTestRegisSubmitExamSheet(subject, language, voice, quatity).then(re => {
                     this._sendJson = re;
                     if (re == null) { console.log("result is null"); return; }
                     //------------------------Create examsheet------------------------------------
-                    this.testBankSvc.syncTestCreateexamsheet(this._sendJson).then(()=> {
-                    //------------------------Refresh------------------------------------
+                    this.testBankSvc.syncTestCreateexamsheet(this._sendJson).then(() => {
+                        //------------------------Refresh------------------------------------
                         this.testBankSvc.syncTestRegisListExamSheet().then(re => {
                             this._syncTestRegisVM = re;
                             this.alertMessage = "ดาวน์โหลดข้อสอบสำเร็จ";
@@ -75,7 +76,7 @@
                     this.prepareData = true;
                     this.failToLoad = true;
                 });
-            }, error=> {
+            }, error => {
                 console.log("Fail to check version");
                 this.prepareData = true;
                 this.failToLoad = true;

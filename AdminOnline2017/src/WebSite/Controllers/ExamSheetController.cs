@@ -35,23 +35,21 @@ namespace WebSite.Controllers
     {
         private IRepoForSheetRepository repoSheet;
         private IRepoForRegistrationRepository repoTestRegis;
+        private readonly serverconfig serverconfig;
         private const int trycount = 5;
 
-        public ExamSheetController(IRepoForSheetRepository repoSheet, IRepoForRegistrationRepository repoTestRegis)
+        public ExamSheetController(IRepoForSheetRepository repoSheet, IRepoForRegistrationRepository repoTestRegis, serverconfig serverconfig)
         {
             this.repoSheet = repoSheet;
             this.repoTestRegis = repoTestRegis;
+            this.serverconfig = serverconfig;
         }
 
         [HttpPost]
         [Route("SubmitExamSheet/{centerid}/{subjectcode}/{examlanguage}/{voicelanguage}/{quantity}")]
         public AdminOnlineModels.TestBankVM SubmitExamSheet(string centerid, string subjectcode, string examlanguage, string voicelanguage, int quantity)
         {
-            //string URL = string.Format("http://localhost:7113/api/activated/RandomExamSheet/1/TSS04318002/th/1");
-
-            //string URL = string.Format("http://exambankex.azurewebsites.net/api/activated/RandomExamSheet/{0}/{1}/{2}/{3}", centerid, subjectcode, examlanguage, quantity);
-            string URL = string.Format("http://localhost:50273/api/activated/RandomExamSheet/{0}/{1}/{2}/{3}", centerid, subjectcode, examlanguage, quantity);
-            //string URL = string.Format("http://localhost:7113/api/activated/RandomExamSheet/{0}/{1}/{2}/{3}", centerid, subjectcode, examlanguage, quantity);
+            string URL = $"{serverconfig.adminwebip}/api/activated/RandomExamSheet/{centerid}/{subjectcode}/{examlanguage}/{quantity}";
 
             using (var client = new WebClient())
             {

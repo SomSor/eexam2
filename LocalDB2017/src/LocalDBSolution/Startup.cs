@@ -31,6 +31,11 @@ namespace LocalDBSolution
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            });
+
             // Add framework services.
             services.AddMvc();
             services.AddSwaggerGen(c =>

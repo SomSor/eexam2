@@ -50,6 +50,11 @@ namespace WebSite
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            });
+
             services.AddMvc();
 
             // Add application services.
@@ -64,6 +69,7 @@ namespace WebSite
             services.AddTransient<IRepoForRegistrationRepository, Repositories.Imprementration.RepoForRegistrationRepository>();
             services.AddTransient<IRepoForSheetRepository, Repositories.Imprementration.RepoForSheetRepository>();
 
+            services.AddTransient(x => Configuration.GetSection("serverconfig").Get<serverconfig>());
             services.Configure<serverconfig>(Configuration.GetSection("serverconfig"));
 
             services.AddCors(options =>
