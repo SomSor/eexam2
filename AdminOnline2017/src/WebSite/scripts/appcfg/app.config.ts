@@ -96,7 +96,8 @@
     }
     angular
         .module('application')
-        .constant('defaultUrl', 'http://localhost:50659')
+        .constant('defaultUrl', 'http://150.95.27.173:8081')
+        //.constant('defaultUrl', 'http://localhost:50659')
         //.constant('defaultUrl', 'http://eexamthaiex.azurewebsites.net')
         //.constant('examBankUrl', 'http://eexambankex.azurewebsites.net')
         .constant('examBankUrl', 'http://150.95.27.173:8080')
