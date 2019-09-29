@@ -13,11 +13,32 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\templates\createinactivesubject.html" />
+    <None Remove="client\templates\activatedexamsuiteview.html" />
+    <None Remove="client\templates\activatedsubjectlist.html" />
+    <None Remove="client\templates\activatedsubjectview.html" />
+    <None Remove="client\templates\createexamsuite.html" />
+    <None Remove="client\templates\createinactivesubject.html" />
+    <None Remove="client\templates\createquestion.html" />
+    <None Remove="client\templates\home.html" />
+    <None Remove="client\templates\inactiveexamsuiteview.html" />
+    <None Remove="client\templates\inactivesubjectlist.html" />
+    <None Remove="client\templates\inactivesubjectview.html" />
+    <None Remove="client\templates\uploadexamsuite.html" />
+    <None Remove="Properties\PublishProfiles\eexambankex - Web Deploy.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Properties\PublishProfiles\eexambankex - Web Deploy.pubxml" />
+    <Content Include="client\templates\activatedexamsuiteview.html" />
+    <Content Include="client\templates\activatedsubjectlist.html" />
+    <Content Include="client\templates\activatedsubjectview.html" />
+    <Content Include="client\templates\createexamsuite.html" />
+    <Content Include="client\templates\createinactivesubject.html" />
+    <Content Include="client\templates\createquestion.html" />
+    <Content Include="client\templates\home.html" />
+    <Content Include="client\templates\inactiveexamsuiteview.html" />
+    <Content Include="client\templates\inactivesubjectlist.html" />
+    <Content Include="client\templates\inactivesubjectview.html" />
+    <Content Include="client\templates\uploadexamsuite.html" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNetZip" Version="1.10.1" />
@@ -55,9 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\templates\createinactivesubject.html" />
   </ItemGroup>
 
 </Project>

@@ -34,7 +34,7 @@ namespace LocalDBSolution.Controllers
         private localconfig config;
 
         public SharedController(
-            ISharedRepository shareRepo, 
+            ISharedRepository shareRepo,
             IRepoForOnSite onsiteRepo,
             localconfig config
             )
@@ -61,28 +61,28 @@ namespace LocalDBSolution.Controllers
 
         [HttpPost]
         [Route("LoginToLocalDB/")]
-        public void LoginToLocalDB([FromBody]Center center)
+        public IActionResult LoginToLocalDB([FromBody]Center center)
         {
-            var logoPath = this.config.logoname + config.logoextension;
-            var logoblob = center._id + config.logoextension;
-            //var logoPath = Path.Combine(question.ExamCode, asset.Resource);
-            //asset = "TSS04318002L1-2/imgs/q007img1.png";
-
-            // Retrieve storage account from connection string.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(config.StorageConnectionString);
-
-            // Create the blob client.
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Retrieve reference to a previously created container.
-            CloudBlobContainer container = blobClient.GetContainerReference(config.blobStorage);
-
-            // Retrieve reference to a blob named "photo1.jpg".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(config.blobLogoStorage + "/" + logoblob);
-
-            // Save blob contents to a file.
             try
             {
+                var logoPath = this.config.logoname + config.logoextension;
+                var logoblob = center._id + config.logoextension;
+                //var logoPath = Path.Combine(question.ExamCode, asset.Resource);
+                //asset = "TSS04318002L1-2/imgs/q007img1.png";
+
+                // Retrieve storage account from connection string.
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(config.StorageConnectionString);
+
+                // Create the blob client.
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+                // Retrieve reference to a previously created container.
+                CloudBlobContainer container = blobClient.GetContainerReference(config.blobStorage);
+
+                // Retrieve reference to a blob named "photo1.jpg".
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(config.blobLogoStorage + "/" + logoblob);
+
+                // Save blob contents to a file.
                 //var localPath = @"C:\examtest\" + asset;
                 var localPath = Path.Combine(config.root, config.config, logoPath);
                 var di = Path.GetDirectoryName(localPath);
@@ -100,17 +100,19 @@ namespace LocalDBSolution.Controllers
                         blockBlob.DownloadToStream(fileStream);
                     }
                 }
+
+                //substring only real username
+                center.LatestUser = center.LatestUser.Split(new char[] { '.', '@' })[1];
+
+                //Save center data
+                this.shareRepo.CreateCenter(center);
+
+                return Ok();
             }
             catch (Exception ex)
             {
-                var d = ex;
+                return Ok(ex.ToString());
             }
-
-            //substring only real username
-            center.LatestUser = center.LatestUser.Split(new char[] { '.', '@' })[1];
-
-            //Save center data
-            this.shareRepo.CreateCenter(center);
         }
 
         [HttpPut]
