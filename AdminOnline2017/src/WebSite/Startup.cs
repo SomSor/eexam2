@@ -15,6 +15,7 @@ using WebSite.Services;
 using Microsoft.WindowsAzure.Storage;
 using MongoDB.Driver;
 using WebSite.Repositories;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace WebSite
 {
@@ -56,6 +57,8 @@ namespace WebSite
             });
 
             services.AddMvc();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -113,8 +116,8 @@ namespace WebSite
             //app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             app.UseStaticFiles();
-
             app.UseIdentity();
+            app.UseSession();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

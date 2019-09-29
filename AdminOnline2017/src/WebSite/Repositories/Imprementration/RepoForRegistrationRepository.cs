@@ -38,6 +38,13 @@ namespace WebSite.Repositories.Imprementration
             this.helper = helper;
         }
 
+        public ViewModels.ExamBankModelsBack.ActivatedSubject.Subject GetActivatedSubjectByCode(string code)
+        {
+            var coltn = helper.GetCollection<ViewModels.ExamBankModelsBack.ActivatedSubject.Subject>(ActivatedSubject_Subject);
+            var result = coltn.Find(x => x.SubjectCode == code).FirstOrDefault();
+            return result;
+        }
+
         public IEnumerable<TestRegistration> ListForAproved(string centerId)
         {
             var coltn = helper.GetCollection<TestRegistration>(ShareData_TestRegistration);
@@ -130,13 +137,12 @@ namespace WebSite.Repositories.Imprementration
 
         public void CreateTestRegis(IEnumerable<TestRegistration> testRegis)
         {
-            if (testRegis.Count()>0)
+            if (testRegis.Count() > 0)
             {
                 var coltn = helper.GetCollection<TestRegistration>(ShareData_TestRegistration);
 
                 coltn.InsertMany(testRegis);
             }
-           
         }
 
         public Site GetSiteData(string siteId)

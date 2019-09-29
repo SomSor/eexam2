@@ -1,0 +1,62 @@
+@model WebSite.ViewModels.AdminOnlineModelsBack.TestRegistration
+@{
+    ViewData["Title"] = "CreateTestRegistration";
+    Layout = "_LayoutBootstrap";
+}
+
+<h2>CreateTestRegistration</h2>
+@if (TempData["message"] != null)
+{
+    <div class="h1 text-center">@TempData["message"]</div>
+}
+<div class="row">
+    <div class="col-md-8">
+        <section>
+            <form asp-action="CreateTestRegistration" method="post" class="form-horizontal" role="form">
+                <hr />
+                <div class="form-group">
+                    <label asp-for="Title" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstName" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SubjectCode" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="SubjectCode" class="form-control" />
+                        <span asp-validation-for="SubjectCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PID" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="PID" class="form-control" />
+                        <span asp-validation-for="PID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-default">Register</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>

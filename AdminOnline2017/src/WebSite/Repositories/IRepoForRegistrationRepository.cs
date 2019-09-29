@@ -6,6 +6,8 @@ namespace WebSite.Repositories
 {
     public interface IRepoForRegistrationRepository
     {
+        ViewModels.ExamBankModelsBack.ActivatedSubject.Subject GetActivatedSubjectByCode(string code);
+
         IEnumerable<TestRegistration> ListTestRegisByID(List<string> id);
 
         void UpdateAppointStatus(IEnumerable<TestRegistration> appointTestRegis);

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using WebSite.Repositories;
 using WebSite.ViewModels.AdminOnlineModels;
 
 namespace WebSite.Controllers
@@ -13,9 +13,12 @@ namespace WebSite.Controllers
     {
         private serverconfig svconfig;
         public static CenterDataRequest _centerdata = new CenterDataRequest();
-        public HomeController(IOptions<serverconfig> svconfig)
+        private readonly IRepoForRegistrationRepository repoRegis;
+
+        public HomeController(IOptions<serverconfig> svconfig, IRepoForRegistrationRepository repoRegis)
         {
             this.svconfig = svconfig.Value;
+            this.repoRegis = repoRegis;
         }
 
         public IActionResult Index()
@@ -67,6 +70,58 @@ namespace WebSite.Controllers
 
         public IActionResult Error()
         {
+            return View();
+        }
+
+        public IActionResult CreateTestRegistration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateTestRegistration([FromForm]ViewModels.AdminOnlineModelsBack.TestRegistration testRegistration)
+        {
+            var center = repoRegis.GetCenterData(_centerdata._id);
+            if (center == null)
+            {
+                TempData["message"] = "ไม่พบข้อมูล";
+                return View(testRegistration);
+            }
+            var site = repoRegis.GetSiteData(center.SiteId);
+
+            if (site == null)
+            {
+                TempData["message"] = "ไม่พบข้อมูล";
+                return View(testRegistration);
+            }
+            var subject = repoRegis.GetActivatedSubjectByCode(testRegistration.SubjectCode);
+
+            if (subject == null)
+            {
+                TempData["message"] = "ไม่พบข้อมูล";
+                return View(testRegistration);
+            }
+
+            testRegistration._id = Guid.NewGuid().ToString();
+            testRegistration.SubjectName = subject.SubjectName;
+            testRegistration.ExamLanguage = "th";
+            testRegistration.VoiceLanguage = "th";
+            testRegistration.RegDate = DateTime.UtcNow;
+            testRegistration.ExpiredDate = testRegistration.RegDate.AddDays(90);
+            testRegistration.SiteId = site._id;
+            testRegistration.CenterId = center._id;
+            testRegistration.ForPractice = false;
+            testRegistration.ForTestSystem = false;
+            testRegistration.Status = "APPROVED";
+            testRegistration.ExamStatus = "UNSEND";
+            testRegistration.ExamPeriod = "all";
+            testRegistration.AppointDate = testRegistration.RegDate;
+            testRegistration.MaxCount = site.MaxTestCount;
+
+            var testRegistrations = new List<ViewModels.AdminOnlineModelsBack.TestRegistration> { testRegistration };
+            repoRegis.CreateTestRegis(testRegistrations);
+
+            TempData["message"] = "ลงทะเบียนสำเร็จ";
             return View();
         }
     }

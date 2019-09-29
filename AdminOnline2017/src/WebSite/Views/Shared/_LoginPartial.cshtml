@@ -17,7 +17,7 @@
                 <li><a ui-sref="syncresult"><strong>syncresult</strong></a></li>
             }
             <li><a ui-sref="testresult"><strong>examreport</strong></a></li>
-            <li><a asp-controller="Testaker" asp-action="Create"><strong>Register</strong></a></li>
+            <li><a asp-controller="Home" asp-action="CreateTestRegistration" target="_blank"><strong>Register</strong></a></li>
         }
     </ul>
 </div>
@@ -27,7 +27,7 @@
         @if (User.Identity.IsAuthenticated)
         {
             <li>
-                <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
                     <div class="grid-content">
                         <font color="white" asp-controller="Manage" asp-action="Index" title="Manage">@User.Identity.Name</font>
                         <a onclick="logoutForm.submit()"><font color="white">Log off</font></a>
