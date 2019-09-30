@@ -96,9 +96,9 @@
     }
     angular
         .module('application')
-        .constant('defaultUrl', 'http://10.10.2.251:8081')
-        .constant('examBankUrl', 'http://10.10.2.251:8080')
-        .constant('calStaticURl', 'http://10.10.2.251:8083')
+        .constant('defaultUrl', 'http://58.97.18.64:8081')
+        .constant('examBankUrl', 'http://58.97.18.64:8080')
+        .constant('calStaticURl', 'http://58.97.18.64:8083')
 
         //.constant('defaultUrl', 'http://150.95.27.173:8081')
         //.constant('examBankUrl', 'http://150.95.27.173:8080')
