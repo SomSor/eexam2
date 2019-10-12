@@ -201,12 +201,21 @@ namespace ExamClient.Views
 
         private void NoButton_Click(object sender, RoutedEventArgs e)
         {
-            // NoButton Clicked! Let's hide our InputBox.
-            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+            NavigationService.Navigate(new Uri("/Views/LoginPage.xaml", UriKind.RelativeOrAbsolute));
+        }
 
-            // Clear InputBox.
-            InputTextBox.Text = String.Empty;
+        private void ScanButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.cts = new System.Threading.CancellationTokenSource();
+            try
+            {
+                DoReadCard(this.cts.Token);
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }
