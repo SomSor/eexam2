@@ -38,7 +38,9 @@ namespace ExamClient.Views
 
             navigateMethod = NavigateToCamera;
 
-            ViewModel.CheckExam("1234567890123", navigateMethod);
+            InputBox.Visibility = System.Windows.Visibility.Visible;
+
+
 
             //IsVisibleChanged += VerifyPopupUI_IsVisibleChanged;
         }
@@ -96,7 +98,7 @@ namespace ExamClient.Views
                                 using (var fmt = new TheS.SmartCard.Formatters.SimpleMemoryCardFormatter(cardReader))
                                 {
                                     var pid = fmt.ReadString();
-                                    ViewModel.CheckExam(pid , navigateMethod);
+                                    ViewModel.CheckExam(pid, navigateMethod);
                                     //this.LicenList.Focus();
                                     fmt.Dispose();
                                     //this.LicenList.Focus();
@@ -108,7 +110,7 @@ namespace ExamClient.Views
                                 {
                                     var pid = fmt.ReadString();
 
-                                    ViewModel.CheckExam(pid , navigateMethod);
+                                    ViewModel.CheckExam(pid, navigateMethod);
 
                                     this.cts.Cancel();
                                     fmt.Dispose();
@@ -137,7 +139,7 @@ namespace ExamClient.Views
                                 }
                                 //Console.WriteLine(info.PID);
 
-                                ViewModel.CheckExam(info.PID , navigateMethod);
+                                ViewModel.CheckExam(info.PID, navigateMethod);
                                 //this.LicenList.Focus();
 
                                 this.cts.Cancel();
@@ -188,5 +190,23 @@ namespace ExamClient.Views
         //    NavigationService.Navigate(new Uri("/Views/CameraPage.xaml", UriKind.RelativeOrAbsolute));
 
         //}
+
+        private void YesButton_Click(object sender, RoutedEventArgs e)
+        {
+            // YesButton Clicked! Let's hide our InputBox and handle the input text.
+            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+
+            ViewModel.CheckExam(InputTextBox.Text, navigateMethod);
+        }
+
+        private void NoButton_Click(object sender, RoutedEventArgs e)
+        {
+            // NoButton Clicked! Let's hide our InputBox.
+            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+
+            // Clear InputBox.
+            InputTextBox.Text = String.Empty;
+
+        }
     }
 }
