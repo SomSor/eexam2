@@ -15,9 +15,11 @@ using WebSite.ViewModels.AdminOnlineModels;
 using AdminOnlineModelsBack = WebSite.ViewModels.AdminOnlineModelsBack;
 using WebSite.Repositories;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 
 namespace WebSite.Controllers
 {
+    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
     public class TestRegistrationController : Controller
@@ -75,7 +77,7 @@ namespace WebSite.Controllers
                     //Mobile = 
                     //Address = 
                     MaxCount = item.MaxCount,
-
+                    
                     //HACK : mock cert data
                     CertData = new ViewModels.AdminOnlineModelsBack.CertData { CertNo = "4050007", CertYear = "2550", UserCode = "9901" },
                     LatestCount = 0
@@ -218,7 +220,7 @@ namespace WebSite.Controllers
             //var site = repoRegis.GetSiteData(centerId);
             //if (site._id == "02")
             //{
-            GetTestRegisFrom3rd(centerId);
+            //GetTestRegisFrom3rd(centerId);
             //}
 
             var _testRegis = repoRegis.ListForAproved(centerId);

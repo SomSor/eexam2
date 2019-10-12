@@ -31,7 +31,7 @@ namespace LocalDBSolution.Controllers
                 _id = data._id,
                 NameTh = data.NameTh,
                 NameEn = data.NameEn,
-                CertDatas = data.CertDatas.Select(x => new CertData { CertNo = x.CertNo, CertYear = x.CertYear, UserCode = x.UserCode }).ToList(),
+                //CertDatas = data.CertDatas.Select(x => new CertData { CertNo = x.CertNo, CertYear = x.CertYear, UserCode = x.UserCode }).ToList(),
                 SiteName = data.SiteName,
                 SiteId = data.SiteId
             };

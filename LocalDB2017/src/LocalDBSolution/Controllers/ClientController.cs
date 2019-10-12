@@ -130,6 +130,10 @@ namespace LocalDBSolution.Controllers
                 {
                     sheet = oldsheet;
                 }
+                else if (oldsheet.LatestStatus == "TESTING")
+                {
+                    sheet = oldsheet;
+                }
                 else if (oldsheet.LatestStatus != "RESUME")
                 {
                     return new ExamSheetRespone { Message = new ViewModels.MessageRespone { Code = "2", Message = getsheet2 } };

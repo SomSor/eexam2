@@ -75,7 +75,7 @@
             this.MainResumeTestUrl = defaultUrl + '/api/Onsite/Resume';
             this.MainCloseExamDataUrl = defaultUrl + '/api/Onsite/CloseExamData';
             //Mainpage
-            this.MainpageListTestregistrationUrl = defaultUrl + '/api/Onsite/ListTesrRegistration/:centerid';
+            this.MainpageListTestregistrationUrl = defaultUrl + '/api/Onsite/ListTestRegistration/:centerid';
             this.MainpageSearchTestRegisUrl = defaultUrl + '/api/Onsite/SearchTestRegis/:txt/:centerid';
             this.MainpageChangeUserLanguage = '/api/Onsite/ChangeLanguage';
             //TestRegis
@@ -96,15 +96,24 @@
     angular
         .module('application')
         //.constant('defaultUrl', 'http://192.168.0.99:9090')
-        .constant('defaultUrl', 'http://192.168.9.99:8080')
+        //.constant('defaultUrl', 'http://192.168.9.99:8080')
         //.constant('defaultUrl', 'http://192.168.5.88:8080')
         //.constant('defaultUrl', 'http://localhost:9143')
         //.constant('localip', 'http://10.93.77.199')
         //.constant('localip', 'http://192.168.5.88')
-        .constant('localip', 'http://192.168.9.99')
+        //.constant('localip', 'http://192.168.9.99')
         //.constant('sharedUrl', 'http://10.93.77.199/localdb')
-        .constant('sharedUrl', 'http://192.168.9.99/localdb')
+        //.constant('sharedUrl', 'http://192.168.9.99/localdb')
         //.constant('sharedUrl', 'http://192.168.5.88/localdb')
         //.constant('sharedUrl', 'http://localhost:9143/')
+
+        //.constant('defaultUrl', 'http://localhost:58589')
+        //.constant('localip', 'http://localhost:58589')
+        //.constant('sharedUrl', 'http://localhost:58426/localdb')
+
+        .constant('defaultUrl', 'http://58.97.18.64:8082')
+        .constant('localip', 'http://58.97.18.64:8082')
+        .constant('sharedUrl', 'http://58.97.18.64:8083')
+
         .service('appConfig', AppConfig);
 }

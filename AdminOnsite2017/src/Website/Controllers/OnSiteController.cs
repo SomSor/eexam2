@@ -101,7 +101,7 @@ namespace WebSite.Controllers
         }
 
         [HttpGet]
-        [Route("ListTesrRegistration/{centerid}")]
+        [Route("ListTestRegistration/{centerid}")]
         public DisplayAllVM ListTesrRegistration(string centerid)
         {
             using (var client = new WebClient())

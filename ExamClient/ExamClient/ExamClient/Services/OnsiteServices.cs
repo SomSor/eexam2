@@ -12,7 +12,9 @@ namespace ExamClient.Services
     public class OnsiteServices : IOnsiteServices
     {
         //private readonly string serviceUrl = "http://10.93.77.199:8080/api";
-        private readonly string serviceUrl = "http://192.168.5.88:8080/api";
+        //private readonly string serviceUrl = "http://192.168.5.88:8080/api";
+        //private readonly string serviceUrl = "http://localhost:58589/api";
+        private readonly string serviceUrl = "http://58.97.18.64:8082/api";
 
         public void Answer(AnswerRequest answer)
         {
@@ -60,7 +62,6 @@ namespace ExamClient.Services
 
         public PicResponse SavePic(PicRequest picrequest)
         {
-            //var aaa = "http://localhost:9143/api";
             var client = new RestClient(serviceUrl);
             var request = new RestRequest("Client/SavePic", Method.POST);
             request.AddParameter("application/json", JsonConvert.SerializeObject(picrequest), ParameterType.RequestBody);

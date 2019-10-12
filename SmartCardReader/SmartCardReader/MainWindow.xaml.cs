@@ -26,10 +26,10 @@ namespace SmartCardReader
         public PersonalCardInfo MyInfo = new PersonalCardInfo();
         System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
 
-        string centerid = "1";
+        string centerid = "2";
         string pid = "1000000000001";
 
-        string baseUrl = "http://localhost:7752/";
+        string baseUrl = "http://localhost:58589/";
         string ListTestRegistrationApiUrl = "api/OnSite/ListTestRegistration/{centerid}";
         string GetInfoForPrintQRApiUrl = "api/OnSite/GetInfoForPrintQR/{pid}";
         string GetResultApiUrl = "api/OnSite/GetResult/{pid}";
@@ -47,12 +47,12 @@ namespace SmartCardReader
         {
             InitializeComponent();
 
-            this.IsEnabled = false;
-            txtTitle.Text = "Connecting...";
-            aTimer = new Timer(1000);
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.AutoReset = false;
-            aTimer.Enabled = true;
+            //this.IsEnabled = false;
+            //txtTitle.Text = "Connecting...";
+            //aTimer = new Timer(1000);
+            //aTimer.Elapsed += OnTimedEvent;
+            //aTimer.AutoReset = false;
+            //aTimer.Enabled = true;
         }
 
         public void OnTimedEvent(Object source, ElapsedEventArgs e)

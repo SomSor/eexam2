@@ -215,7 +215,7 @@ namespace LocalDBSolution.Repositories.Implementation
 
                 col.EnsureIndex(x => x._id);
                 var data = col.Find(x => x._id == sheetid && x.IsCloseExam == false);
-                var result = data.FirstOrDefault() ?? new ExamSheet();
+                var result = data.FirstOrDefault();
                 return result;
             }
         }

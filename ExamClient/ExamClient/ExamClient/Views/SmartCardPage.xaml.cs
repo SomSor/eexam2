@@ -38,10 +38,12 @@ namespace ExamClient.Views
 
             navigateMethod = NavigateToCamera;
 
-            IsVisibleChanged += VerifyPopupUI_IsVisibleChanged;
+            ViewModel.CheckExam("1234567890123", navigateMethod);
+
+            //IsVisibleChanged += VerifyPopupUI_IsVisibleChanged;
         }
 
-      
+
 
         void VerifyPopupUI_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

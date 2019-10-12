@@ -44,7 +44,7 @@ controller: 'application.mainpageApp.mainController as ctx'
         <li><input type="radio" id="mainpage" ng-model="_link" name="filter" value="mainpage"><label for="mainpage">mainpage</label></li>
         <li><input type="radio" id="testing" ng-model="_link" name="filter" value="testing"><label for="testing">testing</label></li>
         <li><input type="radio" id="exambank" ng-model="_link" name="filter" value="exambank"><label for="exambank">exambank</label></li>
-        <li><input type="radio" id="manageNresult" ng-model="_link" name="filter" value="manageNresult"><label><a href="http://examex.blob.core.windows.net/examclient/pc/SmartCardReader.application" >manage & result</a></label></li>
+        <li><input type="radio" id="manageNresult" ng-model="_link" name="filter" value="manageNresult"><label><a href="http://58.97.18.64:8081/smartcardreader/SmartCardReader.application">manage & result</a></label></li>
     </ul>
     <div ng-if="ctx.LoadComplete">
         <ng-include src="'templates/mainpage.html'" ng-show="_link=='mainpage'"></ng-include>

@@ -105,11 +105,12 @@
         //.constant('calStaticURl', 'http://150.95.27.173:8083')
 
         //.constant('defaultUrl', 'http://localhost:50659')
-        //.constant('examBankUrl', 'http://localhost:50659')
-        //.constant('calStaticURl', 'http://192.168.9.99/localdb')
+        //.constant('examBankUrl', 'http://localhost:50274')
+        //.constant('calStaticURl', 'http://localhost:58426')
 
         //.constant('defaultUrl', 'http://eexamthaiex.azurewebsites.net')
         //.constant('examBankUrl', 'http://eexambankex.azurewebsites.net')
+        //.constant('calStaticURl', 'http://192.168.9.99/localdb')
 
         .service('appConfig', AppConfig);
 }
