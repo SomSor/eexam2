@@ -96,13 +96,13 @@
     }
     angular
         .module('application')
-        .constant('defaultUrl', 'http://58.97.18.64:8081')
-        .constant('examBankUrl', 'http://58.97.18.64:8080')
-        .constant('calStaticURl', 'http://58.97.18.64:8083')
+        //.constant('defaultUrl', 'http://58.97.18.64:8081')
+        //.constant('examBankUrl', 'http://58.97.18.64:8080')
+        //.constant('calStaticURl', 'http://58.97.18.64:8083')
 
-        //.constant('defaultUrl', 'http://150.95.27.173:8081')
-        //.constant('examBankUrl', 'http://150.95.27.173:8080')
-        //.constant('calStaticURl', 'http://150.95.27.173:8083')
+        .constant('defaultUrl', 'http://150.95.27.173:8081')
+        .constant('examBankUrl', 'http://150.95.27.173:8080')
+        .constant('calStaticURl', 'http://150.95.27.173:8083')
 
         //.constant('defaultUrl', 'http://localhost:50659')
         //.constant('examBankUrl', 'http://localhost:50274')

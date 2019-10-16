@@ -14,7 +14,8 @@ namespace ExamClient.Services
         //private readonly string serviceUrl = "http://10.93.77.199:8080/api";
         //private readonly string serviceUrl = "http://192.168.5.88:8080/api";
         //private readonly string serviceUrl = "http://localhost:58589/api";
-        private readonly string serviceUrl = "http://58.97.18.64:8082/api";
+        private readonly string serviceUrl = "http://150.95.27.173:8082/api";
+        //private readonly string serviceUrl = "http://58.97.18.64:8082/api";
 
         public void Answer(AnswerRequest answer)
         {

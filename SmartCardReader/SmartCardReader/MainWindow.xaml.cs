@@ -29,7 +29,8 @@ namespace SmartCardReader
         string centerid = "2";
         string pid = "1000000000001";
 
-        string baseUrl = "http://localhost:58589/";
+        //string baseUrl = "http://localhost:58589/";
+        string baseUrl = "http://150.95.27.173:8082/";
         string ListTestRegistrationApiUrl = "api/OnSite/ListTestRegistration/{centerid}";
         string GetInfoForPrintQRApiUrl = "api/OnSite/GetInfoForPrintQR/{pid}";
         string GetResultApiUrl = "api/OnSite/GetResult/{pid}";

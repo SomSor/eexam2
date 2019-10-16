@@ -111,9 +111,13 @@
         //.constant('localip', 'http://localhost:58589')
         //.constant('sharedUrl', 'http://localhost:58426/localdb')
 
-        .constant('defaultUrl', 'http://58.97.18.64:8082')
-        .constant('localip', 'http://58.97.18.64:8082')
-        .constant('sharedUrl', 'http://58.97.18.64:8083')
+        //.constant('defaultUrl', 'http://58.97.18.64:8082')
+        //.constant('localip', 'http://58.97.18.64:8082')
+        //.constant('sharedUrl', 'http://58.97.18.64:8083')
+
+        .constant('defaultUrl', 'http://150.95.27.173:8082')
+        .constant('localip', 'http://150.95.27.173:8082')
+        .constant('sharedUrl', 'http://150.95.27.173:8083')
 
         .service('appConfig', AppConfig);
 }
