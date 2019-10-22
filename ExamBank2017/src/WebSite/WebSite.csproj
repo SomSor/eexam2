@@ -19,7 +19,7 @@
     <None Remove="Properties\PublishProfiles\eexambankex - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetZip" Version="1.10.1" />
+    <PackageReference Include="DotNetZip" Version="1.11.0" />
     <PackageReference Include="LiteDB" Version="3.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
