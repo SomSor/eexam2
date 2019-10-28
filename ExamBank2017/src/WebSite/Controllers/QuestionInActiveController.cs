@@ -267,6 +267,7 @@ namespace WebSite.Controllers
             var qsuiteVm = repoQ.GetQuestionSuite(request.ExamSuiteId);
             var question = qsuiteVm?.Questions?.Where(x => x._id == request.id)?.FirstOrDefault();
             question.Content = request.Detail;
+            question.NoShuffleChoice = request.IsAllowRandomChoice;
             question.Choices = request.Choices?.Select(x => new TheS.ExamBank.DataFormats.SelectableChoice
             {
                 Code = x.id,
