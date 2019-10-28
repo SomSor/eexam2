@@ -126,17 +126,13 @@ namespace LocalDBSolution.Controllers
                 {
                     sheet = repoOnSite.GetSheetBySubjectCodeForMap(subjectCode, regis.ExamLanguage);
                 }
-                else if (oldsheet.LatestStatus == "RESUME")
+                else if (oldsheet.LatestStatus == "RESUME" || oldsheet.LatestStatus == "Ready")
                 {
                     sheet = oldsheet;
                 }
                 else if (oldsheet.LatestStatus == "TESTING")
                 {
                     sheet = oldsheet;
-                }
-                else if (oldsheet.LatestStatus != "RESUME")
-                {
-                    return new ExamSheetRespone { Message = new ViewModels.MessageRespone { Code = "2", Message = getsheet2 } };
                 }
                 else if (oldsheet.LatestStatus == "PASS")
                 {
@@ -464,7 +460,9 @@ namespace LocalDBSolution.Controllers
 
                     foreach (var ast in qassets)
                     {
-                        q.Detail = q.Detail.Insert(ast.Position, ast.Resource);
+                        var position = ast.Position;
+                        if (ast.Position > q.Detail.Length) position = q.Detail.Length;
+                        q.Detail = q.Detail.Insert(position, ast.Resource);
                     }
 
                     if (q.Choices != null)
@@ -477,7 +475,9 @@ namespace LocalDBSolution.Controllers
                             string cnt = choices[i].Detail;
                             foreach (var ast in casset)
                             {
-                                choices[i].Detail = choices[i].Detail.Insert(ast.Position, ast.Resource);
+                                var position = ast.Position;
+                                if (ast.Position > choices[i].Detail.Length) position = choices[i].Detail.Length;
+                                choices[i].Detail = choices[i].Detail.Insert(position, ast.Resource);
                             }
                         }
                     }

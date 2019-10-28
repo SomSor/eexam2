@@ -16,6 +16,14 @@
     <div class="menu-group primary">
     </div>
     <div class="container body-content">
+        @if (TempData["message"] != null)
+        {
+            <div class="h1 text-center text-success">@TempData["message"]</div>
+        }
+        @if (TempData["errormessage"] != null)
+        {
+            <div class="h1 text-center text-danger">@TempData["errormessage"]</div>
+        }
         @RenderBody()
         <hr />
         <footer>

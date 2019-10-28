@@ -84,21 +84,28 @@ namespace WebSite.Controllers
             var center = repoRegis.GetCenterData(_centerdata._id);
             if (center == null)
             {
-                TempData["message"] = "ไม่พบข้อมูล";
+                TempData["errormessage"] = "ไม่พบข้อมูลศูนย์สอบ หรือล็อกอินหมดอายุ";
                 return View(testRegistration);
             }
-            var site = repoRegis.GetSiteData(center.SiteId);
 
+            var site = repoRegis.GetSiteData(center.SiteId);
             if (site == null)
             {
-                TempData["message"] = "ไม่พบข้อมูล";
+                TempData["errormessage"] = "ไม่พบข้อมูลศูนย์สอบ หรือล็อกอินหมดอายุ";
                 return View(testRegistration);
             }
-            var subject = repoRegis.GetActivatedSubjectByCode(testRegistration.SubjectCode);
 
+            var subject = repoRegis.GetActivatedSubjectByCode(testRegistration.SubjectCode);
             if (subject == null)
             {
-                TempData["message"] = "ไม่พบข้อมูล";
+                TempData["errormessage"] = "ไม่พบข้อมูลวิชา";
+                return View(testRegistration);
+            }
+
+            var oldTestRegistration = repoRegis.ListTestRegisByPID(new List<string> { testRegistration.PID });
+            if (oldTestRegistration != null && oldTestRegistration.Any(x => x.SubjectCode == testRegistration.SubjectCode))
+            {
+                TempData["errormessage"] = "มีข้อมูลการลงทะเบียนแล้ว";
                 return View(testRegistration);
             }
 

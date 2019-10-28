@@ -196,76 +196,76 @@ namespace WebSite.Controllers
             var _qid = _subject?.ExamSuites?.SelectMany(es => es?.QuestionIds)?.ToList();
 
 
-            string conString = "User Id=c##dsd;Password=1q2w3e4r;" +
-                               "Data Source=localhost:1521/db;";
-            DataTable dt_subject = new DataTable();
-            DataTable dt_subjects = new DataTable();
-            DataTable dt_activated = new DataTable();
+            //string conString = "User Id=c##dsd;Password=1q2w3e4r;" +
+            //                   "Data Source=localhost:1521/db;";
+            //DataTable dt_subject = new DataTable();
+            //DataTable dt_subjects = new DataTable();
+            //DataTable dt_activated = new DataTable();
 
-            DataSet ds_subject = new DataSet();
-            DataSet ds_subjects = new DataSet();
-            DataSet ds_activated = new DataSet();
+            //DataSet ds_subject = new DataSet();
+            //DataSet ds_subjects = new DataSet();
+            //DataSet ds_activated = new DataSet();
 
             
-            using (OracleConnection objConn = new OracleConnection(conString))
-            {
-                OracleCommand cmd = new OracleCommand();
-                OracleDataAdapter da = new OracleDataAdapter();
-                cmd.Connection = objConn;
-                cmd.InitialLONGFetchSize = 1000;
-                cmd.CommandText = "spGetSubject";
-                cmd.CommandType = CommandType.StoredProcedure;
-                OracleParameter oraP = new OracleParameter();
-                oraP.OracleDbType = OracleDbType.RefCursor;
-                oraP.Direction = System.Data.ParameterDirection.Output;
-                cmd.Parameters.Add("SubjectId", OracleDbType.NVarchar2).Value = "14";
-                cmd.Parameters.Add(oraP);
+            //using (OracleConnection objConn = new OracleConnection(conString))
+            //{
+            //    OracleCommand cmd = new OracleCommand();
+            //    OracleDataAdapter da = new OracleDataAdapter();
+            //    cmd.Connection = objConn;
+            //    cmd.InitialLONGFetchSize = 1000;
+            //    cmd.CommandText = "spGetSubject";
+            //    cmd.CommandType = CommandType.StoredProcedure;
+            //    OracleParameter oraP = new OracleParameter();
+            //    oraP.OracleDbType = OracleDbType.RefCursor;
+            //    oraP.Direction = System.Data.ParameterDirection.Output;
+            //    cmd.Parameters.Add("SubjectId", OracleDbType.NVarchar2).Value = "14";
+            //    cmd.Parameters.Add(oraP);
                 
-                da.SelectCommand = cmd;
+            //    da.SelectCommand = cmd;
 
-                da.Fill(ds_subject);
-                dt_subject = ds_subject.Tables[0];
-            }
+            //    da.Fill(ds_subject);
+            //    dt_subject = ds_subject.Tables[0];
+            //}
 
-            using (OracleConnection objConn = new OracleConnection(conString))
-            {
-                OracleCommand cmd = new OracleCommand();
-                OracleDataAdapter da = new OracleDataAdapter();
-                cmd.Connection = objConn;
-                cmd.InitialLONGFetchSize = 1000;
-                cmd.CommandText = "spGetSubjectList";
-                cmd.CommandType = CommandType.StoredProcedure;
-                OracleParameter oraP = new OracleParameter();
-                oraP.OracleDbType = OracleDbType.RefCursor;
-                oraP.Direction = System.Data.ParameterDirection.Output;
-                cmd.Parameters.Add(oraP);
+            //using (OracleConnection objConn = new OracleConnection(conString))
+            //{
+            //    OracleCommand cmd = new OracleCommand();
+            //    OracleDataAdapter da = new OracleDataAdapter();
+            //    cmd.Connection = objConn;
+            //    cmd.InitialLONGFetchSize = 1000;
+            //    cmd.CommandText = "spGetSubjectList";
+            //    cmd.CommandType = CommandType.StoredProcedure;
+            //    OracleParameter oraP = new OracleParameter();
+            //    oraP.OracleDbType = OracleDbType.RefCursor;
+            //    oraP.Direction = System.Data.ParameterDirection.Output;
+            //    cmd.Parameters.Add(oraP);
 
-                da.SelectCommand = cmd;
+            //    da.SelectCommand = cmd;
 
-                da.Fill(ds_subjects);
-                dt_subjects = ds_subjects.Tables[0];
-            }
+            //    da.Fill(ds_subjects);
+            //    dt_subjects = ds_subjects.Tables[0];
+            //}
 
 
-            using (OracleConnection objConn = new OracleConnection(conString))
-            {
-                OracleCommand cmd = new OracleCommand();
-                OracleDataAdapter da = new OracleDataAdapter();
-                cmd.Connection = objConn;
-                cmd.InitialLONGFetchSize = 1000;
-                cmd.CommandText = "spGetSubject";
-                cmd.CommandType = CommandType.StoredProcedure;
-                OracleParameter oraP = new OracleParameter();
-                oraP.OracleDbType = OracleDbType.RefCursor;
-                oraP.Direction = System.Data.ParameterDirection.Output;
-                cmd.Parameters.Add("SubjectId", OracleDbType.NVarchar2).Value = "14";
-                cmd.Parameters.Add(oraP);
+            //using (OracleConnection objConn = new OracleConnection(conString))
+            //{
+            //    OracleCommand cmd = new OracleCommand();
+            //    OracleDataAdapter da = new OracleDataAdapter();
+            //    cmd.Connection = objConn;
+            //    cmd.InitialLONGFetchSize = 1000;
+            //    cmd.CommandText = "spGetSubject";
+            //    cmd.CommandType = CommandType.StoredProcedure;
+            //    OracleParameter oraP = new OracleParameter();
+            //    oraP.OracleDbType = OracleDbType.RefCursor;
+            //    oraP.Direction = System.Data.ParameterDirection.Output;
+            //    cmd.Parameters.Add("SubjectId", OracleDbType.NVarchar2).Value = "14";
+            //    cmd.Parameters.Add(oraP);
 
-                da.SelectCommand = cmd;
+            //    da.SelectCommand = cmd;
 
-                da.Fill(ds_subject);
-                dt_subject = ds_subject.Tables[0];
-            }
+            //    da.Fill(ds_subject);
+            //    dt_subject = ds_subject.Tables[0];
+            //}
 
 
 

@@ -277,6 +277,7 @@ namespace WebSite.Controllers
                 ExamSuiteCount = 0,
                 ExamSuiteAcceptCount = 0,
                 ExamSuiteRejectCount = 0,
+                ExamSuiteGroups = new List<ViewModels.ExamBankModelsBack.InActiveSubject.ExamSuiteGroup>(),
             };
             repoQ.InsertInActiveSubject(newSubject);
 
