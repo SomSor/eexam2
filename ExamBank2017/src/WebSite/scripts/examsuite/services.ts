@@ -28,6 +28,9 @@
     interface IDeleteExamSuiteResourceClass<T> extends ng.resource.IResourceClass<ng.resource.IResource<T>> {
         Delete(data: T): T;
     }
+    interface IListImagesResourceClass<T> extends ng.resource.IResourceClass<ng.resource.IResource<T>> {
+        GetContent(data: T): T;
+    }
 
     export class examSuiteService {
         private inactiveGetExamSuiteSvc: IGetInactiveExamSuiteResourceClass<any>;
@@ -39,6 +42,7 @@
         private createExamSuiteSvc: ICreateExamSuiteResourceClass<any>;
         private updateExamSuiteSvc: IUpdateExamSuiteResourceClass<any>;
         private deleteExamSuiteSvc: IDeleteExamSuiteResourceClass<any>;
+        private listImagesSvc: IListImagesResourceClass<any>;
 
         static $inject = ['appConfig', '$resource'];
         constructor(appConfig: IAppConfig, $resource) {
@@ -62,10 +66,10 @@
             this.createExamSuiteSvc = <ICreateExamSuiteResourceClass<any>>$resource(appConfig.CreateExamSuiteUrl, {}, { Create: { method: 'POST' } });
             this.updateExamSuiteSvc = <IUpdateExamSuiteResourceClass<any>>$resource(appConfig.UpdateExamSuiteUrl, {}, { Update: { method: 'PUT' } });
             this.deleteExamSuiteSvc = <IDeleteExamSuiteResourceClass<any>>$resource(appConfig.DeleteExamSuiteUrl, { 'examsuiteid': '@examsuiteid' }, { Delete: { method: 'DELETE' } });
+            this.listImagesSvc = <IListImagesResourceClass<any>>$resource(appConfig.ListImageUrl, {}, { GetContent: { method: 'GET' } });
         }
 
         public InactiveGetExamSuite(examsuiteid: string): ng.IPromise<any> {
-            console.log(examsuiteid);
             return this.inactiveGetExamSuiteSvc.get({ 'examsuiteid': examsuiteid }).$promise;
         }
 
@@ -90,7 +94,6 @@
         }
 
         public Create(examSuite: app.subjectApp.ExamSuiteDetail): ng.IPromise<any> {
-            console.log(examSuite);
             return this.createExamSuiteSvc.Create(examSuite).$promise;
         }
 
@@ -102,6 +105,9 @@
             return this.deleteExamSuiteSvc.Delete({ examsuiteid: examsuiteid }).$promise;
         }
 
+        public ListImages(): ng.IPromise<any> {
+            return this.listImagesSvc.GetContent({}).$promise;
+        }
     }
 
     angular

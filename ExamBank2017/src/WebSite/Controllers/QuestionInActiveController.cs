@@ -15,10 +15,13 @@ namespace WebSite.Controllers
     {
         private IExamForApproveRepository repoForApprove;
         private IQuestionImportRepository repoQ;
-        public QuestionInActiveController(IExamForApproveRepository repoForApprove, IQuestionImportRepository repoQ)
+        private readonly IWebConfiguration webConfiguration;
+
+        public QuestionInActiveController(IExamForApproveRepository repoForApprove, IQuestionImportRepository repoQ, IWebConfiguration webConfiguration)
         {
             this.repoForApprove = repoForApprove;
             this.repoQ = repoQ;
+            this.webConfiguration = webConfiguration;
         }
 
         // HttpPost: api/QuestionInActive/ConsiderQuestion/{TitleCode}/{QuestionNumber}   
@@ -316,6 +319,21 @@ namespace WebSite.Controllers
             repoQ.Upsert(qsuite);
 
             return Ok(new { Message = $"Deleted!", QuestionId = questionid });
+        }
+
+        [HttpGet]
+        [Route("Images")]
+        public IActionResult ListImage()
+        {
+            var files = System.IO.Directory.GetFiles(webConfiguration.UploadPath, "*.*", System.IO.SearchOption.AllDirectories);
+            var fileUrls = files.Select(x =>
+            {
+                return x.Replace(webConfiguration.UploadPath, webConfiguration.UploadUrl).Replace("\\", "/");
+            });
+            return Ok(new
+            {
+                fileUrls,
+            });
         }
 
     }

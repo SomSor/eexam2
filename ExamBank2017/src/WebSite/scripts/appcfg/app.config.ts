@@ -36,6 +36,7 @@
         CreateQuestionUrl: string;
         UpdateQuestionUrl: string;
         DeleteQuestionUrl: string;
+        ListImageUrl: string;
         
         //ConfigurationActivated
         ConfigurationActivatedReversionSubjectUrl: string;
@@ -83,6 +84,7 @@
         public CreateQuestionUrl: string;
         public UpdateQuestionUrl: string;
         public DeleteQuestionUrl: string;
+        public ListImageUrl: string;
 
         //ConfigurationActivated
         public ConfigurationActivatedReversionSubjectUrl: string;
@@ -130,6 +132,7 @@
             this.CreateQuestionUrl = defaultUrl + '/api/QuestionInActive/CreateQuestion';
             this.UpdateQuestionUrl = defaultUrl + '/api/QuestionInActive/UpdateQuestion';
             this.DeleteQuestionUrl = defaultUrl + '/api/QuestionInActive/DeleteQuestion/:examsuiteid/:questionid';
+            this.ListImageUrl = defaultUrl + '/api/QuestionInActive/Images';
 
             //ConfigurationActivated
             this.ConfigurationActivatedReversionSubjectUrl = defaultUrl + '/api/ConfigurationActivated/ReversionSubject/:subjectCode/:subjectId';

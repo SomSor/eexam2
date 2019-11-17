@@ -12,5 +12,7 @@ namespace WebSite
         public string MongoDatabaseName { get; set; }
         public string StorageConnectionString { get; set; }
         public string BlobName { get; set; }
+        public string UploadPath { get; set; }
+        public string UploadUrl { get; set; }
     }
 }

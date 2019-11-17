@@ -6,12 +6,20 @@
         public _question: app.examSuiteApp.Question;
         public _correctAnswer: string = "1";
         public _choices: string[] = ["1", "2", "3", "4"];
+        public _images: string[];
+        public _selectImageType: string;
+        public _selectImageToId: string;
+        public _imageFilterText: string;
 
         static $inject = ['$scope', 'app.examSuiteApp.examSuiteService', 'app.createQuestionApp.createQuestionService', '$stateParams', '$state'];
         constructor(private $scope, private _examSuiteSvc: app.examSuiteApp.examSuiteService, private _questionSvc: app.createQuestionApp.createQuestionService, private $stateParams, private $state) {
             this._examSuiteSvc.InactiveGetExamSuite(this.$stateParams.examsuiteid).then(data => {
+                this._imageFilterText = data.SubjectCode;
                 this._examSuite = data;
                 this.Clear();
+            });
+            this._examSuiteSvc.ListImages().then(data => {
+                this._images = data.fileUrls;
             });
         }
 
@@ -72,6 +80,24 @@
                 }
             } else {
                 alert("กรุณาเลือกข้อสอบ");
+            }
+        }
+
+        SelectQuestionImage() {
+            this._selectImageType = "question";
+            this._selectImageToId = this._question.id;
+        }
+
+        SelectChoiceImage(id) {
+            this._selectImageType = "choice";
+            this._selectImageToId = id;
+        }
+
+        SelectImage(imageUrl) {
+            if (this._selectImageType == "question") {
+                this._question.Detail += " ![alt text](" + imageUrl + ")";
+            } else {
+                this._question.Choices.filter(x => x.id == this._selectImageToId)[0].Detail += " ![alt text](" + imageUrl + ")";
             }
         }
     }

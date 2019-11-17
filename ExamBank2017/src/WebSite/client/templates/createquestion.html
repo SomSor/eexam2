@@ -26,17 +26,39 @@ controller: 'app.createQuestionApp.createQuestionController as ctx'
             </div>
             <div class="card-section">
                 <form>
-                    <div class="grid-block"><h6 class="medium-12 grid-content">โจทย์ข้อที่ {{ctx._question.QuestionNumber}}</h6><h6 class="medium-12"><input type="text" ng-model="ctx._question.Detail" id="txtQuestion"></h6></div>
-                    <div class="grid-block"><h6 class="medium-2 grid-content">คำตอบ</h6><h6 class="medium-10"></h6></div>
-                    <div class="grid-block" ng-repeat="c in ctx._question.Choices"><h6 class="medium-1 grid-content">{{c.id}}</h6><h6 class="medium-10"><input type="text" ng-model="c.Detail"></h6></div>
                     <div class="grid-block">
-                        <h6 class="medium-3 grid-content">ตำตอบที่ถูกต้องคือ</h6>
-                        <h6 class="medium-1">
-                            <select ng-options="c for c in ctx._choices" ng-model="ctx._correctAnswer" ng-init="ctx._correctAnswer=ctx._choices[0]"></select>
-                        </h6>
-                        <h6 class="medium-3 grid-content">
-                            <input type="checkbox" ng-checked="ctx._question.IsAllowRandomChoice" ng-model="ctx._question.IsAllowRandomChoice" id="IsAllowRandomChoice" /><label for="IsAllowRandomChoice">No random choice</label>
-                        </h6>
+                        <div class="grid-content medium-6">
+                            <div class="grid-block">
+                                <h6 class="medium-12 grid-content">โจทย์ข้อที่ {{ctx._question.QuestionNumber}}</h6>
+                                <h6 class="medium-9"><input type="text" ng-model="ctx._question.Detail" id="txtQuestion"></h6>
+                                <h6 class="medium-3 grid-content"><button class="button" zf-open="SelectImage" ng-click="ctx.SelectQuestionImage()">Image</button></h6>
+                            </div>
+                            <div class="grid-block"><h6 class="medium-12 grid-content">คำตอบ</h6></div>
+                            <div class="grid-block" ng-repeat="c in ctx._question.Choices">
+                                <h6 class="medium-1 grid-content">{{c.id}}</h6>
+                                <h6 class="medium-8 grid-content"><input type="text" ng-model="c.Detail"></h6>
+                                <h6 class="medium-3 grid-content"><button class="button" zf-open="SelectImage" ng-click="ctx.SelectChoiceImage(c.id)">Image</button></h6>
+                            </div>
+                            <div class="grid-block">
+                                <h6 class="medium-5 grid-content">ตำตอบที่ถูกต้องคือ</h6>
+                                <h6 class="medium-2">
+                                    <select ng-options="c for c in ctx._choices" ng-model="ctx._correctAnswer" ng-init="ctx._correctAnswer=ctx._choices[0]"></select>
+                                </h6>
+                                <h6 class="medium-5 grid-content">
+                                    <input type="checkbox" ng-checked="ctx._question.IsAllowRandomChoice" ng-model="ctx._question.IsAllowRandomChoice" id="IsAllowRandomChoice" /><label for="IsAllowRandomChoice">No random choice</label>
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="grid-content medium-6">
+                            <div class="grid-block"><h6 class="medium-12 grid-content">Preview</h6></div>
+                            <div class="grid-block">
+                                <p>{{ctx._question.QuestionNumber}}.</p>&nbsp;&nbsp;&nbsp;<span marked="ctx._question.Detail" class="medium-11"></span>
+                            </div>
+                            <div class="grid-block" ng-repeat="choice in ctx._question.Choices">
+                                <span ng-class="{'success badge': choice.IsCorrect, 'secondary badge': !choice.IsCorrect}">{{choice.id}}</span>&nbsp;&nbsp;&nbsp;
+                                <span class="medium-11" marked="choice.Detail"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="grid-block">
                         <div class="grid-content">
@@ -46,6 +68,28 @@ controller: 'app.createQuestionApp.createQuestionController as ctx'
                         </div>
                     </div>
                 </form>
+                <div zf-modal="" class="collapse" id="SelectImage">
+                    <div class="grid-block vertical">
+                        <div class="primary title-bar">
+                            <div class="center title">Select image</div>
+                        </div>
+                        <div class="card-section" style="height:500px;overflow: auto;">
+                            <div class="grid-content">
+                                <label>Search: <input ng-model="ctx._imageFilterText"></label>
+                            </div>
+                            <div class="grid-content">
+                                <div ng-repeat="im in ctx._images | filter:ctx._imageFilterText">
+                                    <img src="{{im}}" class="medium-6" ng-click="ctx.SelectImage(im)" zf-close="SelectImage" />
+                                    <div class="medium-12">{{im}}</div>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a class="secondary button" zf-close="SelectImage">cancel</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
