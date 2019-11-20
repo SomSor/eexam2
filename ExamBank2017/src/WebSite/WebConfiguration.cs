@@ -14,5 +14,6 @@ namespace WebSite
         public string BlobName { get; set; }
         public string UploadPath { get; set; }
         public string UploadUrl { get; set; }
+        public IEnumerable<string> SearchPatterns { get; set; }
     }
 }

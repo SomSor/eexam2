@@ -325,7 +325,13 @@ namespace WebSite.Controllers
         [Route("Images")]
         public IActionResult ListImage()
         {
-            var files = System.IO.Directory.GetFiles(webConfiguration.UploadPath, "*.*", System.IO.SearchOption.AllDirectories);
+            var files = System.IO.Directory.GetFiles(webConfiguration.UploadPath, "*.*", System.IO.SearchOption.AllDirectories)
+                .Where(f =>
+                {
+                    return !webConfiguration.SearchPatterns.Any(sp => f.Contains(sp));
+                })
+                .ToList();
+
             var fileUrls = files.Select(x =>
             {
                 return x.Replace(webConfiguration.UploadPath, webConfiguration.UploadUrl).Replace("\\", "/");
