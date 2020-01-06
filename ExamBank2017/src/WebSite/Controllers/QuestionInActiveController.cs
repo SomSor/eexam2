@@ -221,7 +221,7 @@ namespace WebSite.Controllers
                 }).ToList(),
                 Assets = Enumerable.Empty<TheS.ExamBank.DataFormats.Asset>(),
             });
-            qsuiteVm.Questions = questions;
+            qsuiteVm.Questions = ReOrderQuestionNumber(questions);
             var qsuite = new TheS.ExamBank.DataFormats.QuestionSuite()
             {
                 _id = qsuiteVm?._id,
@@ -289,7 +289,7 @@ namespace WebSite.Controllers
                 SubjectCode = qsuiteVm?.SubjectCode,
                 Level = qsuiteVm?.Level ?? 0,
                 LayoutCode = qsuiteVm?.LayoutCode,
-                Questions = qsuiteVm?.Questions,
+                Questions = ReOrderQuestionNumber(qsuiteVm?.Questions),
             };
 
             repoQ.Upsert(qsuite);
@@ -313,7 +313,7 @@ namespace WebSite.Controllers
                 SubjectCode = qsuiteVm?.SubjectCode,
                 Level = qsuiteVm?.Level ?? 0,
                 LayoutCode = qsuiteVm?.LayoutCode,
-                Questions = qsuiteVm.Questions.Where(q => q._id != questionid).ToList(),
+                Questions = ReOrderQuestionNumber(qsuiteVm.Questions.Where(q => q._id != questionid).ToList()),
             };
 
             repoQ.Upsert(qsuite);
@@ -342,6 +342,16 @@ namespace WebSite.Controllers
             });
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private IEnumerable<TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer> ReOrderQuestionNumber(IEnumerable<TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer> questions)
+        {
+            var i = 1;
+            return questions.Select(q =>
+            {
+                q.No = i++;
+                return q;
+            }).ToList();
+        }
     }
 }
 
