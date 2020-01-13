@@ -164,6 +164,11 @@ namespace WebSite.Repositories.OracleImpl
             return Enumerable.Empty<Consideration>();
         }
 
+        public IEnumerable<Consideration> ListConsiderationByQuestionNo(string ExamSuiteId, int QuestionNo)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<InactiveSubject> ListInActiveSubject(string siteId)
         {
             using (var con = new OracleConnection(OracleUtility.conString))

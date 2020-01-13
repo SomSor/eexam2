@@ -302,6 +302,14 @@ namespace WebSite.Controllers
         public IActionResult DeleteQuestion(string examsuiteid, string questionid)
         {
             var qsuiteVm = repoQ.GetQuestionSuite(examsuiteid);
+
+            var delQ = qsuiteVm.Questions.Where(q => q._id == questionid).FirstOrDefault();
+            var considerations = repoForApprove.ListConsiderationByQuestionNo(qsuiteVm?._id, delQ.No);
+            foreach (var item in considerations)
+            {
+                repoForApprove.DeleteConsiderration(item._id);
+            }
+
             var qsuite = new TheS.ExamBank.DataFormats.QuestionSuite()
             {
                 _id = qsuiteVm?._id,
@@ -351,15 +359,18 @@ namespace WebSite.Controllers
             var considerations = repoForApprove.ListConsiderationByExamSuiteId(examsuiteId);
             var orderedQuestions = questions.Select(q =>
             {
-                var consideration = considerations.FirstOrDefault(c => c.QuestionNumber == q.No);
-                consideration.QuestionNumber = i;
-                repoForApprove.UpdateConsideration(consideration);
+                var filteredConsiderations = considerations.Where(c => c.QuestionNumber == q.No).ToList();
+                foreach (var item in filteredConsiderations)
+                {
+                    item.QuestionNumber = i;
+                    repoForApprove.UpdateConsideration(item);
+                }
                 q.No = i;
                 i++;
                 return q;
             }).ToList();
 
-            var qNo = orderedQuestions.Select(q => q.No).ToList();
+            var qNo = questions.Select(q => q.No).ToList();
             var deletingConsiderations = considerations.Where(c => !qNo.Contains(c.QuestionNumber)).ToList();
             foreach (var item in deletingConsiderations)
             {

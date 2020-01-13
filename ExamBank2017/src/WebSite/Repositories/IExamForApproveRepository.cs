@@ -20,6 +20,7 @@ namespace WebSite.Repositories
         //InActive
         IEnumerable<InActive.InactiveSubject> ListInActiveSubject(string siteId);
         IEnumerable<InActive.Consideration> ListConsiderationByExamSuiteId(string ExamSuiteId);
+        IEnumerable<InActive.Consideration> ListConsiderationByQuestionNo(string ExamSuiteId, int QuestionNo);
         InActive.InactiveSubject GetInActiveSubject(string subjectId);
         QuestionSuite GetInActiveExamsuite(string ExamSuiteId);
         void CreateConsideration(InActive.Consideration Consideration);

@@ -97,6 +97,14 @@ namespace WebSite.Repositories.MongoImpl
             return result ?? new List<InActive.Consideration>();
         }
 
+        public IEnumerable<InActive.Consideration> ListConsiderationByQuestionNo(string ExamSuiteId, int QuestionNo)
+        {
+            var coltn = helper.GetCollection<InActive.Consideration>(InactiveSubject_Consideration);
+
+            var result = coltn.Find(it => it.ExamSuiteId == ExamSuiteId && it.QuestionNumber == QuestionNo).ToList();
+            return result ?? new List<InActive.Consideration>();
+        }
+
         public InActive.InactiveSubject GetInActiveSubject(string subjectId)
         {
             var coltn = helper.GetCollection<InActive.InactiveSubject>(InactiveSubject_InactiveSubject);
