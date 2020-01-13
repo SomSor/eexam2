@@ -55,6 +55,11 @@ namespace WebSite.Repositories.OracleImpl
             throw new NotImplementedException();
         }
 
+        public void DeleteConsiderration(string Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public ActivatedSubject GetActivatedSubjectBySubjectCode(string subjectCode, string Language)
         {
             throw new NotImplementedException();
@@ -205,6 +210,11 @@ namespace WebSite.Repositories.OracleImpl
         }
 
         public void UpdateActivatedSubject(ActivatedSubject activatedSubject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateConsideration(Consideration Consideration)
         {
             throw new NotImplementedException();
         }

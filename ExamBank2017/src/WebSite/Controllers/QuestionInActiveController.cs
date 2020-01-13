@@ -221,7 +221,7 @@ namespace WebSite.Controllers
                 }).ToList(),
                 Assets = Enumerable.Empty<TheS.ExamBank.DataFormats.Asset>(),
             });
-            qsuiteVm.Questions = ReOrderQuestionNumber(questions);
+            qsuiteVm.Questions = ReOrderQuestionNumber(questions, qsuiteVm?._id);
             var qsuite = new TheS.ExamBank.DataFormats.QuestionSuite()
             {
                 _id = qsuiteVm?._id,
@@ -289,7 +289,7 @@ namespace WebSite.Controllers
                 SubjectCode = qsuiteVm?.SubjectCode,
                 Level = qsuiteVm?.Level ?? 0,
                 LayoutCode = qsuiteVm?.LayoutCode,
-                Questions = ReOrderQuestionNumber(qsuiteVm?.Questions),
+                Questions = ReOrderQuestionNumber(qsuiteVm?.Questions, qsuiteVm?._id),
             };
 
             repoQ.Upsert(qsuite);
@@ -313,7 +313,7 @@ namespace WebSite.Controllers
                 SubjectCode = qsuiteVm?.SubjectCode,
                 Level = qsuiteVm?.Level ?? 0,
                 LayoutCode = qsuiteVm?.LayoutCode,
-                Questions = ReOrderQuestionNumber(qsuiteVm.Questions.Where(q => q._id != questionid).ToList()),
+                Questions = ReOrderQuestionNumber(qsuiteVm.Questions.Where(q => q._id != questionid).ToList(), qsuiteVm?._id),
             };
 
             repoQ.Upsert(qsuite);
@@ -343,14 +343,30 @@ namespace WebSite.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        private IEnumerable<TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer> ReOrderQuestionNumber(IEnumerable<TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer> questions)
+        private IEnumerable<TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer> ReOrderQuestionNumber(
+            IEnumerable<TheS.ExamBank.DataFormats.MultipleChoiceQuestionWithOneCorrectAnswer> questions,
+            string examsuiteId)
         {
             var i = 1;
-            return questions.Select(q =>
+            var considerations = repoForApprove.ListConsiderationByExamSuiteId(examsuiteId);
+            var orderedQuestions = questions.Select(q =>
             {
-                q.No = i++;
+                var consideration = considerations.FirstOrDefault(c => c.QuestionNumber == q.No);
+                consideration.QuestionNumber = i;
+                repoForApprove.UpdateConsideration(consideration);
+                q.No = i;
+                i++;
                 return q;
             }).ToList();
+
+            var qNo = orderedQuestions.Select(q => q.No).ToList();
+            var deletingConsiderations = considerations.Where(c => !qNo.Contains(c.QuestionNumber)).ToList();
+            foreach (var item in deletingConsiderations)
+            {
+                repoForApprove.DeleteConsiderration(item._id);
+            }
+
+            return orderedQuestions;
         }
     }
 }

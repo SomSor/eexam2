@@ -24,8 +24,10 @@ namespace WebSite.Repositories
         QuestionSuite GetInActiveExamsuite(string ExamSuiteId);
         void CreateConsideration(InActive.Consideration Consideration);
         void CreateManyConsideration(IEnumerable<InActive.Consideration> Considerations);
+        void UpdateConsideration(InActive.Consideration Consideration);
         void UpsertInactiveSubject(InActive.InactiveSubject inactiveSubject);
         void DeleteAllInSubject(string SubjectId);
+        void DeleteConsiderration(string Id);
         void DeleteAllConsiderration(string ExamSuiteId);
         void DeleteAllConsiderration(IEnumerable<string> ExamSuiteIds);
 

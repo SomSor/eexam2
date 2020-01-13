@@ -85,7 +85,7 @@ namespace WebSite.Repositories.MongoImpl
         {
             var coltn = helper.GetCollection<InActive.InactiveSubject>(InactiveSubject_InactiveSubject);
             var result = coltn.Find(Builders<InActive.InactiveSubject>.Filter.Eq(x => x.SiteId, siteId)).ToList();
-            
+
             return result ?? new List<InActive.InactiveSubject>();
         }
 
@@ -139,6 +139,12 @@ namespace WebSite.Repositories.MongoImpl
             }
         }
 
+        public void UpdateConsideration(InActive.Consideration Consideration)
+        {
+            var coltn = helper.GetCollection<InActive.Consideration>(InactiveSubject_Consideration);
+            coltn.ReplaceOne(x => x._id == Consideration._id, Consideration);
+        }
+
         public void UpsertInactiveSubject(InActive.InactiveSubject inactiveSubject)
         {
             if (inactiveSubject != null)
@@ -174,6 +180,19 @@ namespace WebSite.Repositories.MongoImpl
             else
             {
                 throw new ArgumentNullException("null input from SubjectId");
+            }
+        }
+
+        public void DeleteConsiderration(string Id)
+        {
+            if (!string.IsNullOrEmpty(Id))
+            {
+                var coltn = helper.GetCollection<InActive.Consideration>(InactiveSubject_Consideration);
+                var result = coltn.DeleteMany(con => con._id == Id);
+            }
+            else
+            {
+                throw new ArgumentNullException("null input from ExamSuiteId");
             }
         }
 
